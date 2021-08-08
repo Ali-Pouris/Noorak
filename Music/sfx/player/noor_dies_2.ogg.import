@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/noor_dies_2.ogg-52a20b305e65fa4c922346764b1e2586.oggstr"
+
+[deps]
+
+source_file="res://Music/sfx/player/noor_dies_2.ogg"
+dest_files=[ "res://.import/noor_dies_2.ogg-52a20b305e65fa4c922346764b1e2586.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0
