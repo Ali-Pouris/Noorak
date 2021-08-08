@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Rectangle.gd" type="Script" id=1]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 36, 4 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 100, 4 )
+
+[node name="StaticBodyRect2" type="StaticBody2D"]
+collision_layer = 68
+collision_mask = 64
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D108" type="CollisionShape2D" parent="."]
+position = Vector2( 1088, -608 )
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D124" type="CollisionShape2D" parent="."]
+position = Vector2( 1216, -608 )
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D51" type="CollisionShape2D" parent="."]
+position = Vector2( 1088, -736 )
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D52" type="CollisionShape2D" parent="."]
+position = Vector2( 1152, -672 )
+rotation = 1.5708
+shape = SubResource( 3 )
+
+[node name="CollisionShape2D165" type="CollisionShape2D" parent="."]
+position = Vector2( 1120, -640 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D170" type="CollisionShape2D" parent="."]
+position = Vector2( 1056, -704 )
+shape = SubResource( 1 )
