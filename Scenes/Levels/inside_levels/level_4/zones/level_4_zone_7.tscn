@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/enemys/Spikes.tscn" type="PackedScene" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 85, 1 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 29, 1 )
+
+[node name="66" type="Node2D"]
+
+[node name="Spikes2" parent="." instance=ExtResource( 2 )]
+position = Vector2( 392.098, -236.262 )
+rotation = 1.39801
+z_index = 1
+Width = 43
+
+[node name="Sprite" parent="Spikes2" index="0"]
+region_rect = Rect2( 0, 0, 172, 4 )
+
+[node name="CollisionShape2D" parent="Spikes2" index="1"]
+shape = SubResource( 1 )
+
+[node name="Spikes" parent="." instance=ExtResource( 2 )]
+position = Vector2( 435.452, -140.549 )
+rotation = 0.429351
+z_index = 1
+Width = 15
+
+[node name="Sprite" parent="Spikes" index="0"]
+region_rect = Rect2( 0, 0, 60, 4 )
+
+[node name="CollisionShape2D" parent="Spikes" index="1"]
+shape = SubResource( 2 )
+
+[editable path="Spikes2"]
+
+[editable path="Spikes"]

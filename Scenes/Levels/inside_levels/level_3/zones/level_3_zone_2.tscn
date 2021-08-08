@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/Objects/level_1/big_bird.gd" type="Script" id=1]
+
+[node name="StaticBodypoly2" type="StaticBody2D"]
+position = Vector2( 221, -200.024 )
+collision_layer = 68
+collision_mask = 68
+script = ExtResource( 1 )
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="."]
+position = Vector2( -64.3336, -120.497 )
+rotation = -0.220021
+polygon = PoolVector2Array( 61.6908, 116.288, 54.6764, 130.055, 49.3856, 130.595, 44.2835, 126.438, 43.503, 130.69, 49.1241, 138.507, 50.8682, 147.083, 37.9676, 143.12, 39.4817, 136.35, 35.4297, 131.351, 26.0881, 132.689, 24.9779, 137.63, 13.6052, 133.579, 19.7271, 125.47, 31.8339, 126.239, 33.58, 115.981, 40.9453, 118.131, 42.0433, 114.665, 30.4146, 111.236, 28.0987, 85.5459, 63.8701, 73.7185, 57.3017, 93.9698, 76.143, 104.238, 53.4867, 108.575, 46.3564, 120.119, 52.6256, 122.459 )

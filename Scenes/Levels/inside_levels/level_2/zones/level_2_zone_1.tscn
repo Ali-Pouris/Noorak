@@ -1,0 +1,187 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scripts/Ground/BG_polygons_levels.gd" type="Script" id=1]
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Rectangle.gd" type="Script" id=2]
+[ext_resource path="res://scripts/Ground/BG_polygons.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/global/in_portal.tscn" type="PackedScene" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 64, 10 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 76, 10 )
+
+[node name="level_2_zone_1" type="Node2D"]
+
+[node name="BG_polygons" type="Node2D" parent="."]
+z_index = -10
+script = ExtResource( 1 )
+
+[node name="blank" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_back",
+]]
+color = Color( 0.254902, 0.254902, 0.254902, 1 )
+polygon = PoolVector2Array( 65, -31, -73, -30, -73, -138, 69, -138 )
+
+[node name="light" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( -66, -63, 59, -63, 59, -37, -66, -37 )
+
+[node name="light2" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( -65, -63, -50, -68, -48, -83, -58, -97, -51, -108, -44, -104, -27, -112, -25, -123, -7, -121, -4, -110, 20, -111, 22, -119, 29, -119, 28, -109, 39, -109, 46, -115, 58, -119, 60, -116, 68, -120, 72, -120, 72, -108, 72, -109, 56, -108, 50, -104, 51, -98, 45, -96, 42, -75, 49, -70, 44, -66, 47, -59, 60, -60, 72, -100, 72, -132, 60, -133, -68, -132 )
+
+[node name="light3" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 81.1054, -102.615, 71.8959, -108.917, 68.9002, -101.774 )
+
+[node name="dark" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( -69, -62, 61, -62, 61, -60, -69, -60 )
+
+[node name="dark2" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( -60, -60, -60, -39, -63, -39, -64, -37, 53, -37, 53, -60, 52, -60, 52, -39, 49, -39, 49, -60, 48, -60, 48, -39, 45, -39, 45, -60, 44, -60, 44, -39, 41, -39, 41, -60, 40, -60, 40, -39, 37, -39, 37, -60, 36, -60, 36, -39, 33, -39, 33, -60, 32, -60, 32, -39, 29, -39, 29, -60, 28, -60, 28, -39, 25, -39, 25, -60, 24, -60, 24, -39, 21, -39, 21, -60, 20, -60, 20, -39, 17, -39, 17, -60, 16, -60, 16, -39, 13, -39, 13, -60, 12, -60, 12, -39, 9, -39, 9, -60, 8, -60, 8, -39, 5, -39, 5, -60, 4, -60, 4, -39, 1, -39, 1, -60, 0, -60, 0, -39, -3, -39, -3, -60, -4, -60, -4, -39, -7, -39, -7, -60, -8, -60, -8, -39, -11, -39, -11, -60, -12, -60, -12, -39, -15, -39, -15, -60, -16, -60, -16, -39, -19, -39, -19, -60, -20, -60, -20, -39, -23, -39, -23, -60, -24, -60, -24, -39, -27, -39, -27, -60, -28, -60, -28, -39, -31, -39, -31, -60, -32, -60, -32, -39, -35, -39, -35, -60, -36, -60, -36, -39, -39, -39, -39, -60, -40, -60, -40, -39, -43, -39, -43, -60, -44, -60, -44, -39, -47, -39, -47, -60, -48, -60, -48, -39, -51, -39, -51, -60, -52, -60, -52, -39, -55, -39, -55, -60, -56, -60, -56, -39, -59, -39, -59, -60 )
+
+[node name="dark3" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( -67, -63, -55, -73, -56, -83, -61, -86, -58, -90, -61, -98, -58, -107, -60, -115, -55, -115, -46, -120, -43, -127, -36, -121, -28, -125, -26, -127, -23, -124, -14, -124, -11, -127, -4, -123, -1, -118, 9, -118, 10, -122, 15, -120, 27, -124, 29, -127, 32, -123, 35, -114, 42, -118, 44, -121, 53, -119, 61, -124, 72.757, -122.919, 73, -129, -66, -134 )
+
+[node name="dark4" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 59, -62, 50, -65, 52, -70, 54, -72, 49, -76, 51, -86, 53, -86, 52, -97, 54, -105, 67, -107, 76, -105, 76, -99 )
+
+[node name="dark5" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( -32, -80, -21, -80, -21, -96, -32, -96, -32, -81, -31, -81, -31, -95, -22, -95, -22, -81, -32, -81 )
+
+[node name="dark6" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( -20, -80, -20, -92, 4, -92, 4, -80, -19, -80, -19, -81, 3, -81, 3, -91, -19, -91, -19, -80 )
+
+[node name="dark7" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 4, -101, 4, -93, -4, -93, -4, -101, 3, -101, 3, -100, -3, -100, -3, -94, 3, -94, 3, -101 )
+
+[node name="dark8" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( -5, -97, -5, -93, -20, -93, -20, -97, -6, -97, -6, -96, -19, -96, -19, -94, -6, -94, -6, -97 )
+
+[node name="dark9" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 5, -101, 5, -86, 23, -86, 23, -101, 6, -101, 6, -101, 6, -100, 22, -100, 22, -87, 6, -87, 6, -100, 6, -101 )
+
+[node name="dark10" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 23, -80, 23, -85, 17, -85, 17, -80, 22, -80, 22, -80, 22, -81, 18, -81, 18, -84, 22, -84, 22, -81, 22, -80 )
+
+[node name="dark11" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 16, -85, 16, -80, 5, -80, 5, -85, 15, -85, 15, -84, 6, -84, 6, -81, 15, -81, 15, -85 )
+
+[node name="dark20" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 54, -80, 32, -84, 17, -74, 5, -81, 12, -86, 12, -94, 18, -96, 18, -100, 17, -97, 12, -95, 10, -98, 11, -94, 11, -87, 4, -82, 2, -87, 3, -91, 2, -93, 2, -91, 1, -87, -4, -86, -9, -89, -5, -85, 1, -86, 3, -80, 17, -71, 32, -80, 55, -72 )
+
+[node name="dark21" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( -56, -80, -49, -80, -52, -82, -51, -84, -54, -85, -53, -88, -58, -83 )
+
+[node name="dark32" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 49.5469, -83.1875, 49.8906, -81.875, 48.9219, -80.8906, 40.9844, -82.2969, 40.2656, -83.4844, 41.0916, -84.6641, 43.2188, -83.7969, 47.5469, -83.2188 )
+
+[node name="noor" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_light",
+]]
+color = Color( 1, 1, 1, 0.117647 )
+invert_border = 10.0
+polygon = PoolVector2Array( 9, -130, 40, -32, -48, -32, -16, -130 )
+
+[node name="Ground" type="Node2D" parent="."]
+
+[node name="StaticBodyRect" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 64
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 0, -30 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 0, -138 )
+shape = SubResource( 2 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( -74, -84 )
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 66, -40 )
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[node name="FG_polygons" type="Node2D" parent="."]
+script = ExtResource( 3 )
+
+[node name="black" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 74.9564, -136.839, 75.3533, -232.877, -188.364, -228.392, -186.243, 72.8353, 117.106, 70.0069, 117, -34, 115.5, -100, 60.1377, -102.325, 62, -34.5, -74, -32.5, -73.5, -138 )
+
+[node name="black7" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 9.54326, -129.282, 11.3271, -124.971, -18.2544, -124.971, -16.6936, -129.207 )
+
+[node name="in_portal" parent="." instance=ExtResource( 4 )]
+position = Vector2( -48, -125 )
+rotation = 0.854478

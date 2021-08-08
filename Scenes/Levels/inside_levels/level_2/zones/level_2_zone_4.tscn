@@ -1,0 +1,303 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Rectangle.gd" type="Script" id=1]
+[ext_resource path="res://scripts/Ground/BG_polygons.gd" type="Script" id=2]
+[ext_resource path="res://scripts/Ground/BG_polygons_levels.gd" type="Script" id=3]
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Circle.gd" type="Script" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 109.366, 10 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 137.916, 10 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 168.479, 10 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 75.411, 10 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 80.0181, 10 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 50.316, 10 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 65.5737, 10 )
+
+[sub_resource type="CircleShape2D" id=8]
+
+[node name="level_2_zone_4" type="Node2D"]
+
+[node name="BG_polygons" type="Node2D" parent="."]
+z_index = -10
+script = ExtResource( 3 )
+
+[node name="blank2" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_back",
+]]
+color = Color( 0.254902, 0.254902, 0.254902, 1 )
+polygon = PoolVector2Array( 483.256, -31.9532, 582, -22, 728, -37, 736, -109, 572, -107, 481.489, -129.42 )
+
+[node name="blank3" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_back",
+]]
+color = Color( 0.254902, 0.254902, 0.254902, 1 )
+polygon = PoolVector2Array( 664, -106, 707, -229, 1030, -210, 1018, -101, 735, -80 )
+
+[node name="light5" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 461.367, -108.995, 483, -106, 484, -109, 489, -104, 509, -103, 510, -106, 515, -100, 530, -93, 535, -96, 540, -90, 559, -89, 561, -92, 571, -87, 590, -89, 592, -93, 603, -89, 617, -91, 623, -95, 630, -90, 652, -89, 657, -93, 664, -91, 676, -96, 669, -104, 572, -105, 488.127, -128.298, 459.583, -141.55 )
+
+[node name="light6" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 477.346, -50.2364, 492, -50, 493, -46, 500, -48, 523, -43, 525, -40, 538, -42, 557, -41, 562, -37, 570, -40, 589, -42, 595, -40, 603, -43, 620, -47, 626, -44, 636, -49, 658, -51, 659, -47, 665, -52, 689, -48, 691, -47, 695, -51, 714, -54, 726, -45, 576, -29, 467.832, -39.8168 )
+
+[node name="light11" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 483.089, -40.1284, 515.829, -67.3008, 589.106, -77.7689, 663.719, -78.8825, 718.954, -45.9192, 713.609, -45.9192, 662.382, -74.428, 589.551, -73.5371, 518.725, -63.5145, 485.984, -38.3466 )
+
+[node name="light12" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 512.934, -34.5603, 535.206, -49.9283, 590.442, -59.06, 654.587, -57.9464, 692.816, -41.6785, 687.327, -40.5738, 652.805, -54.3828, 591.11, -54.16, 538.993, -46.142, 520.622, -33.3358 )
+
+[node name="light7" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 721, -45, 714, -60, 714, -74, 719, -78, 714, -88, 720, -105, 722, -104, 720, -111, 721, -132, 726, -138, 722, -141, 721, -150, 725, -152, 727, -164, 738, -170, 745, -166, 751, -170, 768, -168, 770, -166, 781, -169, 796, -167, 799, -159, 737, -152 )
+
+[node name="light8" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 669, -103, 675, -95, 684, -101, 684, -109, 691, -114, 692, -130, 689, -136, 695, -139, 701, -150, 697, -156, 704, -163, 711, -177, 707, -186, 713, -191, 721, -199, 719, -209, 728, -208, 741, -210, 742, -213, 751, -209, 768, -206, 772, -209, 778, -205, 797, -204, 801, -209, 805, -202, 829, -200, 833, -205, 845, -204, 866, -199, 868, -204, 880, -198, 903, -202, 905, -206, 912, -201, 930, -198, 936, -201, 942, -195, 967, -194, 973, -198, 981, -192, 999, -195, 1000, -199, 1009, -194, 1023, -193, 1024, -205, 955, -213, 707, -223 )
+
+[node name="light9" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 795, -158, 800, -167, 818, -170, 823, -167, 833, -171, 853, -171, 857, -167, 866, -173, 885, -169, 889, -165, 893, -170, 915, -173, 920, -168, 924, -171, 947, -170, 948, -166, 957, -168, 967, -158, 964, -154, 966, -145, 949, -136, 942, -139, 936, -135, 913, -137, 910, -140, 907, -136, 891, -134, 888, -138, 876, -135, 865, -139, 858, -134, 836, -134, 833, -139, 826, -134, 803, -131, 800, -137, 792, -132, 775, -136, 774, -140, 770, -135, 758, -133, 747, -141, 748, -150 )
+
+[node name="light10" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 743, -148, 760, -132, 758, -109, 752, -103, 759, -104, 769, -101, 774, -99, 784, -106, 802, -107, 812, -103, 822, -109, 852, -110, 856, -106, 872, -113, 896, -111, 902, -108, 910, -113, 940, -115, 950, -111, 963, -116, 984, -116, 991, -113, 1000, -121, 995, -135, 1000, -148, 1006, -149, 1002, -157, 1008, -170, 1014, -175, 1006, -182, 1011, -190, 1018, -197, 1025, -193, 1016, -104, 739, -87 )
+
+[node name="dark41" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 470, -45, 475, -48, 483, -47, 484, -44, 489, -47, 496, -43, 499, -46, 510, -43, 510, -41, 515, -42, 522, -41, 524, -38, 528, -39, 537, -39, 538, -37, 542, -40, 552, -39, 552, -36, 556, -39, 561, -36, 564, -35, 567, -37, 576, -39, 577, -36, 580, -39, 588, -39, 591, -37, 593, -38, 602, -40, 605, -39, 609, -42, 617, -44, 618, -41, 621, -45, 628, -41, 631, -44, 641, -46, 643, -44, 645, -48, 653, -47, 654, -44, 658, -46, 663, -46, 666, -44, 667, -49, 677, -48, 680, -46, 683, -47, 691, -46, 695, -49, 704, -50, 706, -49, 712, -52, 727, -52, 725, -45, 575, -29, 465.254, -40.0482 )
+
+[node name="dark15" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 467, -112, 469, -110, 480, -112, 481, -114, 485, -111, 486, -108, 492, -106, 494, -108, 497, -105, 504, -107, 504, -109, 507, -107, 514, -107, 515, -103, 520, -100, 523, -102, 526, -98, 533, -97, 535, -99, 538, -95, 546, -93, 548, -94, 551, -91, 559, -92, 561, -94, 564, -93, 568, -90, 575, -90, 577, -93, 582, -90, 592, -94, 592, -96, 594, -94, 602, -91, 604, -93, 609, -91, 617, -94, 620, -97, 626, -97, 629, -92, 638, -91, 639, -93, 642, -91, 652, -92, 654, -95, 656, -93, 660, -95, 664, -94, 674, -97, 674, -100, 677, -99, 683, -102, 683, -106, 571, -105, 482.736, -129.518, 465.426, -134.326, 445, -140 )
+
+[node name="dark16" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 669, -104, 682, -107, 682, -114, 686, -113, 689, -119, 686, -123, 689, -127, 687, -135, 686, -139, 689, -139, 694, -143, 692, -147, 697, -148, 696, -157, 694, -159, 699, -161, 702, -167, 700, -170, 704, -171, 708, -178, 705, -181, 705, -189, 708, -189, 713, -194, 712, -197, 716, -198, 717, -204, 715, -209, 719, -213, 722, -211, 730, -210, 732, -213, 734, -211, 742, -215, 746, -213, 752, -211, 754, -213, 758, -209, 768, -208, 769, -211, 775, -211, 778, -207, 786, -207, 789, -209, 792, -207, 801, -210, 802, -212, 806, -207, 815, -205, 817, -207, 820, -203, 832, -206, 832, -209, 836, -206, 848, -206, 850, -208, 851, -205, 861, -204, 862, -206, 865, -204, 870, -206, 871, -208, 873, -206, 881, -201, 884, -204, 886, -202, 898, -204, 898, -207, 901, -205, 906, -208, 910, -205, 915, -203, 917, -204, 921, -202, 931, -202, 932, -204, 934, -203, 940, -201, 941, -199, 947, -196, 950, -198, 951, -196, 962, -196, 962, -198, 967, -197, 972, -199, 974, -202, 976, -199, 981, -195, 984, -197, 986, -195, 996, -197, 997, -200, 1002, -200, 1006, -197, 1012, -198, 1014, -196, 1028, -196, 1024, -205, 954, -213, 708, -223 )
+
+[node name="dark17" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 722, -51, 718, -55, 716, -64, 719, -66, 716, -72, 721, -80, 721, -84, 717, -87, 719, -96, 723, -95, 722, -100, 724, -108, 725, -110, 723, -110, 722, -114, 724, -115, 723, -116, 722, -118, 724, -131, 726, -132, 725, -135, 728, -139, 723, -143, 723, -149, 726, -152, 728, -155, 728, -161, 732, -165, 735, -164, 735, -166, 739, -168, 741, -163, 743, -164, 751, -167, 757, -168, 761, -165, 764, -167, 773, -165, 776, -164, 779, -167, 785, -166, 786, -165, 787, -167, 793, -166, 796, -159, 737, -151 )
+
+[node name="dark18" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 1016, -197, 1015, -192, 1010, -185, 1013, -184, 1011, -181, 1015, -178, 1015, -177, 1014, -174, 1014, -171, 1012, -169, 1007, -162, 1009, -159, 1005, -156, 1008, -152, 1010, -152, 1009, -146, 1004, -145, 1003, -141, 1004, -138, 998, -136, 1001, -127, 1004, -126, 1003, -122, 1004, -115, 1001, -117, 994, -111, 994, -109, 989, -112, 987, -110, 986, -114, 978, -112, 977, -110, 975, -112, 967, -114, 965, -111, 961, -113, 953, -110, 952, -107, 949, -110, 940, -111, 938, -109, 934, -112, 923, -110, 922, -107, 917, -111, 908, -109, 908, -106, 904, -107, 895, -107, 893, -106, 892, -110, 883, -110, 882, -107, 877, -111, 870, -108, 870, -106, 866, -107, 860, -106, 858, -103, 854, -104, 852, -108, 843, -107, 842, -105, 838, -108, 830, -105, 830, -103, 826, -106, 818, -103, 817, -100, 814, -102, 807, -101, 805, -100, 804, -103, 796, -105, 794, -103, 788, -105, 781, -101, 780, -98, 777, -99, 769, -98, 766, -97, 764, -101, 755, -102, 749, -101, 751, -106, 757, -112, 755, -115, 758, -116, 758, -127, 754, -130, 757, -132, 758, -137, 760, -139, 762, -136, 771, -138, 773, -142, 771, -154, 743, -149, 739, -88, 1016, -105, 1026, -199 )
+
+[node name="dark19" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 794, -160, 796, -162, 807, -164, 809, -163, 813, -168, 819, -168, 822, -164, 828, -166, 834, -169, 838, -166, 840, -170, 848, -169, 849, -165, 852, -169, 858, -166, 860, -164, 862, -168, 871, -170, 874, -166, 878, -169, 884, -167, 886, -163, 888, -164, 894, -166, 897, -165, 899, -169, 907, -170, 908, -167, 912, -171, 919, -167, 921, -165, 924, -169, 937, -169, 938, -165, 940, -168, 947, -165, 949, -163, 955, -165, 960, -163, 961, -159, 963, -160, 965, -158, 964, -155, 963, -154, 964, -152, 963, -146, 961, -147, 961, -145, 953, -140, 951, -141, 949, -138, 939, -140, 937, -142, 936, -138, 926, -137, 924, -139, 922, -138, 912, -139, 912, -142, 908, -141, 906, -137, 900, -136, 897, -138, 893, -135, 890, -137, 889, -139, 886, -140, 877, -136, 876, -140, 874, -138, 867, -141, 864, -141, 858, -135, 852, -136, 848, -135, 846, -138, 843, -135, 836, -138, 835, -140, 831, -141, 826, -136, 820, -134, 818, -137, 813, -134, 805, -133, 803, -136, 803, -139, 797, -138, 793, -135, 786, -135, 786, -138, 784, -136, 777, -137, 775, -141, 770, -142, 769, -144, 770, -156 )
+
+[node name="dark24" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 746.267, -162.608, 749.841, -173.12, 746.267, -180.267, 739.33, -181.529, 736.807, -188.466, 740.381, -183.841, 746.688, -183.21, 748.284, -186.546, 745.804, -192.896, 741.432, -197.926, 742.903, -205.074, 743.744, -198.136, 746.898, -194.773, 749.841, -198.977, 756.988, -201.92, 763.926, -198.346, 768.971, -199.608, 764.257, -196.269, 757.409, -199.187, 751.733, -196.244, 749.091, -192.28, 751.26, -185.455, 750.261, -180.688, 752.994, -175.432, 758.25, -179.216, 756.358, -185.943, 760.142, -188.886, 759.932, -194.352, 762.244, -188.466, 759.091, -184.682, 760.352, -181.318, 764.346, -183.421, 769.392, -182.58, 764.977, -181.529, 754.045, -173.12, 753.835, -163.239 )
+
+[node name="dark33" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 551.017, -38.5758, 553.492, -42.4649, 550.84, -40.6087, 550.221, -42.1997, 549.426, -40.7855, 547.658, -42.3765, 547.658, -40.1668, 545.006, -42.0229, 546.862, -38.3106 )
+
+[node name="dark34" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 720.443, -130.511, 725.497, -129.024, 724.085, -124.565, 720.071, -123.301, 722.375, -126.2, 719.7, -127.092, 722.227, -127.984 )
+
+[node name="dark35" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 695.534, -149.915, 700.579, -148.653, 698.582, -151.281, 701, -151.597, 698.582, -154.329, 701.841, -154.96, 698.057, -156.116, 700.159, -158.429, 692.381, -156.747 )
+
+[node name="dark36" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 958.695, -162.672, 964.618, -167.427, 960.113, -166.259, 959.696, -169.096, 958.027, -166.76, 956.526, -169.846, 955.358, -166.843, 951.937, -169.429, 953.856, -162.505 )
+
+[node name="dark40" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 492.256, -39.0088, 520.956, -57.3629, 589.329, -67.969, 660.378, -68.6371, 707.833, -45.683, 700.491, -43.3471, 659.71, -63.9599, 590.665, -63.2918, 524.293, -52.0235, 498.263, -37.0066 )
+
+[node name="dark37" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 954.094, -143.47, 954.656, -135.51, 956.435, -138.975, 959.244, -137.851, 958.87, -140.567, 963.271, -140.567, 956.997, -144.687 )
+
+[node name="dark38" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+invert_border = 10.0
+polygon = PoolVector2Array( 966.881, -155.759, 965.304, -153.867, 968.562, -153.236, 965.304, -151.869, 967.406, -150.818, 965.409, -150.082, 968.668, -147.665, 960.469, -148.716, 961.94, -156.494 )
+
+[node name="noor3" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_light",
+]]
+color = Color( 1, 1, 1, 0.117647 )
+invert_border = 10.0
+polygon = PoolVector2Array( 400.5, -98, 430.372, -144.399, 569.5, -103.75, 417.25, -61.5 )
+
+[node name="noor4" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_light",
+]]
+color = Color( 1, 1, 1, 0.117647 )
+invert_border = 10.0
+polygon = PoolVector2Array( 767.394, -219.495, 783.745, -152.305, 736.056, -151.397, 724.285, -44.6815, 667.5, -39.3301, 739.745, -220.09 )
+
+[node name="noor5" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_light",
+]]
+color = Color( 1, 1, 1, 0.117647 )
+invert_border = 10.0
+polygon = PoolVector2Array( 896.089, -96.521, 982.52, -102.861, 1004.88, -206.979, 975.845, -209.649 )
+
+[node name="Ground" type="Node2D" parent="."]
+
+[node name="StaticBodyRect" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 64
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D16" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 842, -153 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D17" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 876.891, -92.2813 )
+rotation = -0.0558619
+shape = SubResource( 2 )
+
+[node name="CollisionShape2D18" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 860.83, -219.809 )
+rotation = 0.0508812
+shape = SubResource( 3 )
+
+[node name="CollisionShape2D20" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 1023.55, -148.826 )
+rotation = 1.65776
+shape = SubResource( 4 )
+
+[node name="CollisionShape2D12" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 503, -30 )
+rotation = 0.0951841
+shape = SubResource( 5 )
+
+[node name="CollisionShape2D14" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 649, -30 )
+rotation = -0.0959931
+shape = SubResource( 5 )
+
+[node name="CollisionShape2D11" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 527.295, -116.705 )
+rotation = 0.227232
+shape = SubResource( 6 )
+
+[node name="CollisionShape2D13" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 623.994, -107.28 )
+rotation = -0.0331413
+shape = SubResource( 6 )
+
+[node name="CollisionShape2D15" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 735.249, -96.7235 )
+rotation = 1.68262
+shape = SubResource( 7 )
+
+[node name="CollisionShape2D19" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 683.788, -164.72 )
+rotation = 1.8617
+shape = SubResource( 7 )
+
+[node name="StaticBodyCircle" type="StaticBody2D" parent="Ground"]
+position = Vector2( 66.0712, -157.155 )
+collision_layer = 68
+collision_mask = 68
+script = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground/StaticBodyCircle"]
+position = Vector2( 884.929, 4.155 )
+shape = SubResource( 8 )
+
+[node name="FG_polygons" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="black4" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 670.821, -103.388, 684.036, -169.459, 644.393, -240.25, 454.329, -286.249, 431.625, -152.547, 494.317, -122.266, 597.199, -106.22 )
+
+[node name="black5" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 739.724, -76.9596, 797.301, 69.3409, 415.975, 84.4429, 415.975, -34.4853, 483.934, -29.7659, 600.031, -25.0466, 718.959, -33.5414 )
+
+[node name="black6" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 684.001, -146.669, 593.389, -269.373, 719.869, -347.715, 1148.39, -311.847, 1159.71, 44.9371, 729.307, 50.6004, 733.083, -80.5981, 1018.13, -102.307, 1031.35, -210.853, 703.823, -225.955 )
+
+[node name="black9" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 768.046, -218.426, 769.99, -212.327, 736.403, -213.653, 738.878, -218.073 )
+
+[node name="black10" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 1004.73, -204.368, 1004.14, -200.003, 969.927, -202.244, 972.758, -205.784 )

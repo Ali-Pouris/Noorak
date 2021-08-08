@@ -1,0 +1,214 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Rectangle.gd" type="Script" id=1]
+[ext_resource path="res://scripts/objects/drawing_rope.gd" type="Script" id=2]
+[ext_resource path="res://sprites/player/Dead_half1.png" type="Texture" id=3]
+[ext_resource path="res://sprites/player/Dead_half2.png" type="Texture" id=4]
+[ext_resource path="res://sprites/Objects/level_1/broken_cages.png" type="Texture" id=5]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 31.5206, 10 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 0.5, 10 )
+
+[node name="level_1_object_7" type="Node2D"]
+
+[node name="Ground" type="Node2D" parent="."]
+
+[node name="StaticBodyRect" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 64
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D32" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 753.762, 75.3605 )
+rotation = 5.46165
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D33" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 788.561, 45.4345 )
+rotation = 5.64984
+shape = SubResource( 1 )
+
+[node name="Complex_Objects" type="Node2D" parent="."]
+
+[node name="hanged_cages" type="Node2D" parent="Complex_Objects"]
+
+[node name="hanging_cage8" type="Node2D" parent="Complex_Objects/hanged_cages"]
+position = Vector2( 763.983, 172.589 )
+
+[node name="rope" type="Node2D" parent="Complex_Objects/hanged_cages/hanging_cage8"]
+script = ExtResource( 2 )
+
+[node name="pin0" type="PinJoint2D" parent="Complex_Objects/hanged_cages/hanging_cage8/rope"]
+position = Vector2( -0.0496044, -96.2362 )
+node_a = NodePath("../../../../../Ground/StaticBodyRect")
+node_b = NodePath("../0")
+
+[node name="0" type="RigidBody2D" parent="Complex_Objects/hanged_cages/hanging_cage8/rope"]
+position = Vector2( -0.0441818, -86.2834 )
+collision_layer = 37
+collision_mask = 37
+mass = 0.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Complex_Objects/hanged_cages/hanging_cage8/rope/0"]
+shape = SubResource( 2 )
+
+[node name="Pin1" type="PinJoint2D" parent="Complex_Objects/hanged_cages/hanging_cage8/rope"]
+position = Vector2( 0, -76.3358 )
+node_a = NodePath("../0")
+node_b = NodePath("../1")
+
+[node name="1" type="RigidBody2D" parent="Complex_Objects/hanged_cages/hanging_cage8/rope"]
+position = Vector2( -0.0441818, -66.4609 )
+collision_layer = 37
+collision_mask = 37
+mass = 0.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Complex_Objects/hanged_cages/hanging_cage8/rope/1"]
+shape = SubResource( 2 )
+
+[node name="Pin2" type="PinJoint2D" parent="Complex_Objects/hanged_cages/hanging_cage8/rope"]
+position = Vector2( 0, -56.6325 )
+node_a = NodePath("../1")
+node_b = NodePath("../2")
+
+[node name="2" type="RigidBody2D" parent="Complex_Objects/hanged_cages/hanging_cage8/rope"]
+position = Vector2( -0.0441818, -46.6384 )
+collision_layer = 37
+collision_mask = 37
+mass = 0.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Complex_Objects/hanged_cages/hanging_cage8/rope/2"]
+shape = SubResource( 2 )
+
+[node name="Pin3" type="PinJoint2D" parent="Complex_Objects/hanged_cages/hanging_cage8/rope"]
+position = Vector2( 0, -36.6931 )
+node_a = NodePath("../2")
+node_b = NodePath("../3")
+
+[node name="3" type="RigidBody2D" parent="Complex_Objects/hanged_cages/hanging_cage8/rope"]
+position = Vector2( -0.0441818, -26.8159 )
+collision_layer = 37
+collision_mask = 37
+mass = 0.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Complex_Objects/hanged_cages/hanging_cage8/rope/3"]
+shape = SubResource( 2 )
+
+[node name="Pin4" type="PinJoint2D" parent="Complex_Objects/hanged_cages/hanging_cage8/rope"]
+position = Vector2( 0, -17.3437 )
+node_a = NodePath("../3")
+node_b = NodePath("../../cage")
+
+[node name="cage" type="RigidBody2D" parent="Complex_Objects/hanged_cages/hanging_cage8"]
+position = Vector2( 0, -7.18288 )
+collision_layer = 69
+collision_mask = 69
+mass = 2.0
+contacts_reported = 2
+contact_monitor = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Complex_Objects/hanged_cages/hanging_cage8/cage"]
+polygon = PoolVector2Array( -0.0435181, -9.10919, 6.12549, -1.67665, 7.76062, 9.99245, -7.922, 9.8438, -6.0639, -1.30502 )
+
+[node name="Sprite2" type="Sprite" parent="Complex_Objects/hanged_cages/hanging_cage8/cage"]
+position = Vector2( 2.69904, 5.43762 )
+rotation = -0.982494
+scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 3 )
+
+[node name="Sprite3" type="Sprite" parent="Complex_Objects/hanged_cages/hanging_cage8/cage"]
+position = Vector2( -1.33008, 8.03033 )
+rotation = -0.377963
+scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 4 )
+
+[node name="Sprite" type="Sprite" parent="Complex_Objects/hanged_cages/hanging_cage8/cage"]
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 112, 12, 16, 20 )
+
+[node name="hanging_cage9" type="Node2D" parent="Complex_Objects/hanged_cages"]
+position = Vector2( 805.112, 140.039 )
+
+[node name="rope" type="Node2D" parent="Complex_Objects/hanged_cages/hanging_cage9"]
+script = ExtResource( 2 )
+
+[node name="pin0" type="PinJoint2D" parent="Complex_Objects/hanged_cages/hanging_cage9/rope"]
+position = Vector2( -0.0496044, -96.2362 )
+node_a = NodePath("../../../../../Ground/StaticBodyRect")
+node_b = NodePath("../0")
+
+[node name="0" type="RigidBody2D" parent="Complex_Objects/hanged_cages/hanging_cage9/rope"]
+position = Vector2( -0.0441818, -86.2834 )
+collision_layer = 37
+collision_mask = 37
+mass = 0.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Complex_Objects/hanged_cages/hanging_cage9/rope/0"]
+shape = SubResource( 2 )
+
+[node name="Pin1" type="PinJoint2D" parent="Complex_Objects/hanged_cages/hanging_cage9/rope"]
+position = Vector2( 0, -76.3358 )
+node_a = NodePath("../0")
+node_b = NodePath("../1")
+
+[node name="1" type="RigidBody2D" parent="Complex_Objects/hanged_cages/hanging_cage9/rope"]
+position = Vector2( -0.0441818, -66.4609 )
+collision_layer = 37
+collision_mask = 37
+mass = 0.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Complex_Objects/hanged_cages/hanging_cage9/rope/1"]
+shape = SubResource( 2 )
+
+[node name="Pin2" type="PinJoint2D" parent="Complex_Objects/hanged_cages/hanging_cage9/rope"]
+position = Vector2( 0, -56.6325 )
+node_a = NodePath("../1")
+node_b = NodePath("../2")
+
+[node name="2" type="RigidBody2D" parent="Complex_Objects/hanged_cages/hanging_cage9/rope"]
+position = Vector2( -0.0441818, -46.6384 )
+collision_layer = 37
+collision_mask = 37
+mass = 0.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Complex_Objects/hanged_cages/hanging_cage9/rope/2"]
+shape = SubResource( 2 )
+
+[node name="Pin3" type="PinJoint2D" parent="Complex_Objects/hanged_cages/hanging_cage9/rope"]
+position = Vector2( 0, -36.6931 )
+node_a = NodePath("../2")
+node_b = NodePath("../3")
+
+[node name="3" type="RigidBody2D" parent="Complex_Objects/hanged_cages/hanging_cage9/rope"]
+position = Vector2( -0.0441818, -26.8159 )
+collision_layer = 37
+collision_mask = 37
+mass = 0.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Complex_Objects/hanged_cages/hanging_cage9/rope/3"]
+shape = SubResource( 2 )
+
+[node name="Pin4" type="PinJoint2D" parent="Complex_Objects/hanged_cages/hanging_cage9/rope"]
+position = Vector2( 0, -17.3437 )
+node_a = NodePath("../3")
+node_b = NodePath("../../cage")
+
+[node name="cage" type="RigidBody2D" parent="Complex_Objects/hanged_cages/hanging_cage9"]
+position = Vector2( 0, -7.20958 )
+collision_layer = 69
+collision_mask = 69
+mass = 2.0
+contacts_reported = 2
+contact_monitor = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Complex_Objects/hanged_cages/hanging_cage9/cage"]
+polygon = PoolVector2Array( 0.638, -9.89192, 6.013, -1.76692, 7.8255, 7.73308, -7.9245, 7.04558, -5.362, -3.07942, -0.487, -9.89192 )
+
+[node name="Sprite" type="Sprite" parent="Complex_Objects/hanged_cages/hanging_cage9/cage"]
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 128, 12, 16, 20 )

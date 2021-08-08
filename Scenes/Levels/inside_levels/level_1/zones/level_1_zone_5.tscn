@@ -1,0 +1,75 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Scenes/Objects/level_1/big_bird.gd" type="Script" id=1]
+[ext_resource path="res://sprites/player/Dead_half2.png" type="Texture" id=2]
+[ext_resource path="res://sprites/player/Dead_half1.png" type="Texture" id=3]
+[ext_resource path="res://sprites/Objects/level_1/cage_stand.png" type="Texture" id=4]
+[ext_resource path="res://sprites/Objects/level_1/broken_cages.png" type="Texture" id=5]
+
+[node name="level_1_object_5" type="Node2D"]
+
+[node name="Ground" type="Node2D" parent="."]
+
+[node name="big_bird" type="StaticBody2D" parent="Ground"]
+position = Vector2( 23.6571, 121.46 )
+collision_layer = 68
+collision_mask = 68
+script = ExtResource( 1 )
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Ground/big_bird"]
+position = Vector2( -64.3336, -120.497 )
+rotation = -0.220021
+polygon = PoolVector2Array( 1.60003, 103.381, 6.38651, 111.72, 6.12164, 123.904, 10.6244, 133.174, 17.8928, 140.853, 4.98032, 136.454, -16.4415, 134.998, -7.76007, 139.525, 11.3208, 141.46, 25.4694, 146.465, 40.5204, 158.312, 47.1946, 170.826, 49.5207, 171.542, 42.6895, 157.644, 35.1811, 149.302, 44.7369, 152.522, 58.0468, 158.056, 75.4963, 164.433, 82.4393, 159.336, 78.1879, 151.857, 61.9574, 151.82, 47.1758, 138.207, 66.2461, 135.823, 99.0895, 125.493, 121.868, 101.39, 139.349, 52.3903, 107.822, 67.7758, 119.484, 35.4389, 92.2416, 44.9645, 64.9218, 61.9255, 40.8372, 96.9753, 30.2429, 119.011, 33.8318, 120.964, 44.649, 98.3113, 67.9013, 66.5516, 95.0581, 48.9465, 111.538, 44.1795, 101.087, 71.1605, 80.6723, 81.4486, 66.2461, 95.0337, 45.3229, 114.03, 35.5217, 120.726, 23.8676, 112.25, 20.626, 106.05, 10.3211, 108.734 )
+
+[node name="Objects" type="Node2D" parent="."]
+
+[node name="Cage" type="Node2D" parent="Objects"]
+position = Vector2( -56.6628, 103.274 )
+z_index = 1
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Objects/Cage"]
+position = Vector2( 0.167044, 1.94884 )
+collision_layer = 35
+collision_mask = 35
+
+[node name="Sprite" type="Sprite" parent="Objects/Cage/StaticBody2D"]
+texture = ExtResource( 4 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Objects/Cage/StaticBody2D"]
+polygon = PoolVector2Array( -13.9952, 1.00428, -13.9725, 9.99918, -7.03319, 9.94853, -2.01226, 15.1142, -2.02296, 22.1021, -7.9261, 25.3265, -7.9261, 25.9217, 8.05365, 26.0312, 7.92358, 25.1022, 1.97755, 21.9062, 2.05187, 14.9753, 7.00645, 10.0065, 13.9885, 9.8453, 13.9938, 3.99754, 13.0088, 4.00582, 12.833, 8.05116, -13.167, 8.05116, -13.0047, 0.997708 )
+
+[node name="Complex_Objects" type="Node2D" parent="."]
+
+[node name="hanged_cages" type="Node2D" parent="Complex_Objects"]
+
+[node name="falled_cage" type="Node2D" parent="Complex_Objects/hanged_cages"]
+position = Vector2( 0.198425, 1.48819 )
+
+[node name="Sprite2" type="Sprite" parent="Complex_Objects/hanged_cages/falled_cage"]
+position = Vector2( -100.024, 130.263 )
+rotation = 0.80565
+scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 3 )
+region_rect = Rect2( 84, 0, 28, 36 )
+
+[node name="Sprite3" type="Sprite" parent="Complex_Objects/hanged_cages/falled_cage"]
+position = Vector2( -97.0981, 131.815 )
+rotation = 0.424219
+scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 2 )
+region_rect = Rect2( 84, 0, 28, 36 )
+
+[node name="Sprite" type="Sprite" parent="Complex_Objects/hanged_cages/falled_cage"]
+position = Vector2( -95.3937, 117.675 )
+rotation = -0.270942
+texture = ExtResource( 5 )
+flip_h = true
+region_enabled = true
+region_rect = Rect2( 84, 0, 28, 36 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Complex_Objects/hanged_cages/falled_cage"]
+collision_layer = 64
+collision_mask = 64
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Complex_Objects/hanged_cages/falled_cage/StaticBody2D"]
+polygon = PoolVector2Array( -76.1774, 135.032, -81.3278, 117.333, -88.7257, 109.654, -99.8694, 102.163, -110.077, 125.293, -104.364, 141.306 )

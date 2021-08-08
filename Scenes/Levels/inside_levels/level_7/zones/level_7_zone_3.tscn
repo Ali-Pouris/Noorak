@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/enemys/rope_with_dash.gd" type="Script" id=1]
+
+[sub_resource type="RectangleShape2D" id=14]
+extents = Vector2( 0.2, 0.2 )
+
+[sub_resource type="RectangleShape2D" id=13]
+extents = Vector2( 97.0869, 97.1621 )
+
+[node name="level_7_zone_3" type="Node2D"]
+
+[node name="rope_with_dash3" type="Node2D" parent="."]
+position = Vector2( 166.666, -310.251 )
+rotation = -0.722069
+script = ExtResource( 1 )
+rope_length = 6
+pin_softness = 10.0
+new_gravity = 1
+
+[node name="rope_solid" type="RigidBody2D" parent="rope_with_dash3"]
+collision_layer = 0
+mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="rope_with_dash3/rope_solid"]
+shape = SubResource( 14 )
+
+[node name="PinJoint2D" type="PinJoint2D" parent="rope_with_dash3"]
+node_a = NodePath("../rope_solid")
+node_b = NodePath("../1")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2( 23.5451, 27.7496 )
+space_override = 3
+gravity_point = true
+gravity_vec = Vector2( 550, 0 )
+collision_layer = 1024
+collision_mask = 1024
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 171.083, -313.88 )
+shape = SubResource( 13 )

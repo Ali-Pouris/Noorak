@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/Levels/inside_levels/level_1/door.gd" type="Script" id=1]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 6, 30 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 6, 1 )
+
+[node name="door" type="KinematicBody2D"]
+collision_layer = 7
+collision_mask = 7
+motion/sync_to_physics = true
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="crashing" type="Area2D" parent="."]
+position = Vector2( 0, -31 )
+monitorable = false
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="crashing"]
+shape = SubResource( 2 )
+
+[node name="crashing2" type="Area2D" parent="."]
+position = Vector2( 0, -31 )
+monitorable = false
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="crashing2"]
+shape = SubResource( 2 )
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color( 0, 0, 0, 1 )
+[connection signal="body_entered" from="crashing" to="." method="_on_crashing_body_entered"]
+[connection signal="body_exited" from="crashing" to="." method="_on_crashing_body_exited"]
+[connection signal="body_entered" from="crashing2" to="." method="_on_crashing2_body_entered"]
+[connection signal="body_exited" from="crashing2" to="." method="_on_crashing2_body_exited"]

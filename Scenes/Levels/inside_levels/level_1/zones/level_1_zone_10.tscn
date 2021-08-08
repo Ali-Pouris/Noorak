@@ -1,0 +1,62 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Circle.gd" type="Script" id=1]
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Rectangle.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 60.1118, 10 )
+
+[sub_resource type="CircleShape2D" id=26]
+radius = 124.249
+
+[sub_resource type="CircleShape2D" id=27]
+radius = 48.3373
+
+[sub_resource type="CircleShape2D" id=28]
+radius = 25.8197
+
+[node name="level_1_zone_10" type="Node2D"]
+
+[node name="Ground" type="Node2D" parent="."]
+
+[node name="StaticBodyRect" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 64
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( -142.462, 125.931 )
+rotation = 0.896839
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( -61.645, 202.877 )
+rotation = 0.619671
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D13" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( -201.423, 34.9229 )
+rotation = 1.1015
+shape = SubResource( 1 )
+
+[node name="StaticBodyCircle" type="StaticBody2D" parent="Ground"]
+position = Vector2( 66.0712, -157.155 )
+collision_layer = 68
+collision_mask = 68
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="Ground/StaticBodyCircle"]
+position = Vector2( -122.189, 411.428 )
+shape = SubResource( 26 )
+
+[node name="CollisionShape2D8" type="CollisionShape2D" parent="Ground/StaticBodyCircle"]
+position = Vector2( -221.431, 288.837 )
+shape = SubResource( 27 )
+
+[node name="CollisionShape2D10" type="CollisionShape2D" parent="Ground/StaticBodyCircle"]
+position = Vector2( 17.1379, 356.383 )
+shape = SubResource( 27 )
+
+[node name="CollisionShape2D9" type="CollisionShape2D" parent="Ground/StaticBodyCircle"]
+position = Vector2( -244.555, 246.363 )
+shape = SubResource( 28 )
