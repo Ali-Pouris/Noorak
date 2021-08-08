@@ -1,0 +1,949 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Scenes/Interactive_Objects/Glass.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_10/Boss_1.gd" type="Script" id=2]
+[ext_resource path="res://sprites/enemys/boss_one_wings.png" type="Texture" id=3]
+[ext_resource path="res://sprites/enemys/boss_one_body.png" type="Texture" id=4]
+[ext_resource path="res://sprites/enemys/boss_one_eye.png" type="Texture" id=5]
+[ext_resource path="res://sprites/player/0_spot.png" type="Texture" id=6]
+
+[sub_resource type="PhysicsMaterial" id=1]
+bounce = 1.0
+
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.5 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Animation" id=3]
+length = 8.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("RigidBody2D:applied_force")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 4, 4.1, 8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 250, 200 ), Vector2( 300, 200 ), Vector2( -250, -200 ), Vector2( -300, -200 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("RigidBody2D:applied_torque")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 4, 4.1, 8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 500.0, 500.0, -500.0, -500.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Rigid_right:applied_torque")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 4, 4.1, 8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 1200.0, -400.0, -1200.0, 400.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Rigid_up:applied_torque")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 4, 4.1, 8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 1200.0, -400.0, -1200.0, 400.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Rigid_Left:applied_torque")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 4, 4.1, 8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 1200.0, -400.0, -1200.0, 400.0 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Rigid_Down:applied_torque")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 4, 4.1, 8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 1200.0, -400.0, -1200.0, 400.0 ]
+}
+
+[sub_resource type="GDScript" id=4]
+script/source = "extends CollisionPolygon2D
+
+onready var parent = get_parent()
+onready var is_happend : bool = false
+
+export var shard_poly_colors = Color(1,1,1,0.7)
+export var is_complex = false
+
+var tween = Tween.new()
+var poly_color = Polygon2D.new()
+var is_added : bool = false
+
+onready var line_points: Array
+
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	randomize()
+	poly_color.polygon = polygon
+	poly_color.color = shard_poly_colors
+	poly_color.color.a = 0.7
+	add_child(poly_color)
+	
+	var poly_line = get_polygon()
+
+	for i in range(0 , poly_line.size()):
+		#draw_line(poly_line[i-1] , poly_line[i], OutLine , Width)
+		line_points.append(poly_line[i])
+	line_points.append(poly_line[0])
+	line_points.append(poly_line[1])
+
+
+func _draw():
+	draw_polyline(line_points,Color(1,1,1,0.7),1)
+
+
+func explode():
+	var points = polygon
+	var delaunay_points_one = Geometry.triangulate_polygon(points)
+	
+	if not delaunay_points_one:
+		print(\"serious error occurred no delaunay points found\")
+	#find the midlle point of each triangle and add it to points
+	for index in len(delaunay_points_one) / 3:
+		var shard_pool_one = PoolVector2Array()
+		var Ox = 0
+		var Oy = 0
+		for n in range(3):
+			shard_pool_one.append(points[delaunay_points_one[(index * 3) + n]])
+			Ox += shard_pool_one[n].x
+			Oy += shard_pool_one[n].y
+		points.append(Vector2(Ox / 3, Oy / 3))
+	
+	var delaunay_points_two = Geometry.triangulate_delaunay_2d(points)
+	
+	if is_complex:
+		delaunay_points_two = delaunay_points_one
+	
+	for index in len(delaunay_points_two) / 3:
+		var shard_pool = PoolVector2Array()
+		
+		# loop over the three points in our triangle
+		for n in range(3):
+			shard_pool.append(points[delaunay_points_two[(index * 3) + n]])
+		
+		var shard_polygon = Polygon2D.new()
+		var shard_collision_polygon = CollisionPolygon2D.new()
+		var shard_rigidbody = RigidBody2D.new()
+
+		
+		shard_polygon.polygon = shard_pool
+		shard_collision_polygon.polygon = shard_pool
+		shard_rigidbody.applied_torque = round(rand_range(-1,1))
+		shard_rigidbody.mass = 0.4
+		shard_rigidbody.gravity_scale = 0.2
+		shard_rigidbody.set_collision_layer_bit(0,false)
+		shard_rigidbody.set_collision_mask_bit(0,false)
+		shard_rigidbody.set_collision_layer_bit(2,true)
+		shard_rigidbody.set_collision_mask_bit(2,true)
+		shard_rigidbody.add_child(shard_polygon)
+		shard_rigidbody.add_child(shard_collision_polygon)
+		
+		shard_polygon.color = shard_poly_colors
+		
+#		add_child(shard_rigidbody)
+#		shard_polygon.add_child(tween)
+		call_deferred(\"add_child\", shard_rigidbody)
+		if is_added == false:
+			call_deferred(\"add_child\", tween)
+			is_added = true
+		
+		tween.interpolate_property(self, \"modulate\", Color(1,1,1,1), Color(1,1,1,0), 0.5, tween.TRANS_LINEAR, tween.EASE_OUT_IN)
+		shard_rigidbody.apply_central_impulse(Vector2(5,0).rotated(deg2rad(rand_range(0,360))))
+	self.polygon = [Vector2.ZERO]
+	yield(get_tree().create_timer(1), \"timeout\")
+	tween.start()
+	yield(get_tree().create_timer(0.5), \"timeout\")
+	parent.queue_free()
+#	for ch in get_children():
+#		print(ch.get_class())
+#		if !ch.get_class() == \"Polygon2D\":
+#			ch.queue_free()
+
+
+func destroy_the_glass():
+	is_happend = true
+	for n in range(20):
+		parent.set_collision_layer_bit(n, false)
+		parent.set_collision_mask_bit(n, false)
+	poly_color.hide()
+	
+	#Deleting the pinjoint conected to the glass before deleting the glass itself
+	var twodots = \"../\"
+	for child in get_parent().get_parent().get_children():
+		if child.is_in_group(\"GlassPinJoint\"):
+			if child.get_node_a() == twodots + get_parent().name or child.get_node_b() == twodots + get_parent().name:
+				child.queue_free()
+	
+	explode()
+
+
+
+func _on_RigidBody2D2_body_entered(body):
+#	print(body.get_collision_layer_bit(9))
+#	print(body.get_linear_velocity().length())
+#	print(body.name)
+	if !is_happend:
+		if parent.get_linear_velocity().length() > 40:
+			destroy_the_glass()
+		elif body.get_collision_layer_bit(9) == true && body.get_collision_mask_bit(9) == true:
+			destroy_the_glass()
+		elif body.get_collision_layer_bit(9) == true && body.get_linear_velocity().length() > 80:
+			destroy_the_glass()
+		elif body.get_collision_mask_bit(9) == true:
+			destroy_the_glass()
+
+"
+
+[sub_resource type="GDScript" id=5]
+script/source = "extends CollisionPolygon2D
+
+onready var parent = get_parent()
+onready var is_happend : bool = false
+
+export var shard_poly_colors = Color(1,1,1,0.7)
+export var is_complex = false
+
+var tween = Tween.new()
+var poly_color = Polygon2D.new()
+var is_added : bool = false
+
+onready var line_points: Array
+
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	randomize()
+	poly_color.polygon = polygon
+	poly_color.color = shard_poly_colors
+	poly_color.color.a = 0.7
+	add_child(poly_color)
+	
+	var poly_line = get_polygon()
+
+	for i in range(0 , poly_line.size()):
+		#draw_line(poly_line[i-1] , poly_line[i], OutLine , Width)
+		line_points.append(poly_line[i])
+	line_points.append(poly_line[0])
+	line_points.append(poly_line[1])
+
+
+func _draw():
+	draw_polyline(line_points,Color(1,1,1,0.7),1)
+
+
+func explode():
+	var points = polygon
+	var delaunay_points_one = Geometry.triangulate_polygon(points)
+	
+	if not delaunay_points_one:
+		print(\"serious error occurred no delaunay points found\")
+	#find the midlle point of each triangle and add it to points
+	for index in len(delaunay_points_one) / 3:
+		var shard_pool_one = PoolVector2Array()
+		var Ox = 0
+		var Oy = 0
+		for n in range(3):
+			shard_pool_one.append(points[delaunay_points_one[(index * 3) + n]])
+			Ox += shard_pool_one[n].x
+			Oy += shard_pool_one[n].y
+		points.append(Vector2(Ox / 3, Oy / 3))
+	
+	var delaunay_points_two = Geometry.triangulate_delaunay_2d(points)
+	
+	if is_complex:
+		delaunay_points_two = delaunay_points_one
+	
+	for index in len(delaunay_points_two) / 3:
+		var shard_pool = PoolVector2Array()
+		
+		# loop over the three points in our triangle
+		for n in range(3):
+			shard_pool.append(points[delaunay_points_two[(index * 3) + n]])
+		
+		var shard_polygon = Polygon2D.new()
+		var shard_collision_polygon = CollisionPolygon2D.new()
+		var shard_rigidbody = RigidBody2D.new()
+
+		
+		shard_polygon.polygon = shard_pool
+		shard_collision_polygon.polygon = shard_pool
+		shard_rigidbody.applied_torque = round(rand_range(-1,1))
+		shard_rigidbody.mass = 0.4
+		shard_rigidbody.gravity_scale = 0.2
+		shard_rigidbody.set_collision_layer_bit(0,false)
+		shard_rigidbody.set_collision_mask_bit(0,false)
+		shard_rigidbody.set_collision_layer_bit(2,true)
+		shard_rigidbody.set_collision_mask_bit(2,true)
+		shard_rigidbody.add_child(shard_polygon)
+		shard_rigidbody.add_child(shard_collision_polygon)
+		
+		shard_polygon.color = shard_poly_colors
+		
+#		add_child(shard_rigidbody)
+#		shard_polygon.add_child(tween)
+		call_deferred(\"add_child\", shard_rigidbody)
+		if is_added == false:
+			call_deferred(\"add_child\", tween)
+			is_added = true
+		
+		tween.interpolate_property(self, \"modulate\", Color(1,1,1,1), Color(1,1,1,0), 0.5, tween.TRANS_LINEAR, tween.EASE_OUT_IN)
+		shard_rigidbody.apply_central_impulse(Vector2(5,0).rotated(deg2rad(rand_range(0,360))))
+	self.polygon = [Vector2.ZERO]
+	yield(get_tree().create_timer(1), \"timeout\")
+	tween.start()
+	yield(get_tree().create_timer(0.5), \"timeout\")
+	parent.queue_free()
+#	for ch in get_children():
+#		print(ch.get_class())
+#		if !ch.get_class() == \"Polygon2D\":
+#			ch.queue_free()
+
+
+func destroy_the_glass():
+	is_happend = true
+	for n in range(20):
+		parent.set_collision_layer_bit(n, false)
+		parent.set_collision_mask_bit(n, false)
+	poly_color.hide()
+	
+	#Deleting the pinjoint conected to the glass before deleting the glass itself
+	var twodots = \"../\"
+	for child in get_parent().get_parent().get_children():
+		if child.is_in_group(\"GlassPinJoint\"):
+			if child.get_node_a() == twodots + get_parent().name or child.get_node_b() == twodots + get_parent().name:
+				child.queue_free()
+	
+	explode()
+
+
+
+func _on_RigidBody2D2_body_entered(body):
+#	print(body.get_collision_layer_bit(9))
+#	print(body.get_linear_velocity().length())
+#	print(body.name)
+	if !is_happend:
+		if parent.get_linear_velocity().length() > 40:
+			destroy_the_glass()
+		elif body.get_collision_layer_bit(9) == true && body.get_collision_mask_bit(9) == true:
+			destroy_the_glass()
+		elif body.get_collision_layer_bit(9) == true && body.get_linear_velocity().length() > 80:
+			destroy_the_glass()
+		elif body.get_collision_mask_bit(9) == true:
+			destroy_the_glass()
+
+"
+
+[sub_resource type="GDScript" id=6]
+script/source = "extends CollisionPolygon2D
+
+onready var parent = get_parent()
+onready var is_happend : bool = false
+
+export var shard_poly_colors = Color(1,1,1,0.7)
+export var is_complex = false
+
+var tween = Tween.new()
+var poly_color = Polygon2D.new()
+var is_added : bool = false
+
+onready var line_points: Array
+
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	randomize()
+	poly_color.polygon = polygon
+	poly_color.color = shard_poly_colors
+	poly_color.color.a = 0.7
+	add_child(poly_color)
+	
+	var poly_line = get_polygon()
+
+	for i in range(0 , poly_line.size()):
+		#draw_line(poly_line[i-1] , poly_line[i], OutLine , Width)
+		line_points.append(poly_line[i])
+	line_points.append(poly_line[0])
+	line_points.append(poly_line[1])
+
+
+func _draw():
+	draw_polyline(line_points,Color(1,1,1,0.7),1)
+
+
+func explode():
+	var points = polygon
+	var delaunay_points_one = Geometry.triangulate_polygon(points)
+	
+	if not delaunay_points_one:
+		print(\"serious error occurred no delaunay points found\")
+	#find the midlle point of each triangle and add it to points
+	for index in len(delaunay_points_one) / 3:
+		var shard_pool_one = PoolVector2Array()
+		var Ox = 0
+		var Oy = 0
+		for n in range(3):
+			shard_pool_one.append(points[delaunay_points_one[(index * 3) + n]])
+			Ox += shard_pool_one[n].x
+			Oy += shard_pool_one[n].y
+		points.append(Vector2(Ox / 3, Oy / 3))
+	
+	var delaunay_points_two = Geometry.triangulate_delaunay_2d(points)
+	
+	if is_complex:
+		delaunay_points_two = delaunay_points_one
+	
+	for index in len(delaunay_points_two) / 3:
+		var shard_pool = PoolVector2Array()
+		
+		# loop over the three points in our triangle
+		for n in range(3):
+			shard_pool.append(points[delaunay_points_two[(index * 3) + n]])
+		
+		var shard_polygon = Polygon2D.new()
+		var shard_collision_polygon = CollisionPolygon2D.new()
+		var shard_rigidbody = RigidBody2D.new()
+
+		
+		shard_polygon.polygon = shard_pool
+		shard_collision_polygon.polygon = shard_pool
+		shard_rigidbody.applied_torque = round(rand_range(-1,1))
+		shard_rigidbody.mass = 0.4
+		shard_rigidbody.gravity_scale = 0.2
+		shard_rigidbody.set_collision_layer_bit(0,false)
+		shard_rigidbody.set_collision_mask_bit(0,false)
+		shard_rigidbody.set_collision_layer_bit(2,true)
+		shard_rigidbody.set_collision_mask_bit(2,true)
+		shard_rigidbody.add_child(shard_polygon)
+		shard_rigidbody.add_child(shard_collision_polygon)
+		
+		shard_polygon.color = shard_poly_colors
+		
+#		add_child(shard_rigidbody)
+#		shard_polygon.add_child(tween)
+		call_deferred(\"add_child\", shard_rigidbody)
+		if is_added == false:
+			call_deferred(\"add_child\", tween)
+			is_added = true
+		
+		tween.interpolate_property(self, \"modulate\", Color(1,1,1,1), Color(1,1,1,0), 0.5, tween.TRANS_LINEAR, tween.EASE_OUT_IN)
+		shard_rigidbody.apply_central_impulse(Vector2(5,0).rotated(deg2rad(rand_range(0,360))))
+	self.polygon = [Vector2.ZERO]
+	yield(get_tree().create_timer(1), \"timeout\")
+	tween.start()
+	yield(get_tree().create_timer(0.5), \"timeout\")
+	parent.queue_free()
+#	for ch in get_children():
+#		print(ch.get_class())
+#		if !ch.get_class() == \"Polygon2D\":
+#			ch.queue_free()
+
+
+func destroy_the_glass():
+	is_happend = true
+	for n in range(20):
+		parent.set_collision_layer_bit(n, false)
+		parent.set_collision_mask_bit(n, false)
+	poly_color.hide()
+	
+	#Deleting the pinjoint conected to the glass before deleting the glass itself
+	var twodots = \"../\"
+	for child in get_parent().get_parent().get_children():
+		if child.is_in_group(\"GlassPinJoint\"):
+			if child.get_node_a() == twodots + get_parent().name or child.get_node_b() == twodots + get_parent().name:
+				child.queue_free()
+	
+	explode()
+
+
+
+func _on_RigidBody2D2_body_entered(body):
+#	print(body.get_collision_layer_bit(9))
+#	print(body.get_linear_velocity().length())
+#	print(body.name)
+	if !is_happend:
+		if parent.get_linear_velocity().length() > 40:
+			destroy_the_glass()
+		elif body.get_collision_layer_bit(9) == true && body.get_collision_mask_bit(9) == true:
+			destroy_the_glass()
+		elif body.get_collision_layer_bit(9) == true && body.get_linear_velocity().length() > 80:
+			destroy_the_glass()
+		elif body.get_collision_mask_bit(9) == true:
+			destroy_the_glass()
+
+"
+
+[sub_resource type="GDScript" id=7]
+script/source = "extends CollisionPolygon2D
+
+onready var parent = get_parent()
+onready var is_happend : bool = false
+
+export var shard_poly_colors = Color(1,1,1,0.7)
+export var is_complex = false
+
+var tween = Tween.new()
+var poly_color = Polygon2D.new()
+var is_added : bool = false
+
+onready var line_points: Array
+
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	randomize()
+	poly_color.polygon = polygon
+	poly_color.color = shard_poly_colors
+	poly_color.color.a = 0.7
+	add_child(poly_color)
+	
+	var poly_line = get_polygon()
+
+	for i in range(0 , poly_line.size()):
+		#draw_line(poly_line[i-1] , poly_line[i], OutLine , Width)
+		line_points.append(poly_line[i])
+	line_points.append(poly_line[0])
+	line_points.append(poly_line[1])
+
+
+func _draw():
+	draw_polyline(line_points,Color(1,1,1,0.7),1)
+
+
+func explode():
+	var points = polygon
+	var delaunay_points_one = Geometry.triangulate_polygon(points)
+	
+	if not delaunay_points_one:
+		print(\"serious error occurred no delaunay points found\")
+	#find the midlle point of each triangle and add it to points
+	for index in len(delaunay_points_one) / 3:
+		var shard_pool_one = PoolVector2Array()
+		var Ox = 0
+		var Oy = 0
+		for n in range(3):
+			shard_pool_one.append(points[delaunay_points_one[(index * 3) + n]])
+			Ox += shard_pool_one[n].x
+			Oy += shard_pool_one[n].y
+		points.append(Vector2(Ox / 3, Oy / 3))
+	
+	var delaunay_points_two = Geometry.triangulate_delaunay_2d(points)
+	
+	if is_complex:
+		delaunay_points_two = delaunay_points_one
+	
+	for index in len(delaunay_points_two) / 3:
+		var shard_pool = PoolVector2Array()
+		
+		# loop over the three points in our triangle
+		for n in range(3):
+			shard_pool.append(points[delaunay_points_two[(index * 3) + n]])
+		
+		var shard_polygon = Polygon2D.new()
+		var shard_collision_polygon = CollisionPolygon2D.new()
+		var shard_rigidbody = RigidBody2D.new()
+
+		
+		shard_polygon.polygon = shard_pool
+		shard_collision_polygon.polygon = shard_pool
+		shard_rigidbody.applied_torque = round(rand_range(-1,1))
+		shard_rigidbody.mass = 0.4
+		shard_rigidbody.gravity_scale = 0.2
+		shard_rigidbody.set_collision_layer_bit(0,false)
+		shard_rigidbody.set_collision_mask_bit(0,false)
+		shard_rigidbody.set_collision_layer_bit(2,true)
+		shard_rigidbody.set_collision_mask_bit(2,true)
+		shard_rigidbody.add_child(shard_polygon)
+		shard_rigidbody.add_child(shard_collision_polygon)
+		
+		shard_polygon.color = shard_poly_colors
+		
+#		add_child(shard_rigidbody)
+#		shard_polygon.add_child(tween)
+		call_deferred(\"add_child\", shard_rigidbody)
+		if is_added == false:
+			call_deferred(\"add_child\", tween)
+			is_added = true
+		
+		tween.interpolate_property(self, \"modulate\", Color(1,1,1,1), Color(1,1,1,0), 0.5, tween.TRANS_LINEAR, tween.EASE_OUT_IN)
+		shard_rigidbody.apply_central_impulse(Vector2(5,0).rotated(deg2rad(rand_range(0,360))))
+	self.polygon = [Vector2.ZERO]
+	yield(get_tree().create_timer(1), \"timeout\")
+	tween.start()
+	yield(get_tree().create_timer(0.5), \"timeout\")
+	parent.queue_free()
+#	for ch in get_children():
+#		print(ch.get_class())
+#		if !ch.get_class() == \"Polygon2D\":
+#			ch.queue_free()
+
+
+func destroy_the_glass():
+	is_happend = true
+	for n in range(20):
+		parent.set_collision_layer_bit(n, false)
+		parent.set_collision_mask_bit(n, false)
+	poly_color.hide()
+	
+	#Deleting the pinjoint conected to the glass before deleting the glass itself
+	var twodots = \"../\"
+	for child in get_parent().get_parent().get_children():
+		if child.is_in_group(\"GlassPinJoint\"):
+			if child.get_node_a() == twodots + get_parent().name or child.get_node_b() == twodots + get_parent().name:
+				child.queue_free()
+	
+	explode()
+
+
+
+func _on_RigidBody2D2_body_entered(body):
+#	print(body.get_collision_layer_bit(9))
+#	print(body.get_linear_velocity().length())
+#	print(body.name)
+	if !is_happend:
+		if parent.get_linear_velocity().length() > 40:
+			destroy_the_glass()
+		elif body.get_collision_layer_bit(9) == true && body.get_collision_mask_bit(9) == true:
+			destroy_the_glass()
+		elif body.get_collision_layer_bit(9) == true && body.get_linear_velocity().length() > 80:
+			destroy_the_glass()
+		elif body.get_collision_mask_bit(9) == true:
+			destroy_the_glass()
+
+"
+
+[node name="Boss_1" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="eye" type="Sprite" parent="."]
+z_index = 1
+texture = ExtResource( 5 )
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+collision_layer = 68
+collision_mask = 68
+mass = 0.7
+physics_material_override = SubResource( 1 )
+gravity_scale = 0.0
+linear_damp = 0.0
+applied_force = Vector2( 250, 200 )
+applied_torque = 500.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RigidBody2D"]
+polygon = PoolVector2Array( -4, -64, -4, -24, -24, -4, -64, -4, -64, 4, -24, 4, -4, 24, -4, 64, 4, 64, 4, 24, 24, 4, 64, 4, 64, -4, 24, -4, 4, -24, 4, -64 )
+
+[node name="Sprite" type="Sprite" parent="RigidBody2D"]
+texture = ExtResource( 4 )
+
+[node name="CPUParticles2D_up" type="CPUParticles2D" parent="RigidBody2D"]
+position = Vector2( 0, -64 )
+rotation = -0.785398
+z_index = 1
+emitting = false
+amount = 4
+speed_scale = 0.5
+local_coords = false
+texture = ExtResource( 6 )
+gravity = Vector2( 0, -98 )
+initial_velocity = 45.0
+damping = 20.0
+scale_amount = 0.5
+scale_amount_curve = SubResource( 2 )
+color = Color( 0, 0, 0, 0.745098 )
+
+[node name="CPUParticles2D_left" type="CPUParticles2D" parent="RigidBody2D"]
+position = Vector2( -64, -1.90735e-06 )
+rotation = -0.785398
+z_index = 1
+emitting = false
+amount = 4
+speed_scale = 0.5
+local_coords = false
+texture = ExtResource( 6 )
+gravity = Vector2( 0, -98 )
+initial_velocity = 45.0
+damping = 20.0
+scale_amount = 0.5
+scale_amount_curve = SubResource( 2 )
+color = Color( 0, 0, 0, 0.745098 )
+
+[node name="CPUParticles2D_right" type="CPUParticles2D" parent="RigidBody2D"]
+position = Vector2( 64, 1.90735e-06 )
+rotation = -0.785398
+z_index = 1
+emitting = false
+amount = 4
+speed_scale = 0.5
+local_coords = false
+texture = ExtResource( 6 )
+gravity = Vector2( 0, -98 )
+initial_velocity = 45.0
+damping = 20.0
+scale_amount = 0.5
+scale_amount_curve = SubResource( 2 )
+color = Color( 0, 0, 0, 0.745098 )
+
+[node name="CPUParticles2D_down" type="CPUParticles2D" parent="RigidBody2D"]
+position = Vector2( 0, 64 )
+rotation = -0.785398
+z_index = 1
+emitting = false
+amount = 4
+speed_scale = 0.5
+local_coords = false
+texture = ExtResource( 6 )
+gravity = Vector2( 0, -98 )
+initial_velocity = 45.0
+damping = 20.0
+scale_amount = 0.5
+scale_amount_curve = SubResource( 2 )
+color = Color( 0, 0, 0, 0.745098 )
+
+[node name="Pin_Right" type="PinJoint2D" parent="."]
+position = Vector2( 64, 0 )
+node_a = NodePath("../RigidBody2D")
+node_b = NodePath("../Rigid_right")
+softness = 0.1
+
+[node name="Pin_Up" type="PinJoint2D" parent="."]
+position = Vector2( 0, -64 )
+node_a = NodePath("../RigidBody2D")
+node_b = NodePath("../Rigid_up")
+softness = 0.1
+
+[node name="Pin_Down" type="PinJoint2D" parent="."]
+position = Vector2( 0, 64 )
+node_a = NodePath("../RigidBody2D")
+node_b = NodePath("../Rigid_Down")
+softness = 0.1
+
+[node name="Pin_Left" type="PinJoint2D" parent="."]
+position = Vector2( -64, 0 )
+node_a = NodePath("../RigidBody2D")
+node_b = NodePath("../Rigid_Left")
+softness = 0.1
+
+[node name="Rigid_right" type="RigidBody2D" parent="."]
+position = Vector2( 64, 0 )
+collision_layer = 76
+collision_mask = 76
+mass = 0.7
+physics_material_override = SubResource( 1 )
+gravity_scale = 0.0
+applied_torque = 1200.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rigid_right"]
+position = Vector2( -4, 0 )
+polygon = PoolVector2Array( 8, -4, 8, -32, 0, -32, 0, -4, -28, -4, -28, 4, 0, 4, 0, 32, 8, 32, 8, 4, 36, 4, 36, -4 )
+
+[node name="Sprite" type="Sprite" parent="Rigid_right"]
+texture = ExtResource( 3 )
+
+[node name="Rigid_up" type="RigidBody2D" parent="."]
+position = Vector2( 0, -64 )
+collision_layer = 76
+collision_mask = 76
+mass = 0.7
+physics_material_override = SubResource( 1 )
+gravity_scale = 0.0
+applied_torque = 1200.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rigid_up"]
+position = Vector2( -4, 0 )
+polygon = PoolVector2Array( 8, -4, 8, -32, 0, -32, 0, -4, -28, -4, -28, 4, 0, 4, 0, 32, 8, 32, 8, 4, 36, 4, 36, -4 )
+
+[node name="Sprite" type="Sprite" parent="Rigid_up"]
+texture = ExtResource( 3 )
+
+[node name="Rigid_Left" type="RigidBody2D" parent="."]
+position = Vector2( -64, 0 )
+collision_layer = 76
+collision_mask = 76
+mass = 0.7
+physics_material_override = SubResource( 1 )
+gravity_scale = 0.0
+applied_torque = 1200.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rigid_Left"]
+position = Vector2( -4, 0 )
+polygon = PoolVector2Array( 8, -4, 8, -32, 0, -32, 0, -4, -28, -4, -28, 4, 0, 4, 0, 32, 8, 32, 8, 4, 36, 4, 36, -4 )
+
+[node name="Sprite" type="Sprite" parent="Rigid_Left"]
+texture = ExtResource( 3 )
+
+[node name="Rigid_Down" type="RigidBody2D" parent="."]
+position = Vector2( 0, 64 )
+collision_layer = 76
+collision_mask = 76
+mass = 0.7
+physics_material_override = SubResource( 1 )
+gravity_scale = 0.0
+applied_torque = 1200.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rigid_Down"]
+position = Vector2( -4, 0 )
+polygon = PoolVector2Array( 8, -4, 8, -32, 0, -32, 0, -4, -28, -4, -28, 4, 0, 4, 0, 32, 8, 32, 8, 4, 36, 4, 36, -4 )
+
+[node name="Sprite" type="Sprite" parent="Rigid_Down"]
+texture = ExtResource( 3 )
+
+[node name="BossFigh_H" type="AnimationPlayer" parent="."]
+autoplay = "H_move"
+anims/H_move = SubResource( 3 )
+
+[node name="Pin_glass_LD" type="PinJoint2D" parent="." groups=[
+"GlassPinJoint",
+]]
+position = Vector2( -4, 20 )
+node_a = NodePath("../RigidBody2D")
+node_b = NodePath("../Glass")
+softness = 5.0
+
+[node name="Pin_glass_LD2" type="PinJoint2D" parent="." groups=[
+"GlassPinJoint",
+]]
+position = Vector2( -20, 4 )
+node_a = NodePath("../RigidBody2D")
+node_b = NodePath("../Glass")
+softness = 5.0
+
+[node name="Glass" parent="." instance=ExtResource( 1 )]
+position = Vector2( -12, 12 )
+z_index = -1
+mode = 0
+mass = 0.01
+gravity_scale = 0.0
+
+[node name="CollisionPolygon2D" parent="Glass" index="0"]
+polygon = PoolVector2Array( 8, 8, -8, -8, -12, -4, -8, 8, 4, 12 )
+script = SubResource( 4 )
+shard_poly_colors = Color( 1, 1, 1, 0.7 )
+
+[node name="Pin_glass_LT" type="PinJoint2D" parent="." groups=[
+"GlassPinJoint",
+]]
+position = Vector2( -4, -20 )
+node_a = NodePath("../RigidBody2D")
+node_b = NodePath("../Glass2")
+softness = 5.0
+
+[node name="Pin_glass_LT2" type="PinJoint2D" parent="." groups=[
+"GlassPinJoint",
+]]
+position = Vector2( -20, -4 )
+node_a = NodePath("../RigidBody2D")
+node_b = NodePath("../Glass2")
+softness = 5.0
+
+[node name="Glass2" parent="." instance=ExtResource( 1 )]
+position = Vector2( -12, -12 )
+z_index = -1
+mode = 0
+mass = 0.01
+gravity_scale = 0.0
+
+[node name="CollisionPolygon2D" parent="Glass2" index="0"]
+polygon = PoolVector2Array( -8, 8, 8, -8, 4, -12, -8, -8, -12, 4 )
+script = SubResource( 5 )
+shard_poly_colors = Color( 1, 1, 1, 0.7 )
+
+[node name="Pin_glass_RT" type="PinJoint2D" parent="." groups=[
+"GlassPinJoint",
+]]
+position = Vector2( 4, -20 )
+node_a = NodePath("../RigidBody2D")
+node_b = NodePath("../Glass3")
+softness = 5.0
+
+[node name="Pin_glass_RT2" type="PinJoint2D" parent="." groups=[
+"GlassPinJoint",
+]]
+position = Vector2( 20, -4 )
+node_a = NodePath("../RigidBody2D")
+node_b = NodePath("../Glass3")
+softness = 5.0
+
+[node name="Glass3" parent="." instance=ExtResource( 1 )]
+position = Vector2( 12, -12 )
+z_index = -1
+mode = 0
+mass = 0.01
+gravity_scale = 0.0
+
+[node name="CollisionPolygon2D" parent="Glass3" index="0"]
+polygon = PoolVector2Array( 8, 8, -8, -8, -4, -12, 8, -8, 12, 4 )
+script = SubResource( 6 )
+shard_poly_colors = Color( 1, 1, 1, 0.7 )
+
+[node name="Pin_glass_RD" type="PinJoint2D" parent="." groups=[
+"GlassPinJoint",
+]]
+position = Vector2( 20, 4 )
+node_a = NodePath("../RigidBody2D")
+node_b = NodePath("../Glass4")
+softness = 5.0
+
+[node name="Pin_glass_RD2" type="PinJoint2D" parent="." groups=[
+"GlassPinJoint",
+]]
+position = Vector2( 4, 20 )
+node_a = NodePath("../RigidBody2D")
+node_b = NodePath("../Glass4")
+softness = 5.0
+
+[node name="Glass4" parent="." instance=ExtResource( 1 )]
+position = Vector2( 12, 12 )
+z_index = -1
+mode = 0
+mass = 0.01
+gravity_scale = 0.0
+
+[node name="CollisionPolygon2D" parent="Glass4" index="0"]
+polygon = PoolVector2Array( 8, -8, -8, 8, -4, 12, 8, 8, 12, -4 )
+script = SubResource( 7 )
+shard_poly_colors = Color( 1, 1, 1, 0.7 )
+
+[editable path="Glass"]
+
+[editable path="Glass2"]
+
+[editable path="Glass3"]
+
+[editable path="Glass4"]

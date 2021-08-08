@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scenes/enemys/Spikes.gd" type="Script" id=1]
+[ext_resource path="res://sprites/enemys/spiks.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 49, 1 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 49, 1 )
+
+[node name="Node2D2" type="Node2D"]
+
+[node name="33" type="StaticBody2D" parent="."]
+position = Vector2( 1210.22, 245.857 )
+rotation = 0.418879
+collision_layer = 8
+collision_mask = 9
+script = ExtResource( 1 )
+Width = 25
+
+[node name="Sprite" type="Sprite" parent="33"]
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 100, 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="33"]
+position = Vector2( -0.5, 0 )
+shape = SubResource( 1 )
+
+[node name="55" type="StaticBody2D" parent="."]
+position = Vector2( 1209.34, 159.765 )
+rotation = 2.72271
+collision_layer = 8
+collision_mask = 9
+script = ExtResource( 1 )
+Width = 25
+
+[node name="Sprite" type="Sprite" parent="55"]
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 100, 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="55"]
+position = Vector2( -0.5, 0 )
+shape = SubResource( 2 )

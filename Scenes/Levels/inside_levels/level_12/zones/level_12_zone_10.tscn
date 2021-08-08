@@ -1,0 +1,80 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Rectangle.gd" type="Script" id=1]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 210.542, 10 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 130.42, 10 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 57.4944, 10 )
+
+[sub_resource type="RectangleShape2D" id=4]
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 10, 16.9684 )
+
+[node name="StaticBodyRect2" type="StaticBody2D"]
+collision_layer = 68
+collision_mask = 64
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_vertical_guides_": [ 1163.63 ]
+}
+
+[node name="CollisionShape2D24" type="CollisionShape2D" parent="."]
+position = Vector2( 1206.59, 127.997 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D26" type="CollisionShape2D" parent="."]
+position = Vector2( 1162.89, 277.469 )
+shape = SubResource( 2 )
+
+[node name="CollisionShape2D32" type="CollisionShape2D" parent="."]
+position = Vector2( 1212.08, 259.025 )
+rotation = 0.418879
+shape = SubResource( 3 )
+
+[node name="CollisionShape2D37" type="CollisionShape2D" parent="."]
+position = Vector2( 1312, 251.495 )
+rotation = 1.5708
+shape = SubResource( 3 )
+
+[node name="CollisionShape2D38" type="CollisionShape2D" parent="."]
+position = Vector2( 1013.84, 261.027 )
+rotation = 1.5708
+shape = SubResource( 3 )
+
+[node name="CollisionShape2D33" type="CollisionShape2D" parent="."]
+position = Vector2( 1115.18, 259.029 )
+rotation = 2.72271
+shape = SubResource( 3 )
+
+[node name="CollisionShape2D34" type="CollisionShape2D" parent="."]
+position = Vector2( 1212.08, 146.184 )
+rotation = -0.418879
+shape = SubResource( 3 )
+
+[node name="CollisionShape2D35" type="CollisionShape2D" parent="."]
+position = Vector2( 1115.18, 146.188 )
+rotation = -2.72271
+shape = SubResource( 3 )
+
+[node name="CollisionShape2D30" type="CollisionShape2D" parent="."]
+position = Vector2( 1020.38, 277.469 )
+shape = SubResource( 4 )
+
+[node name="CollisionShape2D36" type="CollisionShape2D" parent="."]
+position = Vector2( 1013.82, 147.798 )
+shape = SubResource( 4 )
+
+[node name="CollisionShape2D39" type="CollisionShape2D" parent="."]
+position = Vector2( 1028.74, 138.73 )
+rotation = 0.785398
+shape = SubResource( 5 )
+
+[node name="CollisionShape2D31" type="CollisionShape2D" parent="."]
+position = Vector2( 1305.55, 277.469 )
+shape = SubResource( 4 )

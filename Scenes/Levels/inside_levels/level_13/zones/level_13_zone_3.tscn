@@ -1,0 +1,163 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Scenes/Levels/inside_levels/level_1/door.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Interactive_Objects/PhysicBTN2D.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/global/in_portal.tscn" type="PackedScene" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 2, 2 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 6, 62.4857 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 6, 1 )
+
+[sub_resource type="Animation" id=4]
+resource_name = "open"
+length = 5.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 4.5, 4.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ -180.0, -135.0, -90.0 ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "open"
+length = 5.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 4.5, 4.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, -45.0, -90.0 ]
+}
+
+[node name="Node2D" type="Node2D"]
+
+[node name="in_portal" parent="." instance=ExtResource( 4 )]
+position = Vector2( 222.526, -432.456 )
+rotation = 1.14351
+
+[node name="PhysicBTN2D2" type="Node2D" parent="."]
+position = Vector2( 272.725, -260.881 )
+script = ExtResource( 2 )
+is_push_type = false
+
+[node name="Static" type="StaticBody2D" parent="PhysicBTN2D2"]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PhysicBTN2D2/Static"]
+shape = SubResource( 1 )
+
+[node name="GrooveJoint2D" type="GrooveJoint2D" parent="PhysicBTN2D2"]
+rotation = 3.14159
+node_a = NodePath("../Static")
+node_b = NodePath("../btn")
+length = 3.0
+initial_offset = 2.0
+
+[node name="btn" type="RigidBody2D" parent="PhysicBTN2D2"]
+position = Vector2( 0, -4 )
+collision_layer = 39
+collision_mask = 35
+mode = 2
+gravity_scale = 0.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PhysicBTN2D2/btn"]
+z_index = -1
+polygon = PoolVector2Array( -10, -1, -9, -2, 9, -2, 10, -1, 10, 2, -10, 2 )
+
+[node name="Line2D" type="Line2D" parent="PhysicBTN2D2"]
+z_index = 1
+points = PoolVector2Array( -0.0307312, -3.69675, 1.12439, 9.24359, 36.2747, 1.88129, 72.7747, 9.13129, 92.784, 6.98326, 92.694, -3.72675 )
+width = 0.5
+default_color = Color( 1, 1, 1, 0.705882 )
+
+[node name="door" type="KinematicBody2D" parent="PhysicBTN2D2"]
+position = Vector2( 93, -0.733 )
+rotation = -3.14159
+collision_layer = 7
+collision_mask = 7
+motion/sync_to_physics = true
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PhysicBTN2D2/door"]
+position = Vector2( 0, 44.1793 )
+shape = SubResource( 2 )
+
+[node name="crashing" type="Area2D" parent="PhysicBTN2D2/door"]
+position = Vector2( 0, -13.1619 )
+monitorable = false
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PhysicBTN2D2/door/crashing"]
+shape = SubResource( 3 )
+
+[node name="crashing2" type="Area2D" parent="PhysicBTN2D2/door"]
+position = Vector2( 0, -13.1619 )
+monitorable = false
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PhysicBTN2D2/door/crashing2"]
+shape = SubResource( 3 )
+
+[node name="Polygon2D" type="Polygon2D" parent="PhysicBTN2D2/door"]
+color = Color( 0, 0, 0, 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PhysicBTN2D2/door"]
+anims/open = SubResource( 4 )
+
+[node name="door2" type="KinematicBody2D" parent="PhysicBTN2D2"]
+position = Vector2( 93, -175.352 )
+collision_layer = 7
+collision_mask = 7
+motion/sync_to_physics = true
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PhysicBTN2D2/door2"]
+position = Vector2( 0, 44.1793 )
+shape = SubResource( 2 )
+
+[node name="crashing" type="Area2D" parent="PhysicBTN2D2/door2"]
+position = Vector2( 0, -13.1619 )
+monitorable = false
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PhysicBTN2D2/door2/crashing"]
+shape = SubResource( 3 )
+
+[node name="crashing2" type="Area2D" parent="PhysicBTN2D2/door2"]
+position = Vector2( 0, -13.1619 )
+monitorable = false
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PhysicBTN2D2/door2/crashing2"]
+shape = SubResource( 3 )
+
+[node name="Polygon2D" type="Polygon2D" parent="PhysicBTN2D2/door2"]
+color = Color( 0, 0, 0, 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PhysicBTN2D2/door2"]
+anims/open = SubResource( 5 )
+[connection signal="body_entered" from="PhysicBTN2D2/door/crashing" to="PhysicBTN2D2/door" method="_on_crashing_body_entered"]
+[connection signal="body_exited" from="PhysicBTN2D2/door/crashing" to="PhysicBTN2D2/door" method="_on_crashing_body_exited"]
+[connection signal="body_entered" from="PhysicBTN2D2/door/crashing2" to="PhysicBTN2D2/door" method="_on_crashing2_body_entered"]
+[connection signal="body_exited" from="PhysicBTN2D2/door/crashing2" to="PhysicBTN2D2/door" method="_on_crashing2_body_exited"]
+[connection signal="body_entered" from="PhysicBTN2D2/door2/crashing" to="PhysicBTN2D2/door2" method="_on_crashing_body_entered"]
+[connection signal="body_exited" from="PhysicBTN2D2/door2/crashing" to="PhysicBTN2D2/door2" method="_on_crashing_body_exited"]
+[connection signal="body_entered" from="PhysicBTN2D2/door2/crashing2" to="PhysicBTN2D2/door2" method="_on_crashing2_body_entered"]
+[connection signal="body_exited" from="PhysicBTN2D2/door2/crashing2" to="PhysicBTN2D2/door2" method="_on_crashing2_body_exited"]
