@@ -1,0 +1,529 @@
+[gd_scene load_steps=33 format=2]
+
+[ext_resource path="res://Scenes/Levels/Testing_Levels/zone_testing_stuff/Zone_2.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_2/chair.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Objects/level_1/big_bird.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scripts/zone_system/Object_Control.gd" type="Script" id=4]
+[ext_resource path="res://Scenes/Interface_scenes/Shader.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scripts/zone_system/VisibilityObject.gd" type="Script" id=6]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_3/mid_circle.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/Levels/Testing_Levels/zone_testing_stuff/Zone_1.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scripts/player/CameraPlayer.gd" type="Script" id=9]
+[ext_resource path="res://scripts/zone_system/Zone_Control.gd" type="Script" id=10]
+[ext_resource path="res://scripts/player/breaking_sound.gd" type="Script" id=11]
+[ext_resource path="res://Scenes/ControlJoystick.gd" type="Script" id=12]
+[ext_resource path="res://Scenes/Interface_scenes/Game_HUD.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scripts/player/hiting_sound.gd" type="Script" id=14]
+[ext_resource path="res://scripts/player/player.gd" type="Script" id=15]
+[ext_resource path="res://Scenes/exit_portal.tscn" type="PackedScene" id=16]
+[ext_resource path="res://Scenes/global/in_portal.tscn" type="PackedScene" id=17]
+[ext_resource path="res://sprites/player/0_spot.png" type="Texture" id=18]
+[ext_resource path="res://sprites/player/bg_light.png" type="Texture" id=19]
+[ext_resource path="res://Music/sfx/player/wind.ogg" type="AudioStream" id=20]
+[ext_resource path="res://Scenes/Interface_scenes/joystick.tscn" type="PackedScene" id=21]
+[ext_resource path="res://sprites/player/center_wave.png" type="Texture" id=22]
+[ext_resource path="res://sprites/player/angle_wave.png" type="Texture" id=23]
+[ext_resource path="res://sprites/player/speed_danger.png" type="Texture" id=24]
+[ext_resource path="res://sprites/player/light_sprite_aim_1.png" type="Texture" id=25]
+
+[sub_resource type="PhysicsMaterial" id=1]
+bounce = 0.4
+
+[sub_resource type="Animation" id=2]
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("light:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0.196078 ), Color( 1, 1, 1, 0.392157 ), Color( 1, 1, 1, 0.196078 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("light:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.8, 0.8 ), Vector2( 0.9, 0.9 ), Vector2( 0.8, 0.8 ) ]
+}
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 5.0
+
+[sub_resource type="Curve" id=4]
+max_value = 0.5
+_data = [ Vector2( 0, 0.263636 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Animation" id=5]
+length = 0.3
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0.8, 0.8 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+length = 0.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("shot_360:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.6, 0.6 ), Vector2( 0.8, 0.8 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("shot_angle:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.6, 0.6 ), Vector2( 0.8, 0.8 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("shot_360:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("shot_angle:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.2, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+tracks/0/type = "value"
+tracks/0/path = NodePath("ColorRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("ColorRect:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
+
+[node name="level_001" type="Node"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 111
+
+[node name="Game_HUD" parent="CanvasLayer" instance=ExtResource( 13 )]
+
+[node name="Shader" parent="." instance=ExtResource( 5 )]
+
+[node name="player" type="Node" parent="."]
+
+[node name="GlowingParticles" type="CPUParticles2D" parent="player"]
+show_behind_parent = true
+amount = 20
+speed_scale = 3.75
+emission_shape = 1
+emission_sphere_radius = 5.0
+gravity = Vector2( 0, 0 )
+radial_accel = 2.0
+scale_amount_random = 0.5
+
+[node name="PlayerRigidBody" type="RigidBody2D" parent="player"]
+position = Vector2( 1534.89, -300.04 )
+collision_layer = 524355
+collision_mask = 524344
+physics_material_override = SubResource( 1 )
+contacts_reported = 1
+contact_monitor = true
+script = ExtResource( 15 )
+
+[node name="light" type="Sprite" parent="player/PlayerRigidBody"]
+modulate = Color( 1, 1, 1, 0.196078 )
+scale = Vector2( 0.8, 0.8 )
+z_index = -1
+texture = ExtResource( 19 )
+
+[node name="LightAnimation" type="AnimationPlayer" parent="player/PlayerRigidBody"]
+autoplay = "light"
+anims/light = SubResource( 2 )
+
+[node name="spot" type="Sprite" parent="player/PlayerRigidBody"]
+scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 18 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player/PlayerRigidBody"]
+shape = SubResource( 3 )
+
+[node name="TrailParticles" type="CPUParticles2D" parent="player/PlayerRigidBody"]
+show_behind_parent = true
+speed_scale = 0.5
+fixed_fps = 24
+local_coords = false
+texture = ExtResource( 18 )
+gravity = Vector2( 0, 0 )
+scale_amount_curve = SubResource( 4 )
+
+[node name="SpeedDanger" type="Sprite" parent="player/PlayerRigidBody"]
+visible = false
+modulate = Color( 1, 1, 1, 0.576471 )
+show_behind_parent = true
+scale = Vector2( 1e-05, 1e-05 )
+z_index = 90
+texture = ExtResource( 24 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="player/PlayerRigidBody/SpeedDanger"]
+anims/speed_danger = SubResource( 5 )
+
+[node name="Camera2D" type="Camera2D" parent="player"]
+current = true
+process_mode = 0
+smoothing_enabled = true
+editor_draw_drag_margin = true
+script = ExtResource( 9 )
+
+[node name="CenterPos" type="Position2D" parent="player"]
+
+[node name="shot_360" type="Sprite" parent="player/CenterPos"]
+visible = false
+modulate = Color( 1, 1, 1, 0 )
+show_behind_parent = true
+scale = Vector2( 0.8, 0.8 )
+z_index = 90
+texture = ExtResource( 22 )
+
+[node name="shot_angle" type="Sprite" parent="player/CenterPos"]
+visible = false
+modulate = Color( 1, 1, 1, 0 )
+scale = Vector2( 0.8, 0.8 )
+z_index = 90
+texture = ExtResource( 23 )
+
+[node name="Sprite" type="Sprite" parent="player/CenterPos/shot_angle"]
+scale = Vector2( 0.9, 0.9 )
+texture = ExtResource( 25 )
+
+[node name="AimAnimation" type="AnimationPlayer" parent="player/CenterPos"]
+autoplay = "Aiming"
+anims/Aiming = SubResource( 6 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="player"]
+layer = 100
+
+[node name="Control" type="Control" parent="player/CanvasLayer"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -90.0
+margin_top = -60.0
+script = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="joystick" parent="player/CanvasLayer/Control" instance=ExtResource( 21 )]
+position = Vector2( 45, 20 )
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="player"]
+layer = 110
+
+[node name="ColorRect" type="ColorRect" parent="player/CanvasLayer2"]
+visible = false
+modulate = Color( 0, 0, 0, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="player/CanvasLayer2"]
+autoplay = "fade_out"
+anims/fade_out = SubResource( 7 )
+
+[node name="breaking_sound" type="AudioStreamPlayer" parent="player"]
+bus = "reverb"
+script = ExtResource( 11 )
+
+[node name="hiting_sound" type="AudioStreamPlayer" parent="player"]
+bus = "reverb"
+script = ExtResource( 14 )
+
+[node name="wind_sound" type="AudioStreamPlayer" parent="player"]
+stream = ExtResource( 20 )
+volume_db = -80.0
+autoplay = true
+
+[node name="exit_portal" parent="." instance=ExtResource( 16 )]
+position = Vector2( -366.422, -303.145 )
+rotation = -0.306714
+
+[node name="in_portal" parent="." instance=ExtResource( 17 )]
+position = Vector2( -365.102, -269.858 )
+
+[node name="Object_Control" type="Node2D" parent="."]
+script = ExtResource( 4 )
+__meta__ = {
+"_editor_description_": "zero = add th object to objects
+first = the object path
+second = conect the group name to objects with numbers only 0,...,9"
+}
+object_path_0 = "res://Scenes/Levels/inside_levels/level_3/mid_circle.tscn"
+object_path_1 = "res://Scenes/Levels/inside_levels/level_2/chair.tscn"
+object_path_2 = "res://Scenes/Objects/level_1/big_bird.tscn"
+
+[node name="VisibilityNotifiers" type="Node2D" parent="Object_Control"]
+
+[node name="0" type="VisibilityNotifier2D" parent="Object_Control/VisibilityNotifiers"]
+position = Vector2( 462.546, -294.484 )
+script = ExtResource( 6 )
+
+[node name="Polygon2D" type="Polygon2D" parent="Object_Control/VisibilityNotifiers/0"]
+position = Vector2( -5.3454, -4.4545 )
+color = Color( 1, 0.0666667, 0.0666667, 1 )
+polygon = PoolVector2Array( 24.4253, -37.6955, 30.7249, 27.1904, -31.0113, 36.0099, -32.9011, -28.2461 )
+
+[node name="1" type="VisibilityNotifier2D" parent="Object_Control/VisibilityNotifiers"]
+position = Vector2( 695.413, -292.806 )
+script = ExtResource( 6 )
+
+[node name="Polygon2D2" type="Polygon2D" parent="Object_Control/VisibilityNotifiers/1"]
+position = Vector2( 13.5451, 9.09052 )
+color = Color( 0.2, 0.937255, 0.0705882, 1 )
+polygon = PoolVector2Array( 24.4253, -37.6955, 30.7249, 27.1904, -31.0113, 36.0099, -32.9011, -28.2461 )
+
+[node name="2" type="VisibilityNotifier2D" parent="Object_Control/VisibilityNotifiers"]
+position = Vector2( -367.701, -162.048 )
+script = ExtResource( 6 )
+
+[node name="Polygon2D3" type="Polygon2D" parent="Object_Control/VisibilityNotifiers/2"]
+position = Vector2( 0.0749512, -2.06451 )
+polygon = PoolVector2Array( 24.4253, -37.6955, 30.7249, 27.1904, -31.0113, 36.0099, -32.9011, -28.2461 )
+
+[node name="3" type="VisibilityNotifier2D" parent="Object_Control/VisibilityNotifiers"]
+position = Vector2( -114.743, 2.18614 )
+script = ExtResource( 6 )
+
+[node name="Polygon2D3" type="Polygon2D" parent="Object_Control/VisibilityNotifiers/3"]
+position = Vector2( 0.0749512, -2.06451 )
+polygon = PoolVector2Array( 24.4253, -37.6955, 30.7249, 27.1904, -31.0113, 36.0099, -32.9011, -28.2461 )
+
+[node name="4" type="VisibilityNotifier2D" parent="Object_Control/VisibilityNotifiers"]
+position = Vector2( -401.68, -92.2013 )
+script = ExtResource( 6 )
+
+[node name="Polygon2D3" type="Polygon2D" parent="Object_Control/VisibilityNotifiers/4"]
+position = Vector2( 0.0749512, -2.06451 )
+polygon = PoolVector2Array( 24.4253, -37.6955, 30.7249, 27.1904, -31.0113, 36.0099, -32.9011, -28.2461 )
+
+[node name="5" type="VisibilityNotifier2D" parent="Object_Control/VisibilityNotifiers"]
+position = Vector2( -754.689, -52.5585 )
+script = ExtResource( 6 )
+
+[node name="Polygon2D3" type="Polygon2D" parent="Object_Control/VisibilityNotifiers/5"]
+position = Vector2( 0.0749512, -2.06451 )
+polygon = PoolVector2Array( 24.4253, -37.6955, 30.7249, 27.1904, -31.0113, 36.0099, -32.9011, -28.2461 )
+
+[node name="6" type="VisibilityNotifier2D" parent="Object_Control/VisibilityNotifiers"]
+position = Vector2( 429.205, -207.889 )
+script = ExtResource( 6 )
+
+[node name="Polygon2D3" type="Polygon2D" parent="Object_Control/VisibilityNotifiers/6"]
+position = Vector2( 0.0749512, -2.06451 )
+polygon = PoolVector2Array( 24.4253, -37.6955, 30.7249, 27.1904, -31.0113, 36.0099, -32.9011, -28.2461 )
+
+[node name="7" type="VisibilityNotifier2D" parent="Object_Control/VisibilityNotifiers"]
+position = Vector2( -1093.68, 146.658 )
+script = ExtResource( 6 )
+
+[node name="Polygon2D3" type="Polygon2D" parent="Object_Control/VisibilityNotifiers/7"]
+position = Vector2( 0.0749512, -2.06451 )
+polygon = PoolVector2Array( 24.4253, -37.6955, 30.7249, 27.1904, -31.0113, 36.0099, -32.9011, -28.2461 )
+
+[node name="8" type="VisibilityNotifier2D" parent="Object_Control/VisibilityNotifiers"]
+position = Vector2( -572.422, -52.5214 )
+script = ExtResource( 6 )
+
+[node name="Polygon2D3" type="Polygon2D" parent="Object_Control/VisibilityNotifiers/8"]
+position = Vector2( 0.0749512, -2.06451 )
+polygon = PoolVector2Array( 24.4253, -37.6955, 30.7249, 27.1904, -31.0113, 36.0099, -32.9011, -28.2461 )
+
+[node name="9" type="VisibilityNotifier2D" parent="Object_Control/VisibilityNotifiers"]
+position = Vector2( 510.349, -209.322 )
+script = ExtResource( 6 )
+
+[node name="Polygon2D3" type="Polygon2D" parent="Object_Control/VisibilityNotifiers/9"]
+position = Vector2( 0.0749512, -2.06451 )
+polygon = PoolVector2Array( 24.4253, -37.6955, 30.7249, 27.1904, -31.0113, 36.0099, -32.9011, -28.2461 )
+
+[node name="Objects" type="Node2D" parent="Object_Control"]
+
+[node name="0_0" parent="Object_Control/Objects" instance=ExtResource( 7 )]
+position = Vector2( 461.75, -291.754 )
+
+[node name="1_0" parent="Object_Control/Objects" instance=ExtResource( 7 )]
+position = Vector2( 694.862, -293.616 )
+
+[node name="2_0" parent="Object_Control/Objects" instance=ExtResource( 7 )]
+position = Vector2( -367.671, -162.802 )
+
+[node name="3_1" parent="Object_Control/Objects" instance=ExtResource( 2 )]
+position = Vector2( -114.293, 3.1748 )
+
+[node name="4_1" parent="Object_Control/Objects" instance=ExtResource( 2 )]
+position = Vector2( -404.459, -95.5294 )
+
+[node name="5_1" parent="Object_Control/Objects" instance=ExtResource( 2 )]
+position = Vector2( -755.954, -55.1664 )
+
+[node name="6_1" parent="Object_Control/Objects" instance=ExtResource( 2 )]
+position = Vector2( 427.352, -207.99 )
+
+[node name="7_2" parent="Object_Control/Objects" instance=ExtResource( 3 )]
+position = Vector2( -1099.85, 154.846 )
+
+[node name="8_2" parent="Object_Control/Objects" instance=ExtResource( 3 )]
+position = Vector2( -582.605, -49.0304 )
+
+[node name="9_2" parent="Object_Control/Objects" instance=ExtResource( 3 )]
+position = Vector2( 500.963, -203.826 )
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2( 64.5487, 156.313 )
+
+[node name="Polygon2D" type="Polygon2D" parent="Node2D"]
+modulate = Color( 1, 1, 1, 0.101961 )
+position = Vector2( -156.978, 89.0955 )
+polygon = PoolVector2Array( -85, -238, 407, -240, 406, 61, -85, 61 )
+
+[node name="Zone_Control" type="Node2D" parent="."]
+script = ExtResource( 10 )
+zone_path_0 = "res://Scenes/Levels/Testing_Levels/zone_testing_stuff/Zone_2.tscn"
+zone_path_1 = "res://Scenes/Levels/Testing_Levels/zone_testing_stuff/Zone_1.tscn"
+
+[node name="VisibilityNotifiers" type="Node2D" parent="Zone_Control"]
+
+[node name="0" type="VisibilityNotifier2D" parent="Zone_Control/VisibilityNotifiers"]
+position = Vector2( -141.555, -133.155 )
+rect = Rect2( 0, 0, 500, 200 )
+
+[node name="1" type="VisibilityNotifier2D" parent="Zone_Control/VisibilityNotifiers"]
+position = Vector2( 387.015, -87.8488 )
+rect = Rect2( 0, 0, 500, 200 )
+
+[node name="2" type="VisibilityNotifier2D" parent="Zone_Control/VisibilityNotifiers"]
+position = Vector2( 790.993, -280.399 )
+rect = Rect2( 0, 0, 500, 200 )
+
+[node name="3" type="VisibilityNotifier2D" parent="Zone_Control/VisibilityNotifiers"]
+position = Vector2( 1304.46, -454.072 )
+rect = Rect2( 0, 0, 500, 200 )
+
+[node name="4" type="VisibilityNotifier2D" parent="Zone_Control/VisibilityNotifiers"]
+position = Vector2( 1765.07, -646.622 )
+rect = Rect2( 0, 0, 500, 200 )
+
+[node name="5" type="VisibilityNotifier2D" parent="Zone_Control/VisibilityNotifiers"]
+position = Vector2( 2299.04, -824.612 )
+rect = Rect2( 0, 0, 500, 200 )
+
+[node name="6" type="VisibilityNotifier2D" parent="Zone_Control/VisibilityNotifiers"]
+position = Vector2( 2765.2, -994.126 )
+rect = Rect2( 0, 0, 500, 200 )
+
+[node name="7" type="VisibilityNotifier2D" parent="Zone_Control/VisibilityNotifiers"]
+position = Vector2( 3290.7, -1197.54 )
+rect = Rect2( 0, 0, 500, 200 )
+
+[node name="Zones" type="Node2D" parent="Zone_Control"]
+
+[node name="0_0" parent="Zone_Control/Zones" instance=ExtResource( 1 )]
+position = Vector2( -184.895, 161.966 )
+
+[node name="1_1" parent="Zone_Control/Zones" instance=ExtResource( 8 )]
+position = Vector2( 345.068, 164.049 )
+
+[node name="2_1" parent="Zone_Control/Zones" instance=ExtResource( 8 )]
+position = Vector2( 842.871, -28.2843 )
+
+[node name="3_1" parent="Zone_Control/Zones" instance=ExtResource( 8 )]
+position = Vector2( 1329.36, -223.446 )
+
+[node name="4_1" parent="Zone_Control/Zones" instance=ExtResource( 8 )]
+position = Vector2( 1804.54, -401.637 )
+
+[node name="5_1" parent="Zone_Control/Zones" instance=ExtResource( 8 )]
+position = Vector2( 2304.6, -579.626 )
+
+[node name="6_1" parent="Zone_Control/Zones" instance=ExtResource( 8 )]
+position = Vector2( 2787.72, -757.616 )
+
+[node name="7_1" parent="Zone_Control/Zones" instance=ExtResource( 8 )]
+position = Vector2( 3279.31, -961.033 )
+[connection signal="body_entered" from="player/PlayerRigidBody" to="player/PlayerRigidBody" method="_on_RigidBody2D_body_entered"]
+[connection signal="body_exited" from="player/PlayerRigidBody" to="player/PlayerRigidBody" method="_on_PlayerRigidBody_body_exited"]

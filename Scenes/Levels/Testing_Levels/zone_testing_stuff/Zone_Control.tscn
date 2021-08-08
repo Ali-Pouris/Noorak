@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scripts/zone_system/Zone_Control.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Levels/Testing_Levels/zone_testing_stuff/Zone_2.tscn" type="PackedScene" id=2]
+
+[node name="Zone_Control" type="Node2D"]
+script = ExtResource( 1 )
+zone_path_0 = "res://Scenes/Levels/Testing_Levels/zone_testing_stuff/Zone_2.tscn"
+zone_path_1 = "res://Scenes/Levels/Testing_Levels/zone_testing_stuff/Zone_1.tscn"
+
+[node name="VisibilityNotifiers" type="Node2D" parent="."]
+
+[node name="0" type="VisibilityNotifier2D" parent="VisibilityNotifiers"]
+position = Vector2( -697.145, -225.224 )
+rect = Rect2( 0, 0, 500, 200 )
+
+[node name="Zones" type="Node2D" parent="."]
+
+[node name="0" parent="Zones" groups=[
+"z0",
+] instance=ExtResource( 2 )]
+position = Vector2( -724.895, 61.9657 )

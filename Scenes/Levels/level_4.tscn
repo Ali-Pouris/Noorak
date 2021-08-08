@@ -1,0 +1,910 @@
+[gd_scene load_steps=48 format=2]
+
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Circle.gd" type="Script" id=1]
+[ext_resource path="res://scripts/Ground/BG_polygons.gd" type="Script" id=2]
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Poly.gd" type="Script" id=3]
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Rectangle.gd" type="Script" id=4]
+[ext_resource path="res://Scenes/Interface_scenes/Shader.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_4/zones/level_4_zone_8.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/Interactive_Objects/PhysicBTN2D.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/global/CheckPoint.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/player.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scenes/Objects/Box_1.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Scenes/Interactive_Objects/Glass.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Scenes/enemys/Lezer.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/Interface_scenes/Game_HUD.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Scenes/Objects/Box_2.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scenes/enemys/DashSpik.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Scenes/exit_portal.tscn" type="PackedScene" id=16]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_4/zones/level_4_zone_5.tscn" type="PackedScene" id=18]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_4/zones/level_4_zone_7.tscn" type="PackedScene" id=19]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_4/zones/level_4_zone_2.tscn" type="PackedScene" id=20]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_1/door.tscn" type="PackedScene" id=21]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_4/zones/level_4_zone_1.tscn" type="PackedScene" id=22]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_4/BG_polygons.tscn" type="PackedScene" id=23]
+[ext_resource path="res://Scenes/Levels/level_5.tscn" type="PackedScene" id=24]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_4/objects/level_4_object_1.tscn" type="PackedScene" id=25]
+[ext_resource path="res://scripts/zone_system/Zone_Control.gd" type="Script" id=26]
+[ext_resource path="res://scripts/zone_system/VisibilityObject.gd" type="Script" id=27]
+[ext_resource path="res://scripts/zone_system/Object_Control.gd" type="Script" id=28]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_4/objects/level_4_object_2.tscn" type="PackedScene" id=29]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_4/zones/level_4_zone_3.tscn" type="PackedScene" id=30]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_4/zones/level_4_zone_4.tscn" type="PackedScene" id=31]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_4/zones/level_4_zone_6.tscn" type="PackedScene" id=32]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_4/zones/level_4_zone_9.tscn" type="PackedScene" id=33]
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 45.6241, 10 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 38.214, 10 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 75.5974, 10 )
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 50, 50 )
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 184.93, 10 )
+
+[sub_resource type="RectangleShape2D" id=11]
+extents = Vector2( 220.854, 10 )
+
+[sub_resource type="CircleShape2D" id=12]
+
+[sub_resource type="GDScript" id=13]
+script/source = "extends CollisionPolygon2D
+
+onready var parent = get_parent()
+
+export var shard_poly_colors = Color(1,1,1,0.5)
+export var is_complex = false
+
+var tween = Tween.new()
+var poly_color = Polygon2D.new()
+var is_added : bool = false
+
+onready var line_points: Array
+
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	randomize()
+	poly_color.polygon = polygon
+	poly_color.color = shard_poly_colors
+	poly_color.color.a = 0.7
+	add_child(poly_color)
+	
+	var poly_line = get_polygon()
+
+	for i in range(0 , poly_line.size()):
+		#draw_line(poly_line[i-1] , poly_line[i], OutLine , Width)
+		line_points.append(poly_line[i])
+	line_points.append(poly_line[0])
+	line_points.append(poly_line[1])
+
+
+func _draw():
+	draw_polyline(line_points,Color(1,1,1,0.7),1)
+
+
+func explode():
+	var points = polygon
+	var delaunay_points_one = Geometry.triangulate_polygon(points)
+	
+	if not delaunay_points_one:
+		print(\"serious error occurred no delaunay points found\")
+	#find the midlle point of each triangle and add it to points
+	for index in len(delaunay_points_one) / 3:
+		var shard_pool_one = PoolVector2Array()
+		var Ox = 0
+		var Oy = 0
+		for n in range(3):
+			shard_pool_one.append(points[delaunay_points_one[(index * 3) + n]])
+			Ox += shard_pool_one[n].x
+			Oy += shard_pool_one[n].y
+		points.append(Vector2(Ox / 3, Oy / 3))
+	
+	var delaunay_points_two = Geometry.triangulate_delaunay_2d(points)
+	
+	if is_complex:
+		delaunay_points_two = delaunay_points_one
+	
+	for index in len(delaunay_points_two) / 3:
+		var shard_pool = PoolVector2Array()
+		
+		# loop over the three points in our triangle
+		for n in range(3):
+			shard_pool.append(points[delaunay_points_two[(index * 3) + n]])
+		
+		var shard_polygon = Polygon2D.new()
+		var shard_collision_polygon = CollisionPolygon2D.new()
+		var shard_rigidbody = RigidBody2D.new()
+
+		
+		shard_polygon.polygon = shard_pool
+		shard_collision_polygon.polygon = shard_pool
+		shard_rigidbody.applied_torque = round(rand_range(-1,1))
+		shard_rigidbody.mass = 0.4
+		shard_rigidbody.gravity_scale = 0.2
+		shard_rigidbody.set_collision_layer_bit(0,false)
+		shard_rigidbody.set_collision_mask_bit(0,false)
+		shard_rigidbody.set_collision_layer_bit(2,true)
+		shard_rigidbody.set_collision_mask_bit(2,true)
+		shard_rigidbody.add_child(shard_polygon)
+		shard_rigidbody.add_child(shard_collision_polygon)
+		
+		shard_polygon.color = shard_poly_colors
+		
+#		add_child(shard_rigidbody)
+#		shard_polygon.add_child(tween)
+		call_deferred(\"add_child\", shard_rigidbody)
+		if is_added == false:
+			call_deferred(\"add_child\", tween)
+			is_added = true
+		
+		tween.interpolate_property(self, \"modulate\", Color(1,1,1,1), Color(1,1,1,0), 0.5, tween.TRANS_LINEAR, tween.EASE_OUT_IN)
+		shard_rigidbody.apply_central_impulse(Vector2(5,0).rotated(deg2rad(rand_range(0,360))))
+	
+	yield(get_tree().create_timer(1), \"timeout\")
+	tween.start()
+	yield(get_tree().create_timer(0.5), \"timeout\")
+	for ch in get_children():
+		ch.queue_free()
+
+func destroy_the_glass():
+	for n in range(20):
+		parent.set_collision_layer_bit(n, false)
+		parent.set_collision_mask_bit(n, false)
+	poly_color.hide()
+	
+	#Deleting the pinjoint conected to the glass before deleting the glass itself
+	var twodots = \"../\"
+	for child in get_parent().get_parent().get_children():
+		if child.is_in_group(\"GlassPinJoint\"):
+			if child.get_node_a() == twodots + get_parent().name or child.get_node_b() == twodots + get_parent().name:
+				child.queue_free()
+	
+	explode()
+	yield(get_tree().create_timer(5), \"timeout\")
+	parent.queue_free()
+
+
+func _on_RigidBody2D2_body_entered(body):
+#	print(body.get_collision_layer_bit(9))
+#	print(body.get_linear_velocity().length())
+#	print(body.name)
+	if parent.get_linear_velocity().length() > 40:
+		destroy_the_glass()
+	elif body.get_collision_layer_bit(9) == true && body.get_collision_mask_bit(9) == true:
+		destroy_the_glass()
+	elif body.get_collision_layer_bit(9) == true && body.get_linear_velocity().length() > 80:
+		destroy_the_glass()
+	elif body.get_collision_mask_bit(9) == true:
+		destroy_the_glass()
+"
+
+[sub_resource type="GDScript" id=14]
+script/source = "extends CollisionPolygon2D
+
+onready var parent = get_parent()
+
+export var shard_poly_colors = Color(1,1,1,0.5)
+export var is_complex = false
+
+var tween = Tween.new()
+var poly_color = Polygon2D.new()
+var is_added : bool = false
+
+onready var line_points: Array
+
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	randomize()
+	poly_color.polygon = polygon
+	poly_color.color = shard_poly_colors
+	poly_color.color.a = 0.7
+	add_child(poly_color)
+	
+	var poly_line = get_polygon()
+
+	for i in range(0 , poly_line.size()):
+		#draw_line(poly_line[i-1] , poly_line[i], OutLine , Width)
+		line_points.append(poly_line[i])
+	line_points.append(poly_line[0])
+	line_points.append(poly_line[1])
+
+
+func _draw():
+	draw_polyline(line_points,Color(1,1,1,0.7),1)
+
+
+func explode():
+	var points = polygon
+	var delaunay_points_one = Geometry.triangulate_polygon(points)
+	
+	if not delaunay_points_one:
+		print(\"serious error occurred no delaunay points found\")
+	#find the midlle point of each triangle and add it to points
+	for index in len(delaunay_points_one) / 3:
+		var shard_pool_one = PoolVector2Array()
+		var Ox = 0
+		var Oy = 0
+		for n in range(3):
+			shard_pool_one.append(points[delaunay_points_one[(index * 3) + n]])
+			Ox += shard_pool_one[n].x
+			Oy += shard_pool_one[n].y
+		points.append(Vector2(Ox / 3, Oy / 3))
+	
+	var delaunay_points_two = Geometry.triangulate_delaunay_2d(points)
+	
+	if is_complex:
+		delaunay_points_two = delaunay_points_one
+	
+	for index in len(delaunay_points_two) / 3:
+		var shard_pool = PoolVector2Array()
+		
+		# loop over the three points in our triangle
+		for n in range(3):
+			shard_pool.append(points[delaunay_points_two[(index * 3) + n]])
+		
+		var shard_polygon = Polygon2D.new()
+		var shard_collision_polygon = CollisionPolygon2D.new()
+		var shard_rigidbody = RigidBody2D.new()
+
+		
+		shard_polygon.polygon = shard_pool
+		shard_collision_polygon.polygon = shard_pool
+		shard_rigidbody.applied_torque = round(rand_range(-1,1))
+		shard_rigidbody.mass = 0.4
+		shard_rigidbody.gravity_scale = 0.2
+		shard_rigidbody.set_collision_layer_bit(0,false)
+		shard_rigidbody.set_collision_mask_bit(0,false)
+		shard_rigidbody.set_collision_layer_bit(2,true)
+		shard_rigidbody.set_collision_mask_bit(2,true)
+		shard_rigidbody.add_child(shard_polygon)
+		shard_rigidbody.add_child(shard_collision_polygon)
+		
+		shard_polygon.color = shard_poly_colors
+		
+#		add_child(shard_rigidbody)
+#		shard_polygon.add_child(tween)
+		call_deferred(\"add_child\", shard_rigidbody)
+		if is_added == false:
+			call_deferred(\"add_child\", tween)
+			is_added = true
+		
+		tween.interpolate_property(self, \"modulate\", Color(1,1,1,1), Color(1,1,1,0), 0.5, tween.TRANS_LINEAR, tween.EASE_OUT_IN)
+		shard_rigidbody.apply_central_impulse(Vector2(5,0).rotated(deg2rad(rand_range(0,360))))
+	
+	yield(get_tree().create_timer(1), \"timeout\")
+	tween.start()
+	yield(get_tree().create_timer(0.5), \"timeout\")
+	for ch in get_children():
+		ch.queue_free()
+
+func destroy_the_glass():
+	for n in range(20):
+		parent.set_collision_layer_bit(n, false)
+		parent.set_collision_mask_bit(n, false)
+	poly_color.hide()
+	
+	#Deleting the pinjoint conected to the glass before deleting the glass itself
+	var twodots = \"../\"
+	for child in get_parent().get_parent().get_children():
+		if child.is_in_group(\"GlassPinJoint\"):
+			if child.get_node_a() == twodots + get_parent().name or child.get_node_b() == twodots + get_parent().name:
+				child.queue_free()
+	
+	explode()
+	yield(get_tree().create_timer(5), \"timeout\")
+	parent.queue_free()
+
+
+func _on_RigidBody2D2_body_entered(body):
+#	print(body.get_collision_layer_bit(9))
+#	print(body.get_linear_velocity().length())
+#	print(body.name)
+	if parent.get_linear_velocity().length() > 40:
+		destroy_the_glass()
+	elif body.get_collision_layer_bit(9) == true && body.get_collision_mask_bit(9) == true:
+		destroy_the_glass()
+	elif body.get_collision_layer_bit(9) == true && body.get_linear_velocity().length() > 80:
+		destroy_the_glass()
+	elif body.get_collision_mask_bit(9) == true:
+		destroy_the_glass()
+"
+
+[sub_resource type="RectangleShape2D" id=15]
+extents = Vector2( 1, 1 )
+
+[sub_resource type="GDScript" id=16]
+script/source = "extends CollisionPolygon2D
+
+onready var parent = get_parent()
+
+export var shard_poly_colors = Color(1,1,1,0.5)
+export var is_complex = false
+
+var tween = Tween.new()
+var poly_color = Polygon2D.new()
+var is_added : bool = false
+
+onready var line_points: Array
+
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	randomize()
+	poly_color.polygon = polygon
+	poly_color.color = shard_poly_colors
+	poly_color.color.a = 0.7
+	add_child(poly_color)
+	
+	var poly_line = get_polygon()
+
+	for i in range(0 , poly_line.size()):
+		#draw_line(poly_line[i-1] , poly_line[i], OutLine , Width)
+		line_points.append(poly_line[i])
+	line_points.append(poly_line[0])
+	line_points.append(poly_line[1])
+
+
+func _draw():
+	draw_polyline(line_points,Color(1,1,1,0.7),1)
+
+
+func explode():
+	var points = polygon
+	var delaunay_points_one = Geometry.triangulate_polygon(points)
+	
+	if not delaunay_points_one:
+		print(\"serious error occurred no delaunay points found\")
+	#find the midlle point of each triangle and add it to points
+	for index in len(delaunay_points_one) / 3:
+		var shard_pool_one = PoolVector2Array()
+		var Ox = 0
+		var Oy = 0
+		for n in range(3):
+			shard_pool_one.append(points[delaunay_points_one[(index * 3) + n]])
+			Ox += shard_pool_one[n].x
+			Oy += shard_pool_one[n].y
+		points.append(Vector2(Ox / 3, Oy / 3))
+	
+	var delaunay_points_two = Geometry.triangulate_delaunay_2d(points)
+	
+	if is_complex:
+		delaunay_points_two = delaunay_points_one
+	
+	for index in len(delaunay_points_two) / 3:
+		var shard_pool = PoolVector2Array()
+		
+		# loop over the three points in our triangle
+		for n in range(3):
+			shard_pool.append(points[delaunay_points_two[(index * 3) + n]])
+		
+		var shard_polygon = Polygon2D.new()
+		var shard_collision_polygon = CollisionPolygon2D.new()
+		var shard_rigidbody = RigidBody2D.new()
+
+		
+		shard_polygon.polygon = shard_pool
+		shard_collision_polygon.polygon = shard_pool
+		shard_rigidbody.applied_torque = round(rand_range(-1,1))
+		shard_rigidbody.mass = 0.4
+		shard_rigidbody.gravity_scale = 0.2
+		shard_rigidbody.set_collision_layer_bit(0,false)
+		shard_rigidbody.set_collision_mask_bit(0,false)
+		shard_rigidbody.set_collision_layer_bit(2,true)
+		shard_rigidbody.set_collision_mask_bit(2,true)
+		shard_rigidbody.add_child(shard_polygon)
+		shard_rigidbody.add_child(shard_collision_polygon)
+		
+		shard_polygon.color = shard_poly_colors
+		
+#		add_child(shard_rigidbody)
+#		shard_polygon.add_child(tween)
+		call_deferred(\"add_child\", shard_rigidbody)
+		if is_added == false:
+			call_deferred(\"add_child\", tween)
+			is_added = true
+		
+		tween.interpolate_property(self, \"modulate\", Color(1,1,1,1), Color(1,1,1,0), 0.5, tween.TRANS_LINEAR, tween.EASE_OUT_IN)
+		shard_rigidbody.apply_central_impulse(Vector2(5,0).rotated(deg2rad(rand_range(0,360))))
+	
+	yield(get_tree().create_timer(1), \"timeout\")
+	tween.start()
+	yield(get_tree().create_timer(0.5), \"timeout\")
+	for ch in get_children():
+		ch.queue_free()
+
+func destroy_the_glass():
+	for n in range(20):
+		parent.set_collision_layer_bit(n, false)
+		parent.set_collision_mask_bit(n, false)
+	poly_color.hide()
+	
+	#Deleting the pinjoint conected to the glass before deleting the glass itself
+	var twodots = \"../\"
+	for child in get_parent().get_parent().get_children():
+		if child.is_in_group(\"GlassPinJoint\"):
+			if child.get_node_a() == twodots + get_parent().name or child.get_node_b() == twodots + get_parent().name:
+				child.queue_free()
+	
+	explode()
+	yield(get_tree().create_timer(5), \"timeout\")
+	parent.queue_free()
+
+
+func _on_RigidBody2D2_body_entered(body):
+#	print(body.get_collision_layer_bit(9))
+#	print(body.get_linear_velocity().length())
+#	print(body.name)
+	if parent.get_linear_velocity().length() > 40:
+		destroy_the_glass()
+	elif body.get_collision_layer_bit(9) == true && body.get_collision_mask_bit(9) == true:
+		destroy_the_glass()
+	elif body.get_collision_layer_bit(9) == true && body.get_linear_velocity().length() > 80:
+		destroy_the_glass()
+	elif body.get_collision_mask_bit(9) == true:
+		destroy_the_glass()
+"
+
+[sub_resource type="RectangleShape2D" id=17]
+extents = Vector2( 1, 15 )
+
+[sub_resource type="RectangleShape2D" id=18]
+extents = Vector2( 8, 8 )
+
+[sub_resource type="RectangleShape2D" id=19]
+extents = Vector2( 4, 45 )
+
+[sub_resource type="Animation" id=20]
+length = 3.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 37.5698, -26.4494 ]
+}
+
+[node name="level_001" type="Node"]
+
+[node name="BG_polygons" parent="." instance=ExtResource( 23 )]
+visible = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 111
+
+[node name="Game_HUD" parent="CanvasLayer" instance=ExtResource( 13 )]
+
+[node name="Shader" parent="." instance=ExtResource( 5 )]
+
+[node name="player" parent="." instance=ExtResource( 9 )]
+
+[node name="PlayerRigidBody" parent="player" index="1"]
+position = Vector2( 136.944, -171.114 )
+
+[node name="Ground" type="Node2D" parent="."]
+
+[node name="StaticBodyRect" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 64
+script = ExtResource( 4 )
+
+[node name="CollisionShape2D27" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 473.875, 76.7375 )
+shape = SubResource( 5 )
+
+[node name="CollisionShape2D37" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 525.444, 13.0315 )
+shape = SubResource( 6 )
+
+[node name="CollisionShape2D36" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 494.477, 50.1426 )
+rotation = 1.65564
+shape = SubResource( 5 )
+
+[node name="CollisionShape2D32" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 613.496, 60.7268 )
+rotation = 0.72672
+shape = SubResource( 7 )
+
+[node name="CollisionShape2D33" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 738.087, 98.4818 )
+rotation = -0.170908
+shape = SubResource( 7 )
+
+[node name="CollisionShape2D34" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 831.53, 23.203 )
+rotation = -1.3458
+shape = SubResource( 7 )
+
+[node name="CollisionShape2D35" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 825.603, -96.6599 )
+rotation = -2.01009
+shape = SubResource( 7 )
+
+[node name="CollisionShape2D22" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 395.682, -102.223 )
+rotation = 0.427657
+shape = SubResource( 9 )
+
+[node name="CollisionShape2D26" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 672.595, -147.238 )
+rotation = 0.0527209
+shape = SubResource( 10 )
+
+[node name="CollisionShape2D20" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 400.737, -118.091 )
+rotation = 1.39812
+shape = SubResource( 11 )
+
+[node name="StaticBodyCircle" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 68
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground/StaticBodyCircle"]
+position = Vector2( 424.415, -44.2347 )
+shape = SubResource( 12 )
+
+[node name="StaticBodypoly" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 68
+script = ExtResource( 3 )
+
+[node name="FG_polygons" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="black" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 403, -112, 371.193, -341.45, 285.806, -341.998, 286.409, -173.624, 258.655, -145.694, 137.86, -146.099, 110.258, -173.57, 110.172, -298.216, 1.9182, -295.835, -0.462936, -60.1056, 368.608, -72.8048 )
+
+[node name="black2" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 98.8638, -284.837, 269.139, -411.705, 557.311, -390.351, 522.224, -275.278, 429.935, -256.06, 434.094, -236.531, 447.162, -215.326, 461.032, -239.735, 512.416, -216.957, 488.271, -171.963, 478.927, -176.135, 473.171, -170.962, 480.679, -159.199, 487.771, -147.185, 622.187, -148.284, 714.229, -472.676, 266.367, -523.187, 9.32292, -366.042, 8.20046, -282.98 )
+
+[node name="black3" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 603.534, -154.203, 806.951, -140.43, 848.27, -51.4354, 817.545, 80.9975, 663.923, 110.662, 640.306, 194.816, 1014.08, 194.816, 1004.64, -248.805, 615.765, -263.907 )
+
+[node name="black4" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 371.914, -106.502, 411.158, -42.2848, 432.564, 80.2035, 493.213, 77.8251, 496.781, 15.9863, 562.187, 13.6079, 671.594, 111.123, 685.865, 190.8, 295.805, 201.503, 272.021, -94.61 )
+
+[node name="black5" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 165.611, -334.889, 170.511, -332.107, 134.357, -305.753, 133.165, -312.11 )
+
+[node name="black6" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 365.606, -340.13, 369.385, -344.855, 313.319, -344.225, 315.524, -340.13 )
+
+[node name="black7" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 522.614, -394.381, 524.071, -389.746, 486.857, -392.262, 488.844, -396.765 )
+
+[node name="black8" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 414.693, -323.615, 417.173, -320.341, 397.926, -319.349, 398.422, -323.317 )
+
+[node name="black9" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 545.826, -145.31, 547.558, -140.428, 504.091, -143.263, 506.611, -147.515 )
+
+[node name="black10" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 824.625, -70, 827.457, -72.8316, 811.529, -106.929, 807.989, -105.513 )
+
+[node name="black11" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 768, -92, 764, -84, 756, -84, 752, -92 )
+
+[node name="black12" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 498.086, -221.762, 496.971, -218.046, 476.011, -227.783, 479.43, -230.681 )
+
+[node name="Objects" type="Node2D" parent="."]
+
+[node name="BOXS" type="Node2D" parent="Objects"]
+
+[node name="BigBox_1" parent="Objects/BOXS" instance=ExtResource( 10 )]
+position = Vector2( -363.979, -155.228 )
+
+[node name="SmallBox_1" parent="Objects/BOXS" instance=ExtResource( 14 )]
+position = Vector2( -364.801, -171.263 )
+
+[node name="Glasses" type="Node2D" parent="Objects"]
+
+[node name="static" type="Node2D" parent="Objects/Glasses"]
+
+[node name="Glass1" parent="Objects/Glasses/static" instance=ExtResource( 11 )]
+position = Vector2( -489.413, -219.641 )
+
+[node name="CollisionPolygon2D" parent="Objects/Glasses/static/Glass1" index="0"]
+polygon = PoolVector2Array( -35.1419, 0.427876, -17.2879, -2.90195, 14.8243, -8.89096, 34.1766, -12.5002, 33.5453, -9.86945, 16.027, -6.59912, -16.6042, -0.507484, -34.9078, 2.90945 )
+script = SubResource( 13 )
+shard_poly_colors = Color( 1, 1, 1, 0.5 )
+
+[node name="rigid" type="Node2D" parent="Objects/Glasses"]
+
+[node name="Glass1" parent="Objects/Glasses/rigid" instance=ExtResource( 11 )]
+position = Vector2( -511.584, -193.536 )
+collision_layer = 524874
+collision_mask = 524810
+mode = 0
+
+[node name="CollisionPolygon2D" parent="Objects/Glasses/rigid/Glass1" index="0"]
+position = Vector2( -0.285736, 3.36252 )
+polygon = PoolVector2Array( -4, -16, 4, -16, 4, 8, -4, 8 )
+script = SubResource( 14 )
+shard_poly_colors = Color( 1, 1, 1, 0.5 )
+
+[node name="enemies" type="Node2D" parent="."]
+
+[node name="dash_enemies" type="Node2D" parent="enemies"]
+
+[node name="lezer" type="Node2D" parent="enemies"]
+
+[node name="LezerRay" parent="enemies/lezer" instance=ExtResource( 12 )]
+position = Vector2( -552.859, -105.296 )
+
+[node name="Complex_Objects" type="Node2D" parent="."]
+
+[node name="LezerOnRoop" type="Node2D" parent="Complex_Objects"]
+position = Vector2( -674.473, 15.495 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Complex_Objects/LezerOnRoop"]
+position = Vector2( -0.0717163, 0.000976562 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Complex_Objects/LezerOnRoop/StaticBody2D"]
+shape = SubResource( 15 )
+
+[node name="PinJoint2D" type="PinJoint2D" parent="Complex_Objects/LezerOnRoop" groups=[
+"GlassPinJoint",
+]]
+position = Vector2( -0.0677185, -0.0107269 )
+node_a = NodePath("../StaticBody2D")
+node_b = NodePath("../Glass")
+
+[node name="Glass" parent="Complex_Objects/LezerOnRoop" instance=ExtResource( 11 )]
+position = Vector2( -0.074707, 0.00867462 )
+mode = 0
+
+[node name="CollisionPolygon2D" parent="Complex_Objects/LezerOnRoop/Glass" index="0"]
+polygon = PoolVector2Array( -0.996887, -0.304535, -0.751465, 19.4075, 0.711914, 19.3828, 0.971863, -0.312347 )
+script = SubResource( 16 )
+shard_poly_colors = Color( 1, 1, 1, 0.5 )
+
+[node name="PinJoint2D2" type="PinJoint2D" parent="Complex_Objects/LezerOnRoop" groups=[
+"GlassPinJoint",
+]]
+position = Vector2( -0.0847168, 18.6701 )
+node_a = NodePath("../Glass")
+node_b = NodePath("../RigidBody2D")
+
+[node name="RigidBody2D" type="RigidBody2D" parent="Complex_Objects/LezerOnRoop"]
+position = Vector2( -0.131714, 32.814 )
+collision_layer = 6
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Complex_Objects/LezerOnRoop/RigidBody2D"]
+shape = SubResource( 17 )
+
+[node name="Polygon2D" type="Polygon2D" parent="Complex_Objects/LezerOnRoop/RigidBody2D"]
+color = Color( 0.105882, 0.105882, 0.105882, 1 )
+polygon = PoolVector2Array( -0.99202, -14.9907, -0.837952, 14.8974, 0.89444, 14.8974, 0.89444, -15.1833 )
+
+[node name="PinJoint2D3" type="PinJoint2D" parent="Complex_Objects/LezerOnRoop"]
+position = Vector2( -0.114716, 46.965 )
+node_a = NodePath("../RigidBody2D")
+node_b = NodePath("../RigidBody2D2")
+
+[node name="RigidBody2D2" type="RigidBody2D" parent="Complex_Objects/LezerOnRoop"]
+position = Vector2( -0.0997314, 54.336 )
+collision_layer = 6
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Complex_Objects/LezerOnRoop/RigidBody2D2"]
+shape = SubResource( 18 )
+
+[node name="Polygon2D" type="Polygon2D" parent="Complex_Objects/LezerOnRoop/RigidBody2D2"]
+color = Color( 0.0705882, 0.0705882, 0.0705882, 1 )
+polygon = PoolVector2Array( -7.97997, -7.94757, -7.93577, 8.00653, 7.97413, 8.05072, 7.92994, -7.99176 )
+
+[node name="LezerRay" parent="Complex_Objects/LezerOnRoop/RigidBody2D2" instance=ExtResource( 12 )]
+rotation = 1.5708
+cast_to = Vector2( 1000, 0 )
+
+[node name="btn_and_door" type="Node2D" parent="Complex_Objects"]
+position = Vector2( -634.838, 30.6636 )
+
+[node name="PhysicBTN2D2" parent="Complex_Objects/btn_and_door" instance=ExtResource( 7 )]
+position = Vector2( 1342.84, -18.6636 )
+rotation = 1.5708
+is_push_type = false
+
+[node name="btn" parent="Complex_Objects/btn_and_door/PhysicBTN2D2" index="2"]
+collision_layer = 35
+
+[node name="Line2D" parent="Complex_Objects/btn_and_door/PhysicBTN2D2" index="3"]
+points = PoolVector2Array( 0.0954742, -4.0119, 0.176552, 0.020752, 22.5947, 28.5912, 32.3949, 58.2562, 31.0707, 87.3914, 17.5626, 126.062, 2.9801, 145.805, -2.26386, 179.142, 1.37705, 213.093, 10.5799, 230.79, 14.1195, 246.364, 9.87211, 264.534, -4.38455, 286.462, -20.8659, 283.466, -39.1858, 295.132, -53.8287, 291.706, -56.3422, 283.791 )
+
+[node name="door" parent="Complex_Objects/btn_and_door/PhysicBTN2D2" instance=ExtResource( 21 )]
+position = Vector2( -56.2569, 283.6 )
+rotation = 0.655717
+
+[node name="CollisionShape2D" parent="Complex_Objects/btn_and_door/PhysicBTN2D2/door" index="0"]
+position = Vector2( 0, -45 )
+shape = SubResource( 19 )
+
+[node name="crashing" parent="Complex_Objects/btn_and_door/PhysicBTN2D2/door" index="1"]
+position = Vector2( 2.0486, 21.1283 )
+rotation = 1.05135
+
+[node name="crashing2" parent="Complex_Objects/btn_and_door/PhysicBTN2D2/door" index="2"]
+position = Vector2( 2.0486, 21.1283 )
+rotation = 1.05135
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Complex_Objects/btn_and_door/PhysicBTN2D2/door"]
+anims/open = SubResource( 20 )
+
+[node name="CheckPoints" type="Node2D" parent="."]
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="CheckPoint" parent="CheckPoints" instance=ExtResource( 8 )]
+position = Vector2( -458.205, -388.333 )
+
+[node name="exit_portal" parent="." instance=ExtResource( 16 )]
+position = Vector2( 462, 55 )
+rotation = 1.5708
+next_scene = ExtResource( 24 )
+next_level = 5
+
+[node name="Control" type="Node2D" parent="."]
+
+[node name="Zone_Control" type="Node2D" parent="Control"]
+script = ExtResource( 26 )
+zone_path_0 = "res://Scenes/Levels/inside_levels/level_4/zones/level_4_zone_1.tscn"
+zone_path_1 = "res://Scenes/Levels/inside_levels/level_4/zones/level_4_zone_2.tscn"
+zone_path_2 = "res://Scenes/Levels/inside_levels/level_4/zones/level_4_zone_3.tscn"
+zone_path_3 = "res://Scenes/Levels/inside_levels/level_4/zones/level_4_zone_4.tscn"
+zone_path_4 = "res://Scenes/Levels/inside_levels/level_4/zones/level_4_zone_5.tscn"
+zone_path_5 = "res://Scenes/Levels/inside_levels/level_4/zones/level_4_zone_6.tscn"
+zone_path_6 = "res://Scenes/Levels/inside_levels/level_4/zones/level_4_zone_7.tscn"
+zone_path_7 = "res://Scenes/Levels/inside_levels/level_4/zones/level_4_zone_8.tscn"
+zone_path_8 = "res://Scenes/Levels/inside_levels/level_4/zones/level_4_zone_9.tscn"
+
+[node name="VisibilityNotifiers" type="Node2D" parent="Control/Zone_Control"]
+
+[node name="0" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 216.431, -352.27 )
+rect = Rect2( -10, -10, 50, 100 )
+
+[node name="1" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 185.002, -326.453 )
+rect = Rect2( -10, -10, 50, 120 )
+
+[node name="2" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 453.451, -346.748 )
+rect = Rect2( -10, -10, 50, 50 )
+
+[node name="3" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 451.804, -219.238 )
+rect = Rect2( -10, -10, 60, 60 )
+
+[node name="4" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 600.936, -86.1521 )
+rect = Rect2( -10, -10, 160, 100 )
+
+[node name="5" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 442.177, -355.507 )
+rect = Rect2( -10, -10, 160, 100 )
+
+[node name="6" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 393.789, -284.62 )
+rect = Rect2( -10, -10, 50, 150 )
+
+[node name="7" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 183.537, -303.329 )
+rect = Rect2( -10, -10, 50, 150 )
+
+[node name="8" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 309.496, -386.284 )
+rect = Rect2( -10, -10, 250, 90 )
+
+[node name="Zones" type="Node2D" parent="Control/Zone_Control"]
+
+[node name="00" parent="Control/Zone_Control/Zones" instance=ExtResource( 22 )]
+
+[node name="11" parent="Control/Zone_Control/Zones" instance=ExtResource( 20 )]
+
+[node name="22" parent="Control/Zone_Control/Zones" instance=ExtResource( 30 )]
+
+[node name="33" parent="Control/Zone_Control/Zones" instance=ExtResource( 31 )]
+position = Vector2( 475.949, -203.998 )
+rotation = 0.418121
+
+[node name="44" parent="Control/Zone_Control/Zones" instance=ExtResource( 18 )]
+
+[node name="55" parent="Control/Zone_Control/Zones" instance=ExtResource( 32 )]
+
+[node name="66" parent="Control/Zone_Control/Zones" instance=ExtResource( 19 )]
+
+[node name="77" parent="Control/Zone_Control/Zones" instance=ExtResource( 6 )]
+
+[node name="88" parent="Control/Zone_Control/Zones" instance=ExtResource( 33 )]
+
+[node name="Object_Control" type="Node2D" parent="Control"]
+script = ExtResource( 28 )
+object_path_0 = "res://Scenes/enemys/DashSpik.tscn"
+object_path_1 = "res://Scenes/Levels/inside_levels/level_4/objects/level_4_object_1.tscn"
+object_path_2 = "res://Scenes/Levels/inside_levels/level_4/objects/level_4_object_2.tscn"
+
+[node name="VisibilityNotifiers" type="Node2D" parent="Control/Object_Control"]
+
+[node name="0" type="VisibilityNotifier2D" parent="Control/Object_Control/VisibilityNotifiers"]
+position = Vector2( 488.922, -311.1 )
+rect = Rect2( -10, -10, 10, 10 )
+script = ExtResource( 27 )
+
+[node name="1" type="VisibilityNotifier2D" parent="Control/Object_Control/VisibilityNotifiers"]
+position = Vector2( 479.305, -181.062 )
+rect = Rect2( -10, -10, 10, 10 )
+script = ExtResource( 27 )
+
+[node name="2" type="VisibilityNotifier2D" parent="Control/Object_Control/VisibilityNotifiers"]
+position = Vector2( 633.071, -59.066 )
+rect = Rect2( -10, -10, 10, 10 )
+script = ExtResource( 27 )
+
+[node name="3" type="VisibilityNotifier2D" parent="Control/Object_Control/VisibilityNotifiers"]
+position = Vector2( 466.216, -314.518 )
+rect = Rect2( -10, -10, 12, 12 )
+script = ExtResource( 27 )
+
+[node name="4" type="VisibilityNotifier2D" parent="Control/Object_Control/VisibilityNotifiers"]
+position = Vector2( 485.093, -194.96 )
+rect = Rect2( -10, -10, 12, 12 )
+script = ExtResource( 27 )
+
+[node name="Objects" type="Node2D" parent="Control/Object_Control"]
+
+[node name="00" parent="Control/Object_Control/Objects" instance=ExtResource( 15 )]
+position = Vector2( 483.892, -316.196 )
+
+[node name="10" parent="Control/Object_Control/Objects" instance=ExtResource( 15 )]
+position = Vector2( 474.207, -186.074 )
+
+[node name="20" parent="Control/Object_Control/Objects" instance=ExtResource( 15 )]
+position = Vector2( 628.004, -64.0129 )
+
+[node name="31" parent="Control/Object_Control/Objects" instance=ExtResource( 25 )]
+
+[node name="42" parent="Control/Object_Control/Objects" instance=ExtResource( 29 )]
+
+[editable path="player"]
+
+[editable path="Objects/Glasses/static/Glass1"]
+
+[editable path="Objects/Glasses/rigid/Glass1"]
+
+[editable path="Complex_Objects/LezerOnRoop/Glass"]
+
+[editable path="Complex_Objects/btn_and_door/PhysicBTN2D2"]
+
+[editable path="Complex_Objects/btn_and_door/PhysicBTN2D2/door"]

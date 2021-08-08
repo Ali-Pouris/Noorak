@@ -1,0 +1,439 @@
+[gd_scene load_steps=34 format=2]
+
+[ext_resource path="res://Scenes/Levels/level_3.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Interface_scenes/Shader.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scripts/zone_system/Object_Control.gd" type="Script" id=8]
+[ext_resource path="res://Scenes/player.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scripts/zone_system/Zone_Control.gd" type="Script" id=10]
+[ext_resource path="res://scripts/zone_system/VisibilityObject.gd" type="Script" id=11]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_2/zones/level_2_zone_1.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/Interface_scenes/Game_HUD.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_2/objects/level_2_object_3.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_2/objects/level_2_object_2.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Scenes/exit_portal.tscn" type="PackedScene" id=16]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_2/objects/level_2_object_4.tscn" type="PackedScene" id=17]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_2/objects/level_2_object_1.tscn" type="PackedScene" id=18]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_2/zones/level_2_zone_2.tscn" type="PackedScene" id=19]
+[ext_resource path="res://Scenes/Interactive_Objects/EyeSensor.tscn" type="PackedScene" id=20]
+[ext_resource path="res://Scenes/Interactive_Objects/MovingPlatform_one_time.tscn" type="PackedScene" id=21]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_2/zones/level_2_zone_5.tscn" type="PackedScene" id=23]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_2/zones/level_2_zone_3.tscn" type="PackedScene" id=25]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_2/zones/level_2_zone_4.tscn" type="PackedScene" id=26]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+export var one_time_trigered : bool = false
+onready var triger : bool = false
+onready var sprite = get_node(\"Sprite\")
+
+func _on_Area2D_body_entered(body):
+#	if body.name == \"PlayerRigidBody\":
+#		triger = true
+#		sprite.set_frame(1)
+	triger = true
+	sprite.set_frame(1)
+
+func _on_Area2D_body_exited(body):
+#	if body.name == \"PlayerRigidBody\":
+#		triger = false
+#		if !one_time_trigered:
+#			sprite.set_frame(0)
+	triger = false
+	if !one_time_trigered:
+		sprite.set_frame(0)
+"
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 3, 55 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 3, 32 )
+
+[sub_resource type="Animation" id=4]
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 90.0, 0.0 ]
+}
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 4, 15 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 3, 19 )
+
+[sub_resource type="Animation" id=7]
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 8.71957, 0 ), Vector2( 8.71957, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 90.0 ]
+}
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 3, 31 )
+
+[sub_resource type="Animation" id=9]
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.7 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.7 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 90.0, 180.0 ]
+}
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 3, 27 )
+
+[sub_resource type="Animation" id=11]
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 90.0, 0.0 ]
+}
+
+[sub_resource type="RectangleShape2D" id=12]
+extents = Vector2( 4, 34 )
+
+[sub_resource type="RectangleShape2D" id=13]
+extents = Vector2( 11, 31 )
+
+[sub_resource type="Animation" id=14]
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 10, -33 ), Vector2( 10, 29 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0 ]
+}
+
+[node name="level_001" type="Node"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 111
+
+[node name="Game_HUD" parent="CanvasLayer" instance=ExtResource( 13 )]
+
+[node name="Shader" parent="." instance=ExtResource( 5 )]
+
+[node name="player" parent="." instance=ExtResource( 9 )]
+
+[node name="PlayerRigidBody" parent="player" index="1"]
+position = Vector2( -30, -60 )
+
+[node name="Complex_Objects" type="Node2D" parent="."]
+position = Vector2( 344.703, -478.01 )
+
+[node name="EyeSensor" parent="Complex_Objects" instance=ExtResource( 20 )]
+position = Vector2( -13.703, 381.01 )
+script = SubResource( 1 )
+one_time_trigered = true
+
+[node name="CollisionShape2D" parent="Complex_Objects/EyeSensor/Area2D" index="0"]
+position = Vector2( 0, -40 )
+shape = SubResource( 2 )
+
+[node name="MovingPlatform_one_time" parent="Complex_Objects/EyeSensor" instance=ExtResource( 21 )]
+rotation = 1.5708
+motion/sync_to_physics = true
+
+[node name="CollisionShape2D" parent="Complex_Objects/EyeSensor/MovingPlatform_one_time" index="0"]
+position = Vector2( 0, -33 )
+shape = SubResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Complex_Objects/EyeSensor/MovingPlatform_one_time"]
+anims/move = SubResource( 4 )
+
+[node name="EyeSensor2" parent="Complex_Objects" instance=ExtResource( 20 )]
+position = Vector2( -279.703, 381.01 )
+one_time_trigered = true
+
+[node name="CollisionShape2D" parent="Complex_Objects/EyeSensor2/Area2D" index="0"]
+position = Vector2( 0, -19 )
+shape = SubResource( 5 )
+
+[node name="MovingPlatform_one_time" parent="Complex_Objects/EyeSensor2" instance=ExtResource( 21 )]
+position = Vector2( 9.99957, -1.02301 )
+motion/sync_to_physics = true
+
+[node name="CollisionShape2D" parent="Complex_Objects/EyeSensor2/MovingPlatform_one_time" index="0"]
+position = Vector2( 0, -19 )
+shape = SubResource( 6 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Complex_Objects/EyeSensor2/MovingPlatform_one_time"]
+anims/move = SubResource( 7 )
+
+[node name="EyeSensor3" parent="Complex_Objects" instance=ExtResource( 20 )]
+position = Vector2( 175.297, 362.01 )
+rotation = 0.226893
+one_time_trigered = true
+
+[node name="CollisionShape2D" parent="Complex_Objects/EyeSensor3/Area2D" index="0"]
+position = Vector2( 0, 50.5581 )
+
+[node name="MovingPlatform_one_time2" parent="Complex_Objects/EyeSensor3" instance=ExtResource( 21 )]
+rotation = 1.5708
+motion/sync_to_physics = true
+
+[node name="CollisionShape2D" parent="Complex_Objects/EyeSensor3/MovingPlatform_one_time2" index="0"]
+position = Vector2( 0, -31 )
+shape = SubResource( 8 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Complex_Objects/EyeSensor3/MovingPlatform_one_time2"]
+anims/move = SubResource( 9 )
+
+[node name="EyeSensor4" parent="Complex_Objects" instance=ExtResource( 20 )]
+position = Vector2( 278.297, 373.01 )
+rotation = -0.0331613
+one_time_trigered = true
+
+[node name="Sprite" parent="Complex_Objects/EyeSensor4" index="0"]
+position = Vector2( -0.0292969, 75.0549 )
+
+[node name="CollisionShape2D" parent="Complex_Objects/EyeSensor4/Area2D" index="0"]
+position = Vector2( 0, 47 )
+
+[node name="MovingPlatform_one_time2" parent="Complex_Objects/EyeSensor4" instance=ExtResource( 21 )]
+position = Vector2( 0.445374, 77.0571 )
+rotation = 1.4748
+motion/sync_to_physics = true
+
+[node name="CollisionShape2D" parent="Complex_Objects/EyeSensor4/MovingPlatform_one_time2" index="0"]
+position = Vector2( 2.09808e-05, -27 )
+shape = SubResource( 10 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Complex_Objects/EyeSensor4/MovingPlatform_one_time2"]
+anims/move = SubResource( 11 )
+
+[node name="EyeSensor5" parent="Complex_Objects" instance=ExtResource( 20 )]
+position = Vector2( 458.297, 324.01 )
+
+[node name="Sprite" parent="Complex_Objects/EyeSensor5" index="0"]
+position = Vector2( -2, 0 )
+
+[node name="Area2D" parent="Complex_Objects/EyeSensor5" index="1"]
+position = Vector2( -2, 0 )
+
+[node name="CollisionShape2D" parent="Complex_Objects/EyeSensor5/Area2D" index="0"]
+position = Vector2( 0, -32 )
+shape = SubResource( 12 )
+
+[node name="MovingPlatform_one_time2" parent="Complex_Objects/EyeSensor5" instance=ExtResource( 21 )]
+position = Vector2( 10, -33 )
+back_and_forward = true
+
+[node name="CollisionShape2D" parent="Complex_Objects/EyeSensor5/MovingPlatform_one_time2" index="0"]
+position = Vector2( 7, 0 )
+shape = SubResource( 13 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Complex_Objects/EyeSensor5/MovingPlatform_one_time2"]
+anims/move = SubResource( 14 )
+
+[node name="CheckPoints" type="Node2D" parent="."]
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="exit_portal" parent="." instance=ExtResource( 16 )]
+position = Vector2( 755.859, -117.82 )
+rotation = 3.10349
+next_scene = ExtResource( 1 )
+next_level = 3
+
+[node name="Control" type="Node2D" parent="."]
+
+[node name="Zone_Control" type="Node2D" parent="Control"]
+script = ExtResource( 10 )
+zone_path_0 = "res://Scenes/Levels/inside_levels/level_2/zones/level_2_zone_1.tscn"
+zone_path_1 = "res://Scenes/Levels/inside_levels/level_2/zones/level_2_zone_2.tscn"
+zone_path_2 = "res://Scenes/Levels/inside_levels/level_2/zones/level_2_zone_3.tscn"
+zone_path_3 = "res://Scenes/Levels/inside_levels/level_2/zones/level_2_zone_4.tscn"
+zone_path_4 = "res://Scenes/Levels/inside_levels/level_2/zones/level_2_zone_5.tscn"
+
+[node name="VisibilityNotifiers" type="Node2D" parent="Control/Zone_Control"]
+
+[node name="0" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( -18.2401, -97.9985 )
+rect = Rect2( -10, -10, 50, 50 )
+
+[node name="1" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 101.686, -148.241 )
+rect = Rect2( -10, -10, 250, 50 )
+
+[node name="2" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 369.993, -156.73 )
+rect = Rect2( -10, -10, 100, 100 )
+
+[node name="3" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 488.426, -197.047 )
+rect = Rect2( -10, -10, 600, 200 )
+
+[node name="4" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 686.545, -78.3871 )
+rect = Rect2( -10, -10, 50, 50 )
+
+[node name="Zones" type="Node2D" parent="Control/Zone_Control"]
+
+[node name="00" parent="Control/Zone_Control/Zones" instance=ExtResource( 12 )]
+
+[node name="11" parent="Control/Zone_Control/Zones" instance=ExtResource( 19 )]
+
+[node name="22" parent="Control/Zone_Control/Zones" instance=ExtResource( 25 )]
+
+[node name="33" parent="Control/Zone_Control/Zones" instance=ExtResource( 26 )]
+
+[node name="44" parent="Control/Zone_Control/Zones" instance=ExtResource( 23 )]
+
+[node name="Object_Control" type="Node2D" parent="Control"]
+script = ExtResource( 8 )
+object_path_0 = "res://Scenes/Levels/inside_levels/level_2/objects/level_2_object_1.tscn"
+object_path_1 = "res://Scenes/Levels/inside_levels/level_2/objects/level_2_object_2.tscn"
+object_path_2 = "res://Scenes/Levels/inside_levels/level_2/objects/level_2_object_3.tscn"
+object_path_3 = "res://Scenes/Levels/inside_levels/level_2/objects/level_2_object_4.tscn"
+
+[node name="VisibilityNotifiers" type="Node2D" parent="Control/Object_Control"]
+
+[node name="0" type="VisibilityNotifier2D" parent="Control/Object_Control/VisibilityNotifiers"]
+position = Vector2( -24.3211, -55.5061 )
+rect = Rect2( -10, -10, 10, 15 )
+script = ExtResource( 11 )
+
+[node name="1" type="VisibilityNotifier2D" parent="Control/Object_Control/VisibilityNotifiers"]
+position = Vector2( -1.40667, -51.9323 )
+rect = Rect2( -10, -10, 15, 15 )
+script = ExtResource( 11 )
+
+[node name="2" type="VisibilityNotifier2D" parent="Control/Object_Control/VisibilityNotifiers"]
+position = Vector2( 2.89688, -61.9233 )
+rect = Rect2( -10, -10, 5, 5 )
+script = ExtResource( 11 )
+
+[node name="3" type="VisibilityNotifier2D" parent="Control/Object_Control/VisibilityNotifiers"]
+position = Vector2( 17.7009, -57.1986 )
+rect = Rect2( -10, -10, 10, 15 )
+script = ExtResource( 11 )
+
+[node name="Objects" type="Node2D" parent="Control/Object_Control"]
+
+[node name="00" parent="Control/Object_Control/Objects" instance=ExtResource( 18 )]
+
+[node name="11" parent="Control/Object_Control/Objects" instance=ExtResource( 15 )]
+
+[node name="22" parent="Control/Object_Control/Objects" instance=ExtResource( 14 )]
+
+[node name="33" parent="Control/Object_Control/Objects" instance=ExtResource( 17 )]
+
+[editable path="player"]
+
+[editable path="Complex_Objects/EyeSensor"]
+
+[editable path="Complex_Objects/EyeSensor/MovingPlatform_one_time"]
+
+[editable path="Complex_Objects/EyeSensor2"]
+
+[editable path="Complex_Objects/EyeSensor2/MovingPlatform_one_time"]
+
+[editable path="Complex_Objects/EyeSensor3"]
+
+[editable path="Complex_Objects/EyeSensor3/MovingPlatform_one_time2"]
+
+[editable path="Complex_Objects/EyeSensor4"]
+
+[editable path="Complex_Objects/EyeSensor4/MovingPlatform_one_time2"]
+
+[editable path="Complex_Objects/EyeSensor5"]
+
+[editable path="Complex_Objects/EyeSensor5/MovingPlatform_one_time2"]

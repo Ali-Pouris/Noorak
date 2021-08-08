@@ -1,0 +1,636 @@
+[gd_scene load_steps=28 format=2]
+
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Circle.gd" type="Script" id=1]
+[ext_resource path="res://scripts/Ground/BG_polygons.gd" type="Script" id=2]
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Poly.gd" type="Script" id=3]
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Rectangle.gd" type="Script" id=4]
+[ext_resource path="res://Scenes/Interface_scenes/Shader.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/enemys/Spikes.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/Interactive_Objects/PhysicBTN2D.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/global/CheckPoint.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/player.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scenes/Objects/Box_1.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Scenes/Interactive_Objects/Glass.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Scenes/enemys/Lezer.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/Interface_scenes/Game_HUD.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Scenes/Objects/Box_2.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scenes/enemys/DashSpik.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Scenes/exit_portal.tscn" type="PackedScene" id=16]
+[ext_resource path="res://Scenes/global/in_portal.tscn" type="PackedScene" id=17]
+[ext_resource path="res://scripts/Ground/BG_polygons_levels.gd" type="Script" id=18]
+[ext_resource path="res://scripts/zone_system/Object_Control.gd" type="Script" id=19]
+[ext_resource path="res://scripts/zone_system/Zone_Control.gd" type="Script" id=20]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_14/zones/level_14_zone_wall.tscn" type="PackedScene" id=21]
+[ext_resource path="res://scripts/zone_system/VisibilityObject.gd" type="Script" id=22]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_14/LezerOnRoop.tscn" type="PackedScene" id=23]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 53.1885, 10 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 18.7533, 10 )
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends CollisionPolygon2D
+
+onready var parent = get_parent()
+
+export var shard_poly_colors = Color(1,1,1,0.5)
+export var is_complex = false
+
+var tween = Tween.new()
+var poly_color = Polygon2D.new()
+var is_added : bool = false
+
+onready var line_points: Array
+
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	randomize()
+	poly_color.polygon = polygon
+	poly_color.color = shard_poly_colors
+	poly_color.color.a = 0.7
+	add_child(poly_color)
+	
+	var poly_line = get_polygon()
+
+	for i in range(0 , poly_line.size()):
+		#draw_line(poly_line[i-1] , poly_line[i], OutLine , Width)
+		line_points.append(poly_line[i])
+	line_points.append(poly_line[0])
+	line_points.append(poly_line[1])
+
+
+func _draw():
+	draw_polyline(line_points,Color(1,1,1,0.7),1)
+
+
+func explode():
+	var points = polygon
+	var delaunay_points_one = Geometry.triangulate_polygon(points)
+	
+	if not delaunay_points_one:
+		print(\"serious error occurred no delaunay points found\")
+	#find the midlle point of each triangle and add it to points
+	for index in len(delaunay_points_one) / 3:
+		var shard_pool_one = PoolVector2Array()
+		var Ox = 0
+		var Oy = 0
+		for n in range(3):
+			shard_pool_one.append(points[delaunay_points_one[(index * 3) + n]])
+			Ox += shard_pool_one[n].x
+			Oy += shard_pool_one[n].y
+		points.append(Vector2(Ox / 3, Oy / 3))
+	
+	var delaunay_points_two = Geometry.triangulate_delaunay_2d(points)
+	
+	if is_complex:
+		delaunay_points_two = delaunay_points_one
+	
+	for index in len(delaunay_points_two) / 3:
+		var shard_pool = PoolVector2Array()
+		
+		# loop over the three points in our triangle
+		for n in range(3):
+			shard_pool.append(points[delaunay_points_two[(index * 3) + n]])
+		
+		var shard_polygon = Polygon2D.new()
+		var shard_collision_polygon = CollisionPolygon2D.new()
+		var shard_rigidbody = RigidBody2D.new()
+
+		
+		shard_polygon.polygon = shard_pool
+		shard_collision_polygon.polygon = shard_pool
+		shard_rigidbody.applied_torque = round(rand_range(-1,1))
+		shard_rigidbody.mass = 0.4
+		shard_rigidbody.gravity_scale = 0.2
+		shard_rigidbody.set_collision_layer_bit(0,false)
+		shard_rigidbody.set_collision_mask_bit(0,false)
+		shard_rigidbody.set_collision_layer_bit(2,true)
+		shard_rigidbody.set_collision_mask_bit(2,true)
+		shard_rigidbody.add_child(shard_polygon)
+		shard_rigidbody.add_child(shard_collision_polygon)
+		
+		shard_polygon.color = shard_poly_colors
+		
+#		add_child(shard_rigidbody)
+#		shard_polygon.add_child(tween)
+		call_deferred(\"add_child\", shard_rigidbody)
+		if is_added == false:
+			call_deferred(\"add_child\", tween)
+			is_added = true
+		
+		tween.interpolate_property(self, \"modulate\", Color(1,1,1,1), Color(1,1,1,0), 0.5, tween.TRANS_LINEAR, tween.EASE_OUT_IN)
+		shard_rigidbody.apply_central_impulse(Vector2(5,0).rotated(deg2rad(rand_range(0,360))))
+	
+	yield(get_tree().create_timer(1), \"timeout\")
+	tween.start()
+	yield(get_tree().create_timer(0.5), \"timeout\")
+	for ch in get_children():
+		ch.queue_free()
+
+func destroy_the_glass():
+	for n in range(20):
+		parent.set_collision_layer_bit(n, false)
+		parent.set_collision_mask_bit(n, false)
+	poly_color.hide()
+	
+	#Deleting the pinjoint conected to the glass before deleting the glass itself
+	var twodots = \"../\"
+	for child in get_parent().get_parent().get_children():
+		if child.is_in_group(\"GlassPinJoint\"):
+			if child.get_node_a() == twodots + get_parent().name or child.get_node_b() == twodots + get_parent().name:
+				child.queue_free()
+	
+	explode()
+	yield(get_tree().create_timer(5), \"timeout\")
+	parent.queue_free()
+
+
+func _on_RigidBody2D2_body_entered(body):
+#	print(body.get_collision_layer_bit(9))
+#	print(body.get_linear_velocity().length())
+#	print(body.name)
+	if parent.get_linear_velocity().length() > 40:
+		destroy_the_glass()
+	elif body.get_collision_layer_bit(9) == true && body.get_collision_mask_bit(9) == true:
+		destroy_the_glass()
+	elif body.get_collision_layer_bit(9) == true && body.get_linear_velocity().length() > 80:
+		destroy_the_glass()
+	elif body.get_collision_mask_bit(9) == true:
+		destroy_the_glass()
+"
+
+[sub_resource type="GDScript" id=4]
+script/source = "extends CollisionPolygon2D
+
+onready var parent = get_parent()
+
+export var shard_poly_colors = Color(1,1,1,0.5)
+export var is_complex = false
+
+var tween = Tween.new()
+var poly_color = Polygon2D.new()
+var is_added : bool = false
+
+onready var line_points: Array
+
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	randomize()
+	poly_color.polygon = polygon
+	poly_color.color = shard_poly_colors
+	poly_color.color.a = 0.7
+	add_child(poly_color)
+	
+	var poly_line = get_polygon()
+
+	for i in range(0 , poly_line.size()):
+		#draw_line(poly_line[i-1] , poly_line[i], OutLine , Width)
+		line_points.append(poly_line[i])
+	line_points.append(poly_line[0])
+	line_points.append(poly_line[1])
+
+
+func _draw():
+	draw_polyline(line_points,Color(1,1,1,0.7),1)
+
+
+func explode():
+	var points = polygon
+	var delaunay_points_one = Geometry.triangulate_polygon(points)
+	
+	if not delaunay_points_one:
+		print(\"serious error occurred no delaunay points found\")
+	#find the midlle point of each triangle and add it to points
+	for index in len(delaunay_points_one) / 3:
+		var shard_pool_one = PoolVector2Array()
+		var Ox = 0
+		var Oy = 0
+		for n in range(3):
+			shard_pool_one.append(points[delaunay_points_one[(index * 3) + n]])
+			Ox += shard_pool_one[n].x
+			Oy += shard_pool_one[n].y
+		points.append(Vector2(Ox / 3, Oy / 3))
+	
+	var delaunay_points_two = Geometry.triangulate_delaunay_2d(points)
+	
+	if is_complex:
+		delaunay_points_two = delaunay_points_one
+	
+	for index in len(delaunay_points_two) / 3:
+		var shard_pool = PoolVector2Array()
+		
+		# loop over the three points in our triangle
+		for n in range(3):
+			shard_pool.append(points[delaunay_points_two[(index * 3) + n]])
+		
+		var shard_polygon = Polygon2D.new()
+		var shard_collision_polygon = CollisionPolygon2D.new()
+		var shard_rigidbody = RigidBody2D.new()
+
+		
+		shard_polygon.polygon = shard_pool
+		shard_collision_polygon.polygon = shard_pool
+		shard_rigidbody.applied_torque = round(rand_range(-1,1))
+		shard_rigidbody.mass = 0.4
+		shard_rigidbody.gravity_scale = 0.2
+		shard_rigidbody.set_collision_layer_bit(0,false)
+		shard_rigidbody.set_collision_mask_bit(0,false)
+		shard_rigidbody.set_collision_layer_bit(2,true)
+		shard_rigidbody.set_collision_mask_bit(2,true)
+		shard_rigidbody.add_child(shard_polygon)
+		shard_rigidbody.add_child(shard_collision_polygon)
+		
+		shard_polygon.color = shard_poly_colors
+		
+#		add_child(shard_rigidbody)
+#		shard_polygon.add_child(tween)
+		call_deferred(\"add_child\", shard_rigidbody)
+		if is_added == false:
+			call_deferred(\"add_child\", tween)
+			is_added = true
+		
+		tween.interpolate_property(self, \"modulate\", Color(1,1,1,1), Color(1,1,1,0), 0.5, tween.TRANS_LINEAR, tween.EASE_OUT_IN)
+		shard_rigidbody.apply_central_impulse(Vector2(5,0).rotated(deg2rad(rand_range(0,360))))
+	
+	yield(get_tree().create_timer(1), \"timeout\")
+	tween.start()
+	yield(get_tree().create_timer(0.5), \"timeout\")
+	for ch in get_children():
+		ch.queue_free()
+
+func destroy_the_glass():
+	for n in range(20):
+		parent.set_collision_layer_bit(n, false)
+		parent.set_collision_mask_bit(n, false)
+	poly_color.hide()
+	
+	#Deleting the pinjoint conected to the glass before deleting the glass itself
+	var twodots = \"../\"
+	for child in get_parent().get_parent().get_children():
+		if child.is_in_group(\"GlassPinJoint\"):
+			if child.get_node_a() == twodots + get_parent().name or child.get_node_b() == twodots + get_parent().name:
+				child.queue_free()
+	
+	explode()
+	yield(get_tree().create_timer(5), \"timeout\")
+	parent.queue_free()
+
+
+func _on_RigidBody2D2_body_entered(body):
+#	print(body.get_collision_layer_bit(9))
+#	print(body.get_linear_velocity().length())
+#	print(body.name)
+	if parent.get_linear_velocity().length() > 40:
+		destroy_the_glass()
+	elif body.get_collision_layer_bit(9) == true && body.get_collision_mask_bit(9) == true:
+		destroy_the_glass()
+	elif body.get_collision_layer_bit(9) == true && body.get_linear_velocity().length() > 80:
+		destroy_the_glass()
+	elif body.get_collision_mask_bit(9) == true:
+		destroy_the_glass()
+"
+
+[node name="level_001" type="Node"]
+
+[node name="BG_polygons" type="Node2D" parent="."]
+z_index = -10
+script = ExtResource( 18 )
+
+[node name="blank" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_back",
+]]
+color = Color( 0.254902, 0.254902, 0.254902, 1 )
+polygon = PoolVector2Array( -575.778, 106.193, -439.778, 98.1933, -435.778, 158.193, -587.778, 150.193 )
+
+[node name="light" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( -455.032, 111.866, -455.032, 144.829, -484.998, 143.33, -482.001, 110.368 )
+
+[node name="dark" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( -501.479, 119.358, -508.971, 144.829, -568.154, 141.083, -566.656, 115.612 )
+
+[node name="noor" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_light",
+]]
+color = Color( 1, 1, 1, 0.117647 )
+polygon = PoolVector2Array( -548.722, 177.196, -543.371, 150.439, -470.234, 154.007, -467.856, 177.791 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 111
+
+[node name="Game_HUD" parent="CanvasLayer" instance=ExtResource( 13 )]
+
+[node name="Shader" parent="." instance=ExtResource( 5 )]
+
+[node name="player" parent="." instance=ExtResource( 9 )]
+
+[node name="PlayerRigidBody" parent="player" index="1"]
+position = Vector2( 800.05, -637.52 )
+
+[node name="Ground" type="Node2D" parent="."]
+
+[node name="StaticBodyRect" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 64
+script = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 868.211, -287.346 )
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 929.94, -330.53 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 1039.38, -18.7904 )
+rotation = 0.801108
+shape = SubResource( 2 )
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 1097.24, 10.9291 )
+rotation = 0.197994
+shape = SubResource( 2 )
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 1229.76, -13.225 )
+rotation = -0.552318
+shape = SubResource( 2 )
+
+[node name="StaticBodyCircle" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 68
+script = ExtResource( 1 )
+
+[node name="StaticBodypoly" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 68
+script = ExtResource( 3 )
+
+[node name="FG_polygons" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="black" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( -539.778, 40.1933, -453.778, 38.1933, -453.778, 86.1933, -549.778, 92.1933 )
+
+[node name="Objects" type="Node2D" parent="."]
+
+[node name="BOXS" type="Node2D" parent="Objects"]
+
+[node name="BigBox_1" parent="Objects/BOXS" instance=ExtResource( 10 )]
+position = Vector2( -363.979, -155.228 )
+
+[node name="SmallBox_1" parent="Objects/BOXS" instance=ExtResource( 14 )]
+position = Vector2( -364.801, -171.263 )
+
+[node name="Glasses" type="Node2D" parent="Objects"]
+
+[node name="static" type="Node2D" parent="Objects/Glasses"]
+
+[node name="Glass1" parent="Objects/Glasses/static" instance=ExtResource( 11 )]
+position = Vector2( -489.413, -219.641 )
+
+[node name="CollisionPolygon2D" parent="Objects/Glasses/static/Glass1" index="0"]
+polygon = PoolVector2Array( -35.1419, 0.427876, -17.2879, -2.90195, 14.8243, -8.89096, 34.1766, -12.5002, 33.5453, -9.86945, 16.027, -6.59912, -16.6042, -0.507484, -34.9078, 2.90945 )
+script = SubResource( 3 )
+shard_poly_colors = Color( 1, 1, 1, 0.5 )
+
+[node name="rigid" type="Node2D" parent="Objects/Glasses"]
+
+[node name="Glass1" parent="Objects/Glasses/rigid" instance=ExtResource( 11 )]
+position = Vector2( -511.584, -193.536 )
+collision_layer = 524874
+collision_mask = 524810
+mode = 0
+
+[node name="CollisionPolygon2D" parent="Objects/Glasses/rigid/Glass1" index="0"]
+position = Vector2( -0.285736, 3.36252 )
+polygon = PoolVector2Array( -4, -16, 4, -16, 4, 8, -4, 8 )
+script = SubResource( 4 )
+shard_poly_colors = Color( 1, 1, 1, 0.5 )
+
+[node name="enemies" type="Node2D" parent="."]
+
+[node name="dash_enemies" type="Node2D" parent="enemies"]
+
+[node name="Pow_enemy" parent="enemies/dash_enemies" instance=ExtResource( 15 )]
+position = Vector2( -550.303, -48.6362 )
+
+[node name="spikes" type="Node2D" parent="enemies"]
+
+[node name="Spikes" parent="enemies/spikes" instance=ExtResource( 6 )]
+position = Vector2( -498.281, -10.294 )
+Width = 6
+
+[node name="lezer" type="Node2D" parent="enemies"]
+
+[node name="LezerRay" parent="enemies/lezer" instance=ExtResource( 12 )]
+position = Vector2( 590.128, -424.476 )
+rotation = 1.5708
+cast_to = Vector2( 120, 0 )
+
+[node name="Complex_Objects" type="Node2D" parent="."]
+
+[node name="LezerOnRoop" parent="Complex_Objects" instance=ExtResource( 23 )]
+position = Vector2( 1135.97, -240.679 )
+
+[node name="btn_and_door" type="Node2D" parent="Complex_Objects"]
+position = Vector2( -634.838, 30.6636 )
+
+[node name="PhysicBTN2D2" parent="Complex_Objects/btn_and_door" instance=ExtResource( 7 )]
+
+[node name="CheckPoints" type="Node2D" parent="."]
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="CheckPoint" parent="CheckPoints" instance=ExtResource( 8 )]
+position = Vector2( -458.205, -388.333 )
+
+[node name="exit_portal" parent="." instance=ExtResource( 16 )]
+position = Vector2( -366.422, -303.145 )
+rotation = -0.306714
+
+[node name="in_portal" parent="." instance=ExtResource( 17 )]
+position = Vector2( -365.102, -269.858 )
+
+[node name="Control" type="Node2D" parent="."]
+
+[node name="Zone_Control" type="Node2D" parent="Control"]
+script = ExtResource( 20 )
+zone_path_0 = "res://Scenes/Levels/inside_levels/level_14/zones/level_14_zone_wall.tscn"
+store_rotation = true
+
+[node name="VisibilityNotifiers" type="Node2D" parent="Control/Zone_Control"]
+
+[node name="0" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 799.315, -728.246 )
+rect = Rect2( -150, -10, 300, 20 )
+
+[node name="1" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 691.748, -586.28 )
+rotation = 1.2987
+rect = Rect2( -150, -10, 300, 20 )
+
+[node name="2" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 907.505, -584.782 )
+rotation = 1.85726
+rect = Rect2( -150, -10, 300, 20 )
+
+[node name="3" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 591.698, -434.484 )
+rect = Rect2( -150, -10, 300, 20 )
+
+[node name="4" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 451.196, -301.455 )
+rotation = 1.5708
+rect = Rect2( -150, -10, 300, 20 )
+
+[node name="5" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 591.223, -297.668 )
+rect = Rect2( -150, -10, 300, 20 )
+
+[node name="6" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 821.771, -279.991 )
+rect = Rect2( -150, -10, 300, 20 )
+
+[node name="7" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 1005.53, -433.721 )
+rect = Rect2( -150, -10, 300, 20 )
+
+[node name="8" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 973.132, -189.403 )
+rotation = 1.5708
+rect = Rect2( -150, -10, 300, 20 )
+
+[node name="9" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 1070.68, -391.218 )
+rotation = 1.5708
+rect = Rect2( -150, -10, 300, 20 )
+
+[node name="10" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 1241.03, -164.581 )
+rotation = 1.5708
+rect = Rect2( -150, -10, 300, 20 )
+
+[node name="11" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 1348.67, -24.9921 )
+rotation = 1.5708
+rect = Rect2( -150, -10, 300, 20 )
+
+[node name="12" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 1205.71, 112.915 )
+rect = Rect2( -150, -10, 300, 20 )
+
+[node name="13" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 936.075, 112.915 )
+rect = Rect2( -150, -10, 300, 20 )
+
+[node name="14" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 973.132, 106.868 )
+rotation = 1.5708
+rect = Rect2( -150, -10, 300, 20 )
+
+[node name="15" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 1210.81, -251.217 )
+rect = Rect2( -150, -10, 300, 20 )
+
+[node name="16" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 1391.83, -142.322 )
+rect = Rect2( -150, -10, 300, 20 )
+
+[node name="Zones" type="Node2D" parent="Control/Zone_Control"]
+
+[node name="00" parent="Control/Zone_Control/Zones" instance=ExtResource( 21 )]
+position = Vector2( 799.315, -728.246 )
+
+[node name="10" parent="Control/Zone_Control/Zones" instance=ExtResource( 21 )]
+position = Vector2( 691.748, -586.28 )
+rotation = 1.2987
+
+[node name="20" parent="Control/Zone_Control/Zones" instance=ExtResource( 21 )]
+position = Vector2( 907.505, -584.782 )
+rotation = 1.85726
+
+[node name="30" parent="Control/Zone_Control/Zones" instance=ExtResource( 21 )]
+position = Vector2( 591.698, -434.484 )
+
+[node name="40" parent="Control/Zone_Control/Zones" instance=ExtResource( 21 )]
+position = Vector2( 451.196, -301.455 )
+rotation = 1.5708
+
+[node name="50" parent="Control/Zone_Control/Zones" instance=ExtResource( 21 )]
+position = Vector2( 591.223, -297.668 )
+
+[node name="60" parent="Control/Zone_Control/Zones" instance=ExtResource( 21 )]
+position = Vector2( 821.771, -279.991 )
+
+[node name="70" parent="Control/Zone_Control/Zones" instance=ExtResource( 21 )]
+position = Vector2( 1005.53, -433.721 )
+
+[node name="80" parent="Control/Zone_Control/Zones" instance=ExtResource( 21 )]
+position = Vector2( 973.132, -189.403 )
+rotation = 1.5708
+
+[node name="90" parent="Control/Zone_Control/Zones" instance=ExtResource( 21 )]
+position = Vector2( 1070.68, -391.218 )
+rotation = 1.5708
+
+[node name="a0" parent="Control/Zone_Control/Zones" instance=ExtResource( 21 )]
+position = Vector2( 1241.03, -164.581 )
+rotation = 1.5708
+
+[node name="b0" parent="Control/Zone_Control/Zones" instance=ExtResource( 21 )]
+position = Vector2( 1348.67, -24.9921 )
+rotation = 1.5708
+
+[node name="c0" parent="Control/Zone_Control/Zones" instance=ExtResource( 21 )]
+position = Vector2( 1205.71, 112.915 )
+
+[node name="d0" parent="Control/Zone_Control/Zones" instance=ExtResource( 21 )]
+position = Vector2( 936.075, 112.915 )
+
+[node name="e0" parent="Control/Zone_Control/Zones" instance=ExtResource( 21 )]
+position = Vector2( 973.132, 106.868 )
+rotation = 1.5708
+
+[node name="f0" parent="Control/Zone_Control/Zones" instance=ExtResource( 21 )]
+position = Vector2( 1210.81, -251.217 )
+
+[node name="g0" parent="Control/Zone_Control/Zones" instance=ExtResource( 21 )]
+position = Vector2( 1391.83, -142.322 )
+
+[node name="Object_Control" type="Node2D" parent="Control"]
+script = ExtResource( 19 )
+object_path_0 = "res://Scenes/enemys/DashSpik.tscn"
+
+[node name="VisibilityNotifiers" type="Node2D" parent="Control/Object_Control"]
+
+[node name="0" type="VisibilityNotifier2D" parent="Control/Object_Control/VisibilityNotifiers"]
+position = Vector2( 589.475, -355.947 )
+rect = Rect2( -7, -7, 15, 15 )
+script = ExtResource( 22 )
+
+[node name="Objects" type="Node2D" parent="Control/Object_Control"]
+
+[node name="00" parent="Control/Object_Control/Objects" instance=ExtResource( 15 )]
+position = Vector2( 590.006, -355.416 )
+
+[editable path="player"]
+
+[editable path="Objects/Glasses/static/Glass1"]
+
+[editable path="Objects/Glasses/rigid/Glass1"]

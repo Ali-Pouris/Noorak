@@ -1,0 +1,324 @@
+[gd_scene load_steps=29 format=2]
+
+[ext_resource path="res://Scenes/Levels/inside_levels/level_5/zones/level_5_zone_4.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/Ground/BG_polygons.gd" type="Script" id=2]
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Poly.gd" type="Script" id=3]
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Rectangle.gd" type="Script" id=4]
+[ext_resource path="res://Scenes/Interface_scenes/Shader.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/enemys/Spikes.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_5/BG_polygons.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/Levels/level_6.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/player.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_5/zones/level_5_zone_2.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_5/zones/level_5_zone_3.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_5/zones/level_5_zone_6.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/Interface_scenes/Game_HUD.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scripts/zone_system/Zone_Control.gd" type="Script" id=14]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_5/zones/level_5_zone_1.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Scenes/exit_portal.tscn" type="PackedScene" id=16]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_5/zones/level_5_zone_7.tscn" type="PackedScene" id=17]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_5/zones/level_5_zone_5.tscn" type="PackedScene" id=18]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 96, 8 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 161.103, 8 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 258.479, 8 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 119.398, 8 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 139.159, 8 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 63, 1 )
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 4, 100 )
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 4, 99.9999 )
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 4, 35.6604 )
+
+[sub_resource type="Animation" id=11]
+resource_name = "rotate"
+length = 5.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 360.0, 0.0 ]
+}
+
+[node name="level_001" type="Node"]
+
+[node name="BG_polygons" parent="." instance=ExtResource( 7 )]
+visible = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 111
+
+[node name="Game_HUD" parent="CanvasLayer" instance=ExtResource( 13 )]
+
+[node name="Shader" parent="." instance=ExtResource( 5 )]
+
+[node name="player" parent="." instance=ExtResource( 9 )]
+
+[node name="PlayerRigidBody" parent="player" index="1"]
+position = Vector2( 355.315, -167.762 )
+
+[node name="Ground" type="Node2D" parent="."]
+
+[node name="StaticBodyRect" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 64
+script = ExtResource( 4 )
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 303.558, -94.9137 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D12" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 706.596, -8.23372 )
+shape = SubResource( 2 )
+
+[node name="CollisionShape2D13" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 633.521, 100.395 )
+shape = SubResource( 3 )
+
+[node name="CollisionShape2D10" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 434.679, 11.4905 )
+rotation = 1.20595
+shape = SubResource( 4 )
+
+[node name="CollisionShape2D11" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 503.338, -133.089 )
+rotation = 1.20595
+shape = SubResource( 5 )
+
+[node name="CollisionShape2D15" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 504.526, 64.2088 )
+rotation = 0.54068
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D14" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 844.596, 45.3553 )
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[node name="StaticBodypoly" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 68
+script = ExtResource( 3 )
+
+[node name="FG_polygons" type="Node2D" parent="."]
+visible = false
+script = ExtResource( 2 )
+
+[node name="black" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 297.913, -170.64, 303.026, -180.303, 297.994, -188.778, 305.145, -198.049, 302.894, -206.922, 301.57, -204.273, 303.026, -199.108, 294.286, -189.308, 297.994, -181.494, 292.605, -175.799 )
+
+[node name="black2" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 307.5, -162.25, 307.25, -154.75, 301.25, -150, 299.887, -146.505, 310, -152.5, 314.75, -165.5 )
+
+[node name="black3" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 283.193, -188.147, 272.292, -192.32, 273.927, -200.794, 269.764, -209.713, 271.25, -212, 276.305, -201.834, 276.305, -195.145, 283.44, -192.32 )
+
+[node name="black4" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 279.664, -102.867, 252.938, -207.008, 308, -261, 461, -254, 516, -375, 141, -373, 120, -8, 427, -13, 393, -94 )
+
+[node name="black5" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 450, -263, 551, -7, 849, -8, 821, -318, 481, -398 )
+
+[node name="black6" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 418, -27.3646, 443.427, 27.7275, 567, 103, 846, 99, 843.374, -27.3646, 826, -84, 998, -84, 998, 227, 305, 233, 238, -38 )
+
+[node name="black7" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 382.216, -251.673, 378.347, -248.2, 441.645, -248.101, 442.438, -251.474 )
+
+[node name="black8" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 649.281, -2.2122, 642.527, 2.29051, 699.606, 2.68781, 695.898, -2.34464 )
+
+[node name="Objects" type="Node2D" parent="."]
+
+[node name="BOXS" type="Node2D" parent="Objects"]
+
+[node name="Glasses" type="Node2D" parent="Objects"]
+
+[node name="static" type="Node2D" parent="Objects/Glasses"]
+
+[node name="rigid" type="Node2D" parent="Objects/Glasses"]
+
+[node name="enemies" type="Node2D" parent="."]
+
+[node name="dash_enemies" type="Node2D" parent="enemies"]
+
+[node name="spikes" type="Node2D" parent="enemies"]
+
+[node name="Spikes2" parent="enemies/spikes" instance=ExtResource( 6 )]
+position = Vector2( 508.651, 55.4187 )
+rotation = 0.541052
+Width = 35
+
+[node name="Spikes" parent="enemies/spikes" instance=ExtResource( 6 )]
+position = Vector2( 425.163, -39.9942 )
+rotation = 1.20602
+Width = 32
+
+[node name="Sprite" parent="enemies/spikes/Spikes" index="0"]
+region_rect = Rect2( 0, 0, 128, 4 )
+
+[node name="CollisionShape2D" parent="enemies/spikes/Spikes" index="1"]
+shape = SubResource( 7 )
+
+[node name="lezer" type="Node2D" parent="enemies"]
+
+[node name="Complex_Objects" type="Node2D" parent="."]
+
+[node name="fan" type="KinematicBody2D" parent="Complex_Objects"]
+position = Vector2( 516, -100 )
+rotation = 6.28319
+collision_layer = 3
+collision_mask = 3
+motion/sync_to_physics = true
+
+[node name="Polygon2D2" type="Polygon2D" parent="Complex_Objects/fan"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( -89.4709, -0.197845, -62.1204, -62.6569, 0.99176, -89.6578, -0.663635, -97.8687, -68.3076, -68.9348, -98.5307, 0.244141 )
+
+[node name="Polygon2D3" type="Polygon2D" parent="Complex_Objects/fan"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( -0.732666, 89.8884, 62.4156, 62.184, 88.5625, 2.45414, 97.3044, 2.62114, 68.666, 68.3847, -0.555664, 98.7962 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Complex_Objects/fan"]
+shape = SubResource( 8 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Complex_Objects/fan"]
+rotation = 1.5708
+shape = SubResource( 9 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Complex_Objects/fan"]
+rotation = -0.785398
+shape = SubResource( 9 )
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Complex_Objects/fan"]
+position = Vector2( -80.0001, -31.9996 )
+rotation = 0.412788
+shape = SubResource( 10 )
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="Complex_Objects/fan"]
+position = Vector2( -32.0003, -79.9998 )
+rotation = 1.16733
+shape = SubResource( 10 )
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="Complex_Objects/fan"]
+position = Vector2( 80.0002, 31.9996 )
+rotation = 0.411982
+shape = SubResource( 10 )
+
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="Complex_Objects/fan"]
+position = Vector2( 32.0005, 79.9999 )
+rotation = 1.15769
+shape = SubResource( 10 )
+
+[node name="Polygon2D" type="Polygon2D" parent="Complex_Objects/fan"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( -4.00049, -100, 3.99951, -100, 4, -4, 99.9999, -4.00043, 99.9999, 3.99957, 9.57104, 3.96021, 73.5298, 67.9065, 67.9111, 73.5251, 4, 9.61709, 4.00037, 100, -3.99963, 100, -4, 4, -100, 4.00046, -100, -3.99954, -9.61719, -3.99995, -73.4972, -67.8495, -67.8929, -73.4538, -4.00012, -9.59387 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Complex_Objects/fan"]
+autoplay = "rotate"
+anims/rotate = SubResource( 11 )
+
+[node name="CheckPoints" type="Node2D" parent="."]
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="exit_portal" parent="." instance=ExtResource( 16 )]
+position = Vector2( 828.545, 8.11715 )
+rotation = -0.785398
+next_scene = ExtResource( 8 )
+next_level = 6
+
+[node name="Control" type="Node2D" parent="."]
+
+[node name="Zone_Control" type="Node2D" parent="Control"]
+script = ExtResource( 14 )
+zone_path_0 = "res://Scenes/Levels/inside_levels/level_5/zones/level_5_zone_1.tscn"
+zone_path_1 = "res://Scenes/Levels/inside_levels/level_5/zones/level_5_zone_2.tscn"
+zone_path_2 = "res://Scenes/Levels/inside_levels/level_5/zones/level_5_zone_3.tscn"
+zone_path_3 = "res://Scenes/Levels/inside_levels/level_5/zones/level_5_zone_4.tscn"
+zone_path_4 = "res://Scenes/Levels/inside_levels/level_5/zones/level_5_zone_5.tscn"
+zone_path_5 = "res://Scenes/Levels/inside_levels/level_5/zones/level_5_zone_6.tscn"
+zone_path_6 = "res://Scenes/Levels/inside_levels/level_5/zones/level_5_zone_7.tscn"
+
+[node name="VisibilityNotifiers" type="Node2D" parent="Control/Zone_Control"]
+
+[node name="0" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 336.509, -180.753 )
+rect = Rect2( -10, -10, 50, 50 )
+
+[node name="1" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 345.418, -207.479 )
+rect = Rect2( -10, -10, 40, 50 )
+
+[node name="2" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 343.949, -259.113 )
+rect = Rect2( -10, -10, 100, 20 )
+
+[node name="3" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 507.025, -110.286 )
+rect = Rect2( -10, -10, 40, 40 )
+
+[node name="4" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 566.568, 2.4301 )
+rect = Rect2( -10, -10, 40, 100 )
+
+[node name="5" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 661.939, 35.8125 )
+rect = Rect2( -10, -10, 40, 40 )
+
+[node name="6" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 758.335, 34.753 )
+rect = Rect2( -10, -10, 40, 40 )
+
+[node name="Zones" type="Node2D" parent="Control/Zone_Control"]
+
+[node name="00" parent="Control/Zone_Control/Zones" instance=ExtResource( 15 )]
+
+[node name="11" parent="Control/Zone_Control/Zones" instance=ExtResource( 10 )]
+
+[node name="22" parent="Control/Zone_Control/Zones" instance=ExtResource( 11 )]
+
+[node name="33" parent="Control/Zone_Control/Zones" instance=ExtResource( 1 )]
+
+[node name="44" parent="Control/Zone_Control/Zones" instance=ExtResource( 18 )]
+
+[node name="55" parent="Control/Zone_Control/Zones" instance=ExtResource( 12 )]
+
+[node name="66" parent="Control/Zone_Control/Zones" instance=ExtResource( 17 )]
+
+[editable path="player"]
+
+[editable path="enemies/spikes/Spikes"]

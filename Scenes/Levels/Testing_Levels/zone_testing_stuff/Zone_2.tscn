@@ -1,0 +1,108 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Rectangle.gd" type="Script" id=1]
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Poly.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Objects/Box_2.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scripts/Ground/BG_polygons_levels.gd" type="Script" id=4]
+[ext_resource path="res://scripts/Ground/BG_polygons.gd" type="Script" id=5]
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Circle.gd" type="Script" id=6]
+[ext_resource path="res://Scenes/enemys/DashSpik.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/Objects/Box_1.tscn" type="PackedScene" id=13]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 156.662, 10 )
+
+[sub_resource type="PhysicsMaterial" id=2]
+friction = 0.0
+
+[node name="Zone" type="Node2D"]
+
+[node name="BG_polygons" type="Node2D" parent="."]
+z_index = -10
+script = ExtResource( 4 )
+
+[node name="blank" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_back",
+]]
+color = Color( 0.254902, 0.254902, 0.254902, 1 )
+polygon = PoolVector2Array( 7.34824, -63.1274, -2.55125, -283.745, 281.706, -327.585, 564.548, -244.147, 590.004, -27.7721, 315.647, -106.968 )
+
+[node name="light" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 28.5615, -286.573, 100.686, -211.62, 150.184, -306.372, 242.108, -197.478, 267.564, -323.343, 352.416, -194.649, 486.767, -265.36, 278.665, -333.649, 48.4053, -292.937 )
+
+[node name="dark2" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 61.0863, -290.267, 140.509, -251.557, 183.224, -286.263, 276.663, -246.885, 324.717, -281.591, 330.724, -316.296, 179.887, -312.959 )
+
+[node name="noor" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_light",
+]]
+color = Color( 1, 1, 1, 0.117647 )
+polygon = PoolVector2Array( 358.745, -99.5014, 370.072, -301.491, 280.404, -329.807, 129.384, -303.378, 272.853, -105.165 )
+
+[node name="Ground" type="Node2D" parent="."]
+
+[node name="StaticBodyRect" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 64
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 446.248, -71.9397 )
+rotation = 0.276884
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 420.248, -286.94 )
+rotation = 0.276884
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 140.412, -306.157 )
+rotation = -0.145035
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 153.866, -85.8417 )
+rotation = -0.145035
+shape = SubResource( 1 )
+
+[node name="StaticBodyCircle" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 68
+script = ExtResource( 6 )
+
+[node name="StaticBodypoly" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 68
+script = ExtResource( 2 )
+
+[node name="FG_polygons" type="Node2D" parent="."]
+script = ExtResource( 5 )
+
+[node name="black" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 309.664, -107.996, 488.056, -55.1393, 401.22, -24.9354, 156.756, -31.5425, 124.665, -83.4556 )
+
+[node name="Objects" type="Node2D" parent="."]
+
+[node name="BOXS" type="Node2D" parent="Objects"]
+
+[node name="BigBox_1" parent="Objects/BOXS" instance=ExtResource( 13 )]
+position = Vector2( 280.021, -147.228 )
+
+[node name="SmallBox_1" parent="Objects/BOXS" instance=ExtResource( 3 )]
+position = Vector2( 279.199, -163.263 )
+
+[node name="enemies" type="Node2D" parent="."]
+
+[node name="dash_enemies" type="Node2D" parent="enemies"]
+
+[node name="Pow_enemy" parent="enemies/dash_enemies" instance=ExtResource( 7 )]
+position = Vector2( 343.697, -150.636 )
+physics_material_override = SubResource( 2 )

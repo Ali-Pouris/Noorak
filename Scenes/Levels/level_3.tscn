@@ -1,0 +1,751 @@
+[gd_scene load_steps=43 format=2]
+
+[ext_resource path="res://Scenes/exit_portal.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/Ground/BG_polygons_levels.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_3/zones/level_3_zone_3.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scripts/Ground/BG_polygons.gd" type="Script" id=4]
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Rectangle.gd" type="Script" id=5]
+[ext_resource path="res://scripts/zone_system/Zone_Control.gd" type="Script" id=6]
+[ext_resource path="res://scripts/zone_system/VisibilityObject.gd" type="Script" id=7]
+[ext_resource path="res://scripts/zone_system/Object_Control.gd" type="Script" id=8]
+[ext_resource path="res://Scenes/Interface_scenes/Shader.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_3/mid_circle.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Scenes/player.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Scenes/Levels/level_4.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/Interactive_Objects/PhysicBTN2D.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_3/zones/level_3_zone_4.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_3/objects/level_3_object_1.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_3/zones/level_3_zone_1.tscn" type="PackedScene" id=16]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_1/door.tscn" type="PackedScene" id=17]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_3/zones/level_3_zone_6.tscn" type="PackedScene" id=18]
+[ext_resource path="res://Scenes/Interface_scenes/Game_HUD.tscn" type="PackedScene" id=19]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_3/zones/level_3_zone_7.tscn" type="PackedScene" id=20]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_3/zones/level_3_zone_5.tscn" type="PackedScene" id=21]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_3/zones/level_3_zone_2.tscn" type="PackedScene" id=22]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 62.5858, 10 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 63.3646, 10 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 98.2635, 10 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 265.246, 10 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 22.8959, 10 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 30.6907, 10 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 87.0528, 10 )
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 60.8179, 10 )
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 22.4401, 10 )
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 147.31, 10 )
+
+[sub_resource type="RectangleShape2D" id=11]
+extents = Vector2( 6, 40.4631 )
+
+[sub_resource type="RectangleShape2D" id=12]
+extents = Vector2( 6, 1 )
+
+[sub_resource type="RectangleShape2D" id=13]
+extents = Vector2( 6, 1 )
+
+[sub_resource type="Animation" id=14]
+resource_name = "open"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( -3.41064, -144.938 ), Vector2( 62.2931, -144.938 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("crashing2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, -34.7072 ), Vector2( 0, -100.466 ) ]
+}
+
+[sub_resource type="GDScript" id=15]
+script/source = "extends Node2D
+
+onready var btn = get_node(\"btn\")
+onready var sim = get_node(\"Line2D\")
+onready var coll_poly = get_node(\"btn/CollisionPolygon2D\")
+export var is_push_type : bool = true
+var triger : bool = false
+var is_down : bool = false
+var is_up : bool = false
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	var polygon = Polygon2D.new()
+	polygon.polygon = coll_poly.polygon
+	polygon.color = Color(1,1,1,0.7)
+	coll_poly.add_child(polygon)
+
+
+func btn_is_on():
+	sim.modulate.a = 1
+
+func btn_is_off():
+	sim.modulate.a = 0.2
+
+## Called every frame. 'delta' is the elapsed time since the previous frame.
+func _physics_process(_delta):
+	if btn.position.y >= -5:
+		btn.applied_force = Vector2(0,-50).rotated(rotation)
+	if is_push_type:
+		if btn.position.y > -2.5:
+			triger = true
+			btn_is_on()
+		else:
+			triger = false
+			btn_is_off()
+	else:
+		if btn.position.y >= -2.5:
+			is_down = true
+		elif btn.position.y <= -4.5 && is_down:
+			is_up = true
+		if is_down && is_up && btn.position.y <= -4.5:
+			is_down = false
+			is_up = false
+			triger = !triger
+		if triger:
+			btn_is_on()
+		else:
+			btn_is_off()
+
+
+"
+
+[sub_resource type="GDScript" id=16]
+script/source = "extends KinematicBody2D
+
+onready var open : bool = false
+onready var close : bool = true
+
+onready var parent = get_parent()
+onready var anim = get_node(\"AnimationPlayer\")
+onready var poly = get_node(\"Polygon2D\")
+
+onready var in_1 : bool = false
+onready var in_2 : bool = false
+
+func _ready():
+	poly.polygon = [Vector2(-get_child(0).shape.extents.x,-get_child(0).shape.extents.y),Vector2(get_child(0).shape.extents.x,-get_child(0).shape.extents.y),Vector2(get_child(0).shape.extents.x,get_child(0).shape.extents.y),Vector2(-get_child(0).shape.extents.x,get_child(0).shape.extents.y)]
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(_delta):
+	if parent.triger && close && !anim.is_playing():
+		anim.play(\"open\")
+		close = false
+		open = true
+	if parent.triger == false && open:
+		anim.play_backwards(\"open\")
+		close = true
+		open = false
+	if in_1 && in_2:
+		PlayerVars.player_must_die = true
+		in_1 = false
+		in_2 = false
+
+
+
+func _on_crashing_body_entered(body):
+	if body.name == \"PlayerRigidBody\":
+		in_1 = true
+
+func _on_crashing2_body_entered(body):
+	if body.name == \"PlayerRigidBody\":
+		in_2 = true
+
+func _on_crashing2_body_exited(body):
+	if body.name == \"PlayerRigidBody\":
+		in_2 = false
+
+func _on_crashing_body_exited(body):
+	if body.name == \"PlayerRigidBody\":
+		in_1 = false
+"
+
+[sub_resource type="RectangleShape2D" id=17]
+extents = Vector2( 3.85788, 30 )
+
+[sub_resource type="RectangleShape2D" id=18]
+extents = Vector2( 3.86874, 1 )
+
+[sub_resource type="RectangleShape2D" id=19]
+extents = Vector2( 3.86874, 1 )
+
+[sub_resource type="Animation" id=20]
+resource_name = "open"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 8.08313, -90.3678 ), Vector2( 52.5806, -90.3678 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("crashing2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, -22.8184 ), Vector2( 0, -67.2983 ) ]
+}
+
+[node name="level_001" type="Node"]
+
+[node name="BG_polygons" type="Node2D" parent="."]
+z_index = -10
+script = ExtResource( 2 )
+
+[node name="blank3" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_back",
+]]
+color = Color( 0.254902, 0.254902, 0.254902, 1 )
+polygon = PoolVector2Array( 274.354, -182.22, 390.857, -212.909, 435.885, -213.174, 552.425, -182.185, 556.663, -163.114, 608.577, -163.379, 608.764, -302.514, 541.985, -300.862, 542.929, -298.031, 262.362, -298.503 )
+
+[node name="blank2" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_back",
+]]
+color = Color( 0.254902, 0.254902, 0.254902, 1 )
+polygon = PoolVector2Array( 608.453, -296.773, 608.7, -315.149, 731.782, -315.447, 731.782, -298.5, 799.781, -232.422, 893.541, -186.172, 1009.58, -156.741, 1134.04, -157.161, 1134.04, -305.159, 1088.21, -304.318, 1088.63, -213.922, 1108.25, -214.763, 1108.59, -209.59, 1070.71, -209.09, 1071.21, -242.795, 1048.18, -265.487, 1015.81, -269.825, 995.852, -260.639, 965.784, -256.853, 936.83, -260.639, 908.098, -272.443, 883.821, -290.484, 865.335, -315.206, 855.09, -341.933, 838.608, -364.206, 811.213, -379.128, 649.057, -412.054, 555.507, -369.532, 541.963, -312.835, 542.593, -298.661 )
+
+[node name="light9" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 260.317, -279.814, 269.879, -280.642, 274.761, -286.785, 279.328, -280.642, 299.487, -282.69, 301.692, -289.147, 305.472, -285.052, 327.363, -285.84, 328.465, -291.194, 333.033, -288.517, 346.892, -284.58, 350.671, -287.572, 356.184, -284.737, 374.925, -285.367, 376.815, -288.045, 385.004, -283.477, 406.738, -284.58, 410.675, -290.249, 416.03, -283.635, 441.858, -283.32, 444.221, -287.73, 450.993, -283.95, 469.104, -288.517, 471.624, -293.399, 478.081, -288.99, 497.925, -286.47, 500.917, -290.092, 506.902, -284.737, 526.745, -283.792, 530.21, -290.407, 538.872, -285.367, 547.692, -292.612, 531.943, -304.424, 259.629, -302.69 )
+
+[node name="light3" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 274.219, -177.395, 265.488, -184.142, 279.576, -199.619, 287.712, -195.452, 290.291, -202.992, 318.461, -211.387, 328.984, -209.739, 331.365, -218.469, 350.273, -220.603, 361.724, -217.08, 367.813, -222.982, 388.922, -228.631, 398.036, -221.843, 405.18, -228.589, 435.935, -228.192, 439.507, -223.033, 448.635, -225.811, 471.652, -221.049, 474.033, -211.723, 485.201, -221.641, 510.543, -206.564, 513.321, -201.008, 526.021, -206.564, 545.677, -199.593, 546.26, -194.063, 558.165, -194.658, 562.729, -175.213, 560.745, -170.252, 567.888, -172.633, 589.12, -179.975, 598.247, -173.824, 600.827, -183.546, 595.866, -190.888, 596.858, -215.493, 602.017, -216.088, 595.866, -229.78, 597.85, -263.115, 602.892, -269.787, 595.668, -283.95, 596.66, -304.586, 601.851, -307.115, 596.758, -317.197, 602.445, -327.622, 616.835, -331.769, 625.035, -313.912, 613.837, -157.222, 555.772, -161.227, 543.758, -177.912, 416.948, -204.609 )
+
+[node name="light4" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 537.834, -300.6, 543.844, -292.469, 552.33, -302.368, 552.683, -318.632, 550.208, -325.703, 561.522, -334.542, 568.239, -349.744, 568.122, -362.046, 577.785, -359.997, 596.17, -368.129, 599.025, -375.921, 606.07, -370.25, 623.04, -382.625, 626.984, -389.585, 635.061, -385.453, 661.578, -385.1, 665.113, -393.585, 670.063, -384.746, 698.701, -382.625, 705.398, -390.426, 710.368, -384.039, 731.581, -378.029, 742.188, -382.978, 751.38, -375.2, 772.24, -362.826, 784.614, -370.25, 789.564, -361.412, 820.323, -356.462, 824.566, -360.704, 827.747, -350.098, 843.657, -341.613, 848.042, -340.862, 847.547, -333.834, 849.668, -305.55, 858.86, -304.136, 857.446, -295.297, 870.527, -277.266, 880.073, -278.68, 881.673, -268.699, 904.469, -253.224, 913.3, -257.563, 916.136, -248.275, 950.43, -243.678, 958.958, -248.209, 976.593, -241.911, 1003.46, -247.568, 1006.6, -256.2, 1017.61, -250.396, 1038.11, -251.103, 1042, -257.821, 1047.33, -253.525, 1047.66, -246.86, 1060.12, -228.551, 1078.85, -228.402, 1065.34, -261.003, 1014.07, -282.923, 933.813, -275.498, 860.981, -347.977, 825.98, -383.332, 636.475, -415.505, 549.854, -375.554 )
+
+[node name="light5" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 615.247, -312.399, 621.254, -333.422, 653.957, -329.084, 661.632, -323.745, 677.65, -330.085, 705.014, -334.757, 710.02, -327.082, 728.374, -331.087, 748.73, -316.403, 746.061, -307.727, 757.741, -306.058, 771.756, -285.702, 772.09, -273.688, 787.107, -275.357, 804.794, -254.333, 807.797, -240.985, 825.818, -245.991, 861.191, -232.976, 864.862, -218.293, 876.208, -222.965, 904.24, -207.948, 908.244, -197.269, 922.26, -198.937, 948.623, -184.254, 952.628, -179.582, 964.641, -184.588, 990.671, -179.249, 996.01, -172.574, 1003.69, -178.581, 1048.74, -176.579, 1053.41, -168.904, 1063.42, -175.244, 1099.46, -173.909, 1103.8, -167.235, 1111.81, -173.909, 1123.49, -173.576, 1118.15, -181.251, 1121.48, -200.272, 1128.16, -206.946, 1120.48, -225.301, 1118.82, -248.66, 1127.49, -255.668, 1118.82, -270.351, 1126.82, -286.369, 1121.49, -292.376, 1117.15, -283.366, 1096.79, -289.039, 1093.45, -277.693, 1098.56, -267.083, 1100.13, -243.655, 1095.47, -242.389, 1100.1, -238.039, 1101.51, -227.095, 1095.19, -224.99, 1100.67, -222.746, 1100.81, -218.677, 1107.68, -220.36, 1113.15, -218.957, 1115.4, -209.136, 1111.61, -206.891, 1109.79, -202.682, 1100.25, -202.389, 1097.28, -203.429, 1094.12, -199.605, 1070.97, -200.159, 1069.63, -204.47, 1062.08, -204.277, 1058.41, -224.299, 1075.88, -236.578, 1084.11, -312.399, 1145.18, -312.399, 1140.51, -146.545, 1005.02, -151.217, 890.224, -185.589, 791.78, -231.307, 720.032, -307.393 )
+
+[node name="light7" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 915.326, -179.421, 902.645, -208.12, 916.995, -242.158, 955.371, -259.177, 893.105, -286.522, 904.155, -248.502, 889.234, -215.917, 845.247, -207.452 )
+
+[node name="dark41" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 257.978, -287.694, 271.618, -287.959, 273.075, -290.873, 279.299, -287.827, 293.337, -289.946, 295.191, -293.654, 296.78, -290.475, 306.845, -291.138, 308.037, -293.389, 311.216, -290.475, 321.413, -289.019, 322.472, -292.594, 324.459, -291.402, 334.921, -292.594, 337.835, -289.946, 347.767, -290.211, 350.681, -292.197, 355.051, -289.946, 365.248, -292.329, 366.44, -294.846, 369.751, -291.535, 381.405, -290.608, 384.186, -292.197, 385.643, -288.621, 395.31, -288.489, 398.754, -292.197, 403.654, -289.284, 411.6, -292.065, 413.189, -294.978, 416.632, -289.019, 425.638, -286.635, 427.227, -290.078, 430.008, -288.224, 442.457, -290.608, 444.178, -293.786, 448.019, -291.005, 460.6, -291.005, 461.924, -293.521, 466.294, -292.197, 471.989, -301.997, 257.904, -301.633, 250.167, -299.101 )
+
+[node name="dark42" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 309.352, -197.125, 311.127, -202.504, 328.608, -204.225, 330.33, -203.034, 333.376, -210.98, 342.646, -212.436, 346.751, -208.861, 352.711, -211.377, 365.954, -213.761, 369, -210.715, 373.503, -216.674, 389.792, -219.323, 393.897, -216.542, 396.811, -219.323, 415.352, -218.528, 416.146, -216.409, 423.96, -221.839, 437.6, -219.455, 438.262, -216.144, 444.222, -218.396, 453.095, -215.217, 454.817, -211.642, 459.584, -215.35, 469.384, -214.158, 471.106, -208.463, 479.052, -210.185, 488.587, -204.888, 490.176, -201.709, 495.341, -204.623, 510.174, -201.312, 511.895, -197.736, 520.106, -200.782, 532.422, -196.544, 532.952, -193.763, 539.706, -194.558, 552.155, -189.79, 550.036, -187.804, 556.525, -184.493, 559.041, -176.282, 557.717, -170.588, 560.895, -167.409, 568.312, -169.263, 583.541, -169.528, 590.031, -167.144, 590.295, -172.574, 599.963, -170.588, 601.155, -177.739, 602.744, -186.347, 604.598, -187.539, 600.758, -193.366, 601.552, -199.458, 604.598, -201.842, 600.89, -207.669, 603.671, -219.058, 605.525, -222.104, 599.566, -227.534, 601.95, -237.863, 604.863, -238.923, 602.214, -245.677, 601.685, -258.655, 604.333, -259.45, 603.406, -263.688, 606.055, -270.177, 601.155, -279.182, 601.685, -289.115, 604.863, -288.983, 600.493, -298.12, 605.128, -307.258, 612.544, -308.847, 609.593, -157.411, 556.56, -160.947, 547.721, -180.392, 428.574, -209.384, 381.198, -206.555, 309.922, -187.824, 268.165, -176.201, 272.5, -186.088, 277.965, -189.311, 284.719, -190.503, 285.646, -193.152, 300.611, -200.171 )
+
+[node name="dark12" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 238.986, -188.113, 241.906, -193.953, 246.995, -189.448, 241.906, -186.695 )
+
+[node name="dark15" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 326.875, -299.25, 326.875, -281.75, 359.125, -297.75, 362.125, -297.5, 325.375, -279.25, 325.5, -299 )
+
+[node name="dark5" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 241.459, -186.711, 344.602, -299.521, 341.631, -299.143, 239.826, -187.158 )
+
+[node name="dark6" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 466.277, -300.265, 468.928, -294.078, 482.187, -293.194, 483.778, -295.492, 488.551, -290.719, 503.046, -293.017, 504.814, -294.608, 509.234, -290.012, 521.078, -290.542, 521.961, -293.724, 525.497, -291.426, 536.811, -293.017, 537.341, -295.138, 542.998, -293.901, 549.008, -302.209, 545.649, -304.684, 548.478, -308.927, 549.539, -320.241, 546.887, -323.776, 552.544, -331.378, 559.792, -338.979, 556.256, -341.984, 559.615, -343.398, 562.797, -356.303, 560.852, -360.723, 564.918, -361.606, 570.398, -369.561, 571.282, -373.627, 574.641, -370.445, 587.722, -373.274, 587.899, -377.34, 590.02, -374.688, 601.864, -380.522, 603.632, -384.941, 607.168, -382.82, 619.542, -386.355, 619.189, -390.775, 621.663, -389.007, 626.967, -394.31, 631.033, -390.244, 641.639, -389.891, 642.523, -393.073, 645.882, -390.421, 656.135, -395.017, 655.428, -400.321, 660.378, -397.315, 673.813, -394.84, 675.934, -397.315, 678.762, -392.896, 691.844, -390.775, 696.263, -393.426, 699.445, -389.714, 709.345, -393.249, 711.289, -395.194, 713.057, -389.891, 724.371, -385.471, 726.139, -387.769, 729.851, -383.35, 740.281, -385.118, 741.872, -388.83, 747.352, -381.936, 760.433, -377.163, 762.555, -379.638, 766.444, -373.451, 777.934, -373.627, 781.116, -378.754, 783.414, -373.451, 795.966, -368.147, 798.44, -370.445, 802.683, -363.374, 818.77, -361.607, 824.073, -364.789, 828.139, -359.839, 829.023, -354.359, 842.458, -345.873, 850.059, -352.237, 835.387, -373.097, 788.541, -385.825, 649.064, -413.049, 555.372, -371.683, 537.341, -301.149 )
+
+[node name="dark7" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 607.889, -305.314, 602.766, -312.329, 605.884, -319.902, 608.78, -319.234, 611.007, -323.132, 624.704, -321.127, 626.709, -319.457, 630.161, -325.247, 646.977, -323.577, 648.981, -320.125, 652.322, -323.132, 667.913, -322.129, 669.917, -320.125, 674.483, -325.47, 688.07, -325.359, 689.629, -322.686, 694.529, -328.477, 705.665, -324.357, 705.887, -320.793, 710.676, -323.354, 722.258, -322.241, 722.48, -320.57, 729.496, -323.466, 739.408, -315.448, 737.18, -311.327, 741.078, -309.323, 741.412, -299.523, 738.739, -298.409, 743.305, -296.182, 750.878, -292.284, 749.653, -289.389, 758.116, -289.723, 764.575, -280.257, 763.128, -276.582, 766.469, -277.25, 773.707, -268.23, 773.373, -266.114, 778.607, -266.894, 787.739, -263.664, 786.737, -260.769, 791.303, -258.653, 793.864, -250.523, 792.193, -248.519, 796.648, -246.292, 801.548, -239.387, 800.546, -237.049, 804.221, -237.605, 813.798, -235.49, 816.136, -231.48, 817.473, -233.485, 825.379, -229.476, 827.384, -225.578, 830.725, -228.028, 842.529, -223.351, 842.863, -218.785, 847.318, -218.674, 853.666, -213.106, 854.891, -210.322, 859.902, -211.213, 868.254, -209.097, 869.59, -205.533, 872.374, -208.317, 881.951, -204.976, 881.84, -200.41, 884.735, -201.858, 893.31, -195.288, 892.976, -192.392, 899.101, -193.395, 910.015, -189.163, 911.351, -186.045, 914.692, -188.717, 924.937, -186.49, 927.61, -182.147, 931.619, -183.929, 941.196, -179.586, 941.642, -177.581, 944.871, -180.031, 953.224, -177.358, 954.894, -174.352, 959.014, -176.245, 968.814, -173.906, 969.705, -171.233, 974.159, -173.572, 984.739, -172.793, 987.189, -168.672, 989.082, -171.234, 999.327, -166, 1000.33, -163.995, 1003.45, -166.445, 1016.81, -164.552, 1019.15, -161.656, 1022.27, -164.329, 1036.86, -168.115, 1040.87, -162.547, 1043.09, -166.111, 1059.57, -164.218, 1062.14, -162.102, 1067.7, -165.777, 1082.29, -166.222, 1085.08, -163.104, 1086.86, -165.443, 1103.56, -163.661, 1105.68, -160.765, 1111.47, -164.329, 1122.94, -166.779, 1135.75, -161.99, 1136.19, -153.638, 1011.25, -154.823, 893.505, -184.555, 795.578, -232.456, 719.124, -310.562 )
+
+[node name="dark8" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 847.073, -355.236, 846.601, -347.449, 852.972, -332.347, 855.568, -331.875, 853.68, -325.976, 857.219, -313.706, 860.523, -312.526, 860.287, -307.098, 864.77, -294.356, 868.782, -297.188, 870.906, -286.805, 886.008, -279.962, 887.895, -282.322, 890.019, -272.411, 902.997, -264.152, 906.773, -266.984, 907.009, -262.5, 919.751, -256.129, 923.291, -258.725, 925.886, -249.994, 941.932, -249.286, 944.528, -253.534, 948.539, -249.05, 962.461, -250.938, 965.057, -254.949, 970.248, -249.05, 984.17, -249.994, 985.586, -253.534, 992.901, -250.23, 1002.58, -257.073, 1005.41, -261.792, 1011.31, -258.489, 1025.7, -255.185, 1027.82, -260.849, 1029.24, -256.129, 1041.04, -259.905, 1044.58, -264.152, 1048.35, -255.657, 1056.61, -245.511, 1060.86, -245.747, 1059.44, -239.375, 1066.52, -228.285, 1069.12, -224.273, 1063.93, -220.026, 1066.29, -208.7, 1069.59, -207.284, 1072.66, -203.744, 1087.52, -202.328, 1089.65, -206.576, 1092.24, -204.216, 1106.87, -205.396, 1107.35, -207.756, 1112.3, -209.171, 1112.77, -215.071, 1110.52, -215.501, 1110.52, -218.097, 1103.32, -218.097, 1100.96, -216.681, 1097.66, -217.507, 1098.96, -220.103, 1094, -224.35, 1093.88, -227.536, 1097.19, -230.367, 1095.06, -238.272, 1092.23, -240.75, 1094, -241.812, 1096.01, -251.015, 1080.2, -255.616, 1045.98, -267.414, 1009.41, -274.729 )
+
+[node name="dark9" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 1091.67, -250.253, 1096.08, -254.347, 1095.76, -263.482, 1091.35, -265.687, 1093.87, -270.096, 1091.33, -283.552, 1091.78, -289.944, 1093.12, -288.16, 1099.51, -290.985, 1103.23, -296.336, 1104.71, -291.133, 1120.02, -292.768, 1120.02, -297.377, 1122.55, -294.106, 1128.79, -288.755, 1130.43, -286.525, 1128.05, -283.106, 1127.75, -273.444, 1130.28, -271.957, 1127.31, -268.092, 1128.2, -258.133, 1130.58, -255.308, 1122.4, -247.43, 1126.42, -235.835, 1130.43, -235.24, 1126.27, -226.916, 1128.94, -219.335, 1132.96, -216.808, 1129.69, -213.24, 1128.94, -201.794, 1130.58, -198.375, 1125.38, -195.699, 1125.08, -184.253, 1128.79, -182.321, 1125.38, -176.821, 1129.24, -163.293, 1133.55, -161.956, 1136.97, -232.565, 1135.04, -306.89, 1086.28, -308.377, 1086.88, -248.619 )
+
+[node name="dark23" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 537.852, -185.128, 549.506, -206.317, 566.192, -226.447, 559.195, -247.25, 529.497, -263.514, 495.556, -255.029, 477.171, -262.807, 472.575, -273.414, 476.52, -281.798, 473.843, -288.727, 476.048, -291.719, 471.287, -289.091, 473.635, -282.252, 471.868, -278.717, 465.716, -284.046, 457.372, -282.959, 452.776, -287.909, 454.897, -293.566, 449.594, -287.909, 454.897, -280.131, 465.857, -279.777, 469.393, -277.303, 469.039, -272.353, 471.161, -264.221, 460.2, -264.928, 454.544, -256.089, 447.119, -259.978, 452.875, -264.5, 450, -272.125, 455, -276.375, 447.5, -272.75, 449.625, -265.75, 443.937, -262.1, 434.391, -265.282, 434.25, -268.5, 442.125, -272.75, 439.25, -273.375, 434.25, -271.375, 434.75, -275.625, 437.125, -279.375, 432.623, -277.656, 430.148, -263.514, 441.816, -258.211, 437.219, -252.554, 436.262, -238.071, 451.713, -232.921, 459.386, -237.966, 463.065, -239.438, 458.786, -240.887, 451.362, -236.29, 445.705, -237.705, 448.875, -240.384, 449.611, -242.696, 443.619, -238.492, 440.755, -240.18, 441.109, -249.725, 444.75, -255.625, 454.375, -251.125, 463.25, -259.75, 495.202, -246.543, 528.79, -255.382, 549.296, -243.715, 551.771, -229.926, 538.116, -213.204, 508.991, -192.45 )
+
+[node name="dark24" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 505.042, -199.83, 512.121, -208.797, 505.632, -205.729, 504.452, -210.684, 502.446, -205.847, 500.087, -211.628, 500.323, -200.538 )
+
+[node name="dark25" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 449.204, -214.654, 454.255, -220.687, 449.906, -219.284, 449.344, -222.09, 446.959, -219.284, 443.732, -223.493, 442.048, -219.845, 438.26, -223.072, 441.908, -215.636 )
+
+[node name="dark26" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 381.155, -216.899, 382.698, -223.774, 379.191, -220.126, 375.683, -223.072, 375.963, -218.863, 371.474, -220.407, 375.683, -214.935 )
+
+[node name="dark27" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 319.603, -290.716, 321.536, -283.878, 316.928, -286.405, 313.806, -282.838, 312.617, -285.811, 308.157, -283.73, 313.806, -292.054 )
+
+[node name="dark28" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 658.574, -314.685, 626.561, -327.546, 614.494, -353.924, 616.809, -360.579, 604.315, -364.69, 605.26, -375.242, 608.252, -373.195, 607.622, -366.423, 619.067, -363.56, 621.229, -373.286, 646.484, -377.215, 672.862, -362.623, 682.964, -345.786, 675.939, -339.516, 678.497, -334.647, 687.316, -336.222, 688.576, -333.545, 676.607, -332.285, 673.299, -336.852, 664.724, -329.51, 629.647, -341.296, 629.367, -361.5, 648.449, -365.709, 665.566, -351.679, 649.829, -344.568, 640.148, -351.163, 649.291, -354.485, 644.52, -350.556, 650.974, -348.031, 659.673, -352.801, 647.607, -362.061, 633.295, -358.694, 633.857, -344.383, 663.041, -334.842, 677.352, -347.189, 669.775, -360.097, 645.081, -373.005, 623.474, -368.516, 619.826, -355.046, 629.928, -331.194, 668.372, -316.04 )
+
+[node name="dark29" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 989.113, -180.372, 984.281, -186.27, 988.692, -190.253, 986.278, -197.938, 989.744, -203.076, 983.857, -198.872, 986.17, -191.094, 982.179, -188.372, 977.761, -191.935, 972.715, -189.832, 965.887, -191.105, 972.404, -187.847, 976.92, -189.202, 981.443, -185.639, 985.119, -180.162, 973.346, -165.236, 981.124, -163.975, 983.437, -173.645 )
+
+[node name="dark30" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 961.052, -174.144, 960.108, -181.223, 963.648, -177.684, 967.305, -179.217, 967.541, -176.15, 973.441, -177.212, 966.244, -172.728 )
+
+[node name="dark31" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 950.918, -177.174, 954.012, -181.24, 950.564, -180.179, 949.68, -183.096, 948.443, -180.445, 945.526, -185.129, 947.471, -177.616 )
+
+[node name="dark32" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 1081.42, -164.38, 1082.93, -171.275, 1080.1, -167.739, 1076.65, -171.54, 1075.24, -167.827, 1071.35, -171.805, 1070.99, -167.474, 1066.84, -171.275, 1069.49, -164.115 )
+
+[node name="dark33" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 835.966, -223.608, 845.258, -230.695, 837.541, -229.907, 836.911, -234.632, 834.391, -230.38, 829.824, -236.994, 831.871, -224.395 )
+
+[node name="dark34" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 876.307, -289.063, 863.571, -283.257, 872.186, -282.133, 871.625, -275.953, 877.805, -281.197, 881.364, -270.521, 882.487, -286.628 )
+
+[node name="dark35" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 864.578, -300.739, 859.227, -296.725, 860.416, -300.144, 858.335, -302.077, 859.97, -304.009, 855.51, -307.428, 858.929, -308.469, 865.173, -306.536 )
+
+[node name="dark36" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 915.506, -170.079, 900.315, -208.889, 915.964, -244.047, 957.084, -260.163, 950.61, -263.012, 917.45, -248.804, 930.302, -271.947, 919.461, -276.717, 908.68, -252.372, 901.191, -284.756, 894.088, -287.881, 906.153, -248.209, 890.524, -213.949, 844.321, -204.727, 850.627, -201.657, 889.077, -208.178, 878.471, -187.672, 888.37, -183.783, 896.502, -203.935, 909.646, -172.931 )
+
+[node name="dark37" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 1053.56, -257.46, 1042.85, -233.207, 1015.82, -224.718, 996.375, -227.9, 997.775, -236.357, 990.889, -241.125, 991.153, -244.303, 990.226, -244.965, 988.77, -240.198, 995.259, -235.96, 992.486, -228.783, 984.531, -228.076, 977.99, -238.86, 968.197, -232.892, 964.799, -237.284, 964.137, -236.49, 967.448, -231.192, 977.106, -235.324, 983.293, -225.071, 994.332, -225.365, 1016, -219.945, 1047.46, -224.364, 1062.38, -252.106 )
+
+[node name="dark38" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 1022.06, -227.668, 1021.22, -225.889, 1010.17, -225.14, 1007.83, -226.638, 1008.2, -228.23, 1010.26, -228.698, 1015.88, -228.043, 1020.84, -229.166 )
+
+[node name="dark39" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 1014.69, -227.511, 1015.19, -227.761, 1016.15, -228.846, 1015.74, -230.054, 1016.4, -230.389, 1015.73, -230.64, 1015.5, -231.117, 1014.71, -231.236, 1014.38, -230.645, 1014.91, -229.936, 1013.77, -229.555, 1012.77, -228.804, 1012.43, -227.97 )
+
+[node name="noor2" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_light",
+]]
+color = Color( 1, 1, 1, 0.117647 )
+polygon = PoolVector2Array( 461.117, -304.073, 340.028, -196.438, 471.208, -198.54, 498.923, -303.14 )
+
+[node name="noor3" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_light",
+]]
+color = Color( 1, 1, 1, 0.117647 )
+polygon = PoolVector2Array( 589.296, -384.404, 623.314, -307.549, 731.037, -313.218, 628.353, -405.193 )
+
+[node name="noor4" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_light",
+]]
+color = Color( 1, 1, 1, 0.117647 )
+polygon = PoolVector2Array( 967.902, -256.522, 920.655, -174.627, 1011.37, -151.948, 1131.06, -152.578, 991.21, -260.931 )
+
+[node name="noor5" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_light",
+]]
+color = Color( 1, 1, 1, 0.117647 )
+polygon = PoolVector2Array( 229.084, -292.024, 315.385, -186.958, 287.323, -177.417, 273.292, -144.305, 148.699, -138.131, 136.352, -98.8451, 69.0043, -101.09, 197.084, -282.093 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 111
+
+[node name="Game_HUD" parent="CanvasLayer" instance=ExtResource( 19 )]
+
+[node name="Shader" parent="." instance=ExtResource( 9 )]
+
+[node name="player" parent="." instance=ExtResource( 11 )]
+
+[node name="PlayerRigidBody" parent="player" index="1"]
+position = Vector2( 59.988, -113.326 )
+
+[node name="Ground" type="Node2D" parent="."]
+
+[node name="StaticBodyRect" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 64
+script = ExtResource( 5 )
+
+[node name="CollisionShape2D16" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 670.378, -307.101 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D17" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 757.422, -262.373 )
+rotation = 0.76759
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D18" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 839.618, -204.466 )
+rotation = 0.463686
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D19" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 950.919, -163.656 )
+rotation = 0.246112
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D20" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 1072.36, -149.129 )
+shape = SubResource( 2 )
+
+[node name="CollisionShape2D21" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 1141.79, -235.832 )
+rotation = 1.5708
+shape = SubResource( 3 )
+
+[node name="CollisionShape2D23" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 816.677, -386.679 )
+rotation = 0.202106
+shape = SubResource( 4 )
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 218.806, -181.647 )
+rotation = 3.2825
+shape = SubResource( 5 )
+
+[node name="CollisionShape2D13" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 580.332, -154.678 )
+shape = SubResource( 6 )
+
+[node name="CollisionShape2D14" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 616.863, -230.053 )
+rotation = 1.5708
+shape = SubResource( 7 )
+
+[node name="CollisionShape2D9" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 334.749, -189.486 )
+rotation = 2.88425
+shape = SubResource( 8 )
+
+[node name="CollisionShape2D11" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 492.176, -189.514 )
+rotation = -2.88503
+shape = SubResource( 8 )
+
+[node name="CollisionShape2D10" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 413.451, -204.632 )
+shape = SubResource( 9 )
+
+[node name="CollisionShape2D12" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 548.393, -159.734 )
+rotation = 1.36201
+shape = SubResource( 9 )
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 396.291, -307.101 )
+rotation = 3.14273
+shape = SubResource( 10 )
+
+[node name="FG_polygons" type="Node2D" parent="."]
+visible = false
+script = ExtResource( 4 )
+
+[node name="black2" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 277.638, -171.688, 397.774, -202.389, 440.489, -203.724, 544.606, -171.688, 549.945, -151.665, 618.022, -148.996, 616.687, -306.507, 719.47, -305.172, 796.891, -225.081, 898.339, -177.027, 1011.8, -146.326, 1246.73, -150.33, 1261.41, -7.50253, 238.928, -18.1812 )
+
+[node name="black3" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( -41.3887, -211.733, 273.633, -305.172, 532.592, -303.837, 553.95, -379.923, 651.393, -419.968, 650.941, -538.333, -89.0587, -364.333 )
+
+[node name="black4" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 1146.82, -129.94, 1142.33, -312.734, 1083.89, -311.236, 1079.4, -245.31, 1010.48, -297.751, 833.676, -384.653, 631.405, -420.612, 640.395, -559.954, 1281.67, -498.524, 1304.14, -113.459 )
+
+[node name="black6" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 498.003, -295.194, 499.116, -298.646, 452.567, -298.757, 449.338, -295.639 )
+
+[node name="black7" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 630.875, -404.625, 635.125, -400.75, 590, -380.5, 588.5, -384 )
+
+[node name="black8" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 993.001, -260.168, 996.338, -257.999, 965.97, -253.911, 967.055, -256.58 )
+
+[node name="Objects" type="Node2D" parent="."]
+
+[node name="BOXS" type="Node2D" parent="Objects"]
+
+[node name="Glasses" type="Node2D" parent="Objects"]
+
+[node name="static" type="Node2D" parent="Objects/Glasses"]
+
+[node name="rigid" type="Node2D" parent="Objects/Glasses"]
+
+[node name="mid_circle" parent="Objects" instance=ExtResource( 10 )]
+position = Vector2( 261.006, -204.624 )
+
+[node name="enemies" type="Node2D" parent="."]
+
+[node name="dash_enemies" type="Node2D" parent="enemies"]
+
+[node name="spikes" type="Node2D" parent="enemies"]
+
+[node name="lezer" type="Node2D" parent="enemies"]
+
+[node name="Complex_Objects" type="Node2D" parent="."]
+
+[node name="PhysicBTN2D" parent="Complex_Objects" instance=ExtResource( 13 )]
+position = Vector2( 581.067, -161.41 )
+
+[node name="Line2D" parent="Complex_Objects/PhysicBTN2D" index="3"]
+points = PoolVector2Array( -0.0355835, -3.26701, 0.0267944, 2.18506, 27.6664, 6.16017, 40.1531, -7.51572, 32.1803, -18.5661, 31.6798, -42.2595, 40.5231, -55.6079, 40.857, -85.9755, 32.3474, -92.9834, 33.184, -123.542, 40.6693, -134.699, 33.184, -144.893, 25.8231, -144.894 )
+
+[node name="door" parent="Complex_Objects/PhysicBTN2D" instance=ExtResource( 17 )]
+position = Vector2( -3.41064, -144.938 )
+rotation = -1.5708
+
+[node name="CollisionShape2D" parent="Complex_Objects/PhysicBTN2D/door" index="0"]
+position = Vector2( 0, -2.336 )
+shape = SubResource( 11 )
+
+[node name="crashing" parent="Complex_Objects/PhysicBTN2D/door" index="1"]
+position = Vector2( 0, -42.1436 )
+
+[node name="CollisionShape2D" parent="Complex_Objects/PhysicBTN2D/door/crashing" index="0"]
+shape = SubResource( 12 )
+
+[node name="crashing2" parent="Complex_Objects/PhysicBTN2D/door" index="2"]
+position = Vector2( 0, -34.7072 )
+
+[node name="CollisionShape2D" parent="Complex_Objects/PhysicBTN2D/door/crashing2" index="0"]
+shape = SubResource( 13 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Complex_Objects/PhysicBTN2D/door"]
+anims/open = SubResource( 14 )
+
+[node name="PhysicBTN2D2" parent="Complex_Objects" instance=ExtResource( 13 )]
+position = Vector2( 1103.89, -155.735 )
+script = SubResource( 15 )
+
+[node name="Line2D" parent="Complex_Objects/PhysicBTN2D2" index="3"]
+points = PoolVector2Array( -0.0629883, -3.41032, -0.0661621, 4.76292, 25.1924, 8.76897, 39.6385, -0.795929, 34.4904, -23.6678, 42.3325, -40.687, 32.8218, -55.5371, 34.6057, -71.6475, 40.9977, -81.9002, 34.7006, -90.9289, 27.9191, -90.8266 )
+
+[node name="door" parent="Complex_Objects/PhysicBTN2D2" instance=ExtResource( 17 )]
+position = Vector2( 8.08313, -90.3678 )
+rotation = -1.5708
+script = SubResource( 16 )
+
+[node name="CollisionShape2D" parent="Complex_Objects/PhysicBTN2D2/door" index="0"]
+shape = SubResource( 17 )
+
+[node name="crashing" parent="Complex_Objects/PhysicBTN2D2/door" index="1"]
+position = Vector2( 0, -29.2302 )
+
+[node name="CollisionShape2D" parent="Complex_Objects/PhysicBTN2D2/door/crashing" index="0"]
+shape = SubResource( 18 )
+
+[node name="crashing2" parent="Complex_Objects/PhysicBTN2D2/door" index="2"]
+position = Vector2( 0, -22.8184 )
+
+[node name="CollisionShape2D" parent="Complex_Objects/PhysicBTN2D2/door/crashing2" index="0"]
+shape = SubResource( 19 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Complex_Objects/PhysicBTN2D2/door"]
+anims/open = SubResource( 20 )
+
+[node name="CheckPoints" type="Node2D" parent="."]
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="exit_portal" parent="." instance=ExtResource( 1 )]
+position = Vector2( 1110.96, -291.936 )
+rotation = -1.5708
+next_scene = ExtResource( 12 )
+next_level = 4
+
+[node name="Control" type="Node2D" parent="."]
+
+[node name="Zone_Control" type="Node2D" parent="Control"]
+script = ExtResource( 6 )
+zone_path_0 = "res://Scenes/Levels/inside_levels/level_3/zones/level_3_zone_1.tscn"
+zone_path_1 = "res://Scenes/Levels/inside_levels/level_3/zones/level_3_zone_2.tscn"
+zone_path_2 = "res://Scenes/Levels/inside_levels/level_3/zones/level_3_zone_3.tscn"
+zone_path_3 = "res://Scenes/Levels/inside_levels/level_3/zones/level_3_zone_4.tscn"
+zone_path_4 = "res://Scenes/Levels/inside_levels/level_3/zones/level_3_zone_5.tscn"
+zone_path_5 = "res://Scenes/Levels/inside_levels/level_3/zones/level_3_zone_6.tscn"
+zone_path_6 = "res://Scenes/Levels/inside_levels/level_3/zones/level_3_zone_7.tscn"
+
+[node name="VisibilityNotifiers" type="Node2D" parent="Control/Zone_Control"]
+
+[node name="0" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 137.546, -228.811 )
+rect = Rect2( -10, -10, 100, 100 )
+
+[node name="1" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 210.295, -236.82 )
+rect = Rect2( -10, -10, 50, 50 )
+
+[node name="2" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 413.369, -264.434 )
+rect = Rect2( -10, -10, 20, 40 )
+
+[node name="3" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 737.722, -331.1 )
+
+[node name="4" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 569.543, -373.145 )
+rect = Rect2( -10, -10, 70, 20 )
+
+[node name="5" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 1047.16, -251.467 )
+rect = Rect2( -10, -10, 50, 50 )
+
+[node name="6" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 836.93, -360.224 )
+rect = Rect2( -10, -10, 200, 100 )
+
+[node name="Zones" type="Node2D" parent="Control/Zone_Control"]
+
+[node name="00" parent="Control/Zone_Control/Zones" instance=ExtResource( 16 )]
+
+[node name="11" parent="Control/Zone_Control/Zones" instance=ExtResource( 22 )]
+
+[node name="22" parent="Control/Zone_Control/Zones" instance=ExtResource( 3 )]
+
+[node name="33" parent="Control/Zone_Control/Zones" instance=ExtResource( 14 )]
+
+[node name="44" parent="Control/Zone_Control/Zones" instance=ExtResource( 21 )]
+
+[node name="55" parent="Control/Zone_Control/Zones" instance=ExtResource( 18 )]
+
+[node name="66" parent="Control/Zone_Control/Zones" instance=ExtResource( 20 )]
+
+[node name="Object_Control" type="Node2D" parent="."]
+script = ExtResource( 8 )
+object_path_0 = "res://Scenes/Levels/inside_levels/level_3/objects/level_3_object_1.tscn"
+
+[node name="VisibilityNotifiers" type="Node2D" parent="Object_Control"]
+
+[node name="0" type="VisibilityNotifier2D" parent="Object_Control/VisibilityNotifiers"]
+position = Vector2( 1018.34, -187.887 )
+rect = Rect2( -10, -10, 30, 30 )
+script = ExtResource( 7 )
+
+[node name="Objects" type="Node2D" parent="Object_Control"]
+
+[node name="00" parent="Object_Control/Objects" instance=ExtResource( 15 )]
+position = Vector2( 1023.12, -182.801 )
+
+[editable path="player"]
+
+[editable path="Complex_Objects/PhysicBTN2D"]
+
+[editable path="Complex_Objects/PhysicBTN2D/door"]
+
+[editable path="Complex_Objects/PhysicBTN2D2"]
+
+[editable path="Complex_Objects/PhysicBTN2D2/door"]

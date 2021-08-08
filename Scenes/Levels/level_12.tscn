@@ -1,0 +1,610 @@
+[gd_scene load_steps=40 format=2]
+
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Circle.gd" type="Script" id=1]
+[ext_resource path="res://scripts/Ground/BG_polygons.gd" type="Script" id=2]
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Poly.gd" type="Script" id=3]
+[ext_resource path="res://scripts/Ground/ColoredPolygon_Rectangle.gd" type="Script" id=4]
+[ext_resource path="res://Scenes/Interface_scenes/Shader.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_13.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/Interactive_Objects/PhysicBTN2D.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/global/CheckPoint.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/player.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_14.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Scenes/Interactive_Objects/Glass.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Scenes/enemys/Lezer.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/Interface_scenes/Game_HUD.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Scenes/Levels/level_13.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scenes/enemys/DashSpik.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Scenes/exit_portal.tscn" type="PackedScene" id=16]
+[ext_resource path="res://scripts/zone_system/Object_Control.gd" type="Script" id=17]
+[ext_resource path="res://scripts/Ground/BG_polygons_levels.gd" type="Script" id=18]
+[ext_resource path="res://scripts/zone_system/VisibilityObject.gd" type="Script" id=19]
+[ext_resource path="res://scripts/zone_system/Zone_Control.gd" type="Script" id=20]
+[ext_resource path="res://sprites/enemys/lezer.png" type="Texture" id=21]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_3/mid_circle.tscn" type="PackedScene" id=22]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_12/lezer.gd" type="Script" id=23]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_1.tscn" type="PackedScene" id=24]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_3.tscn" type="PackedScene" id=25]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_5.tscn" type="PackedScene" id=26]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_7.tscn" type="PackedScene" id=27]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_6.tscn" type="PackedScene" id=28]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_2.tscn" type="PackedScene" id=29]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_4.tscn" type="PackedScene" id=30]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_8.tscn" type="PackedScene" id=31]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_9.tscn" type="PackedScene" id=32]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_10.tscn" type="PackedScene" id=33]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_12.tscn" type="PackedScene" id=35]
+[ext_resource path="res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_11.tscn" type="PackedScene" id=36]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 77.2285, 10 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 53.761, 10 )
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends CollisionPolygon2D
+
+onready var parent = get_parent()
+
+export var shard_poly_colors = Color(1,1,1,0.5)
+export var is_complex = false
+
+var tween = Tween.new()
+var poly_color = Polygon2D.new()
+var is_added : bool = false
+
+onready var line_points: Array
+
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	randomize()
+	poly_color.polygon = polygon
+	poly_color.color = shard_poly_colors
+	poly_color.color.a = 0.7
+	add_child(poly_color)
+	
+	var poly_line = get_polygon()
+
+	for i in range(0 , poly_line.size()):
+		#draw_line(poly_line[i-1] , poly_line[i], OutLine , Width)
+		line_points.append(poly_line[i])
+	line_points.append(poly_line[0])
+	line_points.append(poly_line[1])
+
+
+func _draw():
+	draw_polyline(line_points,Color(1,1,1,0.7),1)
+
+
+func explode():
+	var points = polygon
+	var delaunay_points_one = Geometry.triangulate_polygon(points)
+	
+	if not delaunay_points_one:
+		print(\"serious error occurred no delaunay points found\")
+	#find the midlle point of each triangle and add it to points
+	for index in len(delaunay_points_one) / 3:
+		var shard_pool_one = PoolVector2Array()
+		var Ox = 0
+		var Oy = 0
+		for n in range(3):
+			shard_pool_one.append(points[delaunay_points_one[(index * 3) + n]])
+			Ox += shard_pool_one[n].x
+			Oy += shard_pool_one[n].y
+		points.append(Vector2(Ox / 3, Oy / 3))
+	
+	var delaunay_points_two = Geometry.triangulate_delaunay_2d(points)
+	
+	if is_complex:
+		delaunay_points_two = delaunay_points_one
+	
+	for index in len(delaunay_points_two) / 3:
+		var shard_pool = PoolVector2Array()
+		
+		# loop over the three points in our triangle
+		for n in range(3):
+			shard_pool.append(points[delaunay_points_two[(index * 3) + n]])
+		
+		var shard_polygon = Polygon2D.new()
+		var shard_collision_polygon = CollisionPolygon2D.new()
+		var shard_rigidbody = RigidBody2D.new()
+
+		
+		shard_polygon.polygon = shard_pool
+		shard_collision_polygon.polygon = shard_pool
+		shard_rigidbody.applied_torque = round(rand_range(-1,1))
+		shard_rigidbody.mass = 0.4
+		shard_rigidbody.gravity_scale = 0.2
+		shard_rigidbody.set_collision_layer_bit(0,false)
+		shard_rigidbody.set_collision_mask_bit(0,false)
+		shard_rigidbody.set_collision_layer_bit(2,true)
+		shard_rigidbody.set_collision_mask_bit(2,true)
+		shard_rigidbody.add_child(shard_polygon)
+		shard_rigidbody.add_child(shard_collision_polygon)
+		
+		shard_polygon.color = shard_poly_colors
+		
+#		add_child(shard_rigidbody)
+#		shard_polygon.add_child(tween)
+		call_deferred(\"add_child\", shard_rigidbody)
+		if is_added == false:
+			call_deferred(\"add_child\", tween)
+			is_added = true
+		
+		tween.interpolate_property(self, \"modulate\", Color(1,1,1,1), Color(1,1,1,0), 0.5, tween.TRANS_LINEAR, tween.EASE_OUT_IN)
+		shard_rigidbody.apply_central_impulse(Vector2(5,0).rotated(deg2rad(rand_range(0,360))))
+	
+	yield(get_tree().create_timer(1), \"timeout\")
+	tween.start()
+	yield(get_tree().create_timer(0.5), \"timeout\")
+	for ch in get_children():
+		ch.queue_free()
+
+func destroy_the_glass():
+	for n in range(20):
+		parent.set_collision_layer_bit(n, false)
+		parent.set_collision_mask_bit(n, false)
+	poly_color.hide()
+	
+	#Deleting the pinjoint conected to the glass before deleting the glass itself
+	var twodots = \"../\"
+	for child in get_parent().get_parent().get_children():
+		if child.is_in_group(\"GlassPinJoint\"):
+			if child.get_node_a() == twodots + get_parent().name or child.get_node_b() == twodots + get_parent().name:
+				child.queue_free()
+	
+	explode()
+	yield(get_tree().create_timer(5), \"timeout\")
+	parent.queue_free()
+
+
+func _on_RigidBody2D2_body_entered(body):
+#	print(body.get_collision_layer_bit(9))
+#	print(body.get_linear_velocity().length())
+#	print(body.name)
+	if parent.get_linear_velocity().length() > 40:
+		destroy_the_glass()
+	elif body.get_collision_layer_bit(9) == true && body.get_collision_mask_bit(9) == true:
+		destroy_the_glass()
+	elif body.get_collision_layer_bit(9) == true && body.get_linear_velocity().length() > 80:
+		destroy_the_glass()
+	elif body.get_collision_mask_bit(9) == true:
+		destroy_the_glass()
+"
+
+[sub_resource type="Animation" id=4]
+length = 8.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 4, 8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 697.99, -139.754 ), Vector2( 697.99, 110.279 ), Vector2( 697.99, -139.754 ) ]
+}
+
+[node name="level_001" type="Node"]
+__meta__ = {
+"_edit_vertical_guides_": [ 1163.67 ]
+}
+
+[node name="BG_polygons" type="Node2D" parent="."]
+z_index = -10
+script = ExtResource( 18 )
+
+[node name="blank" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_back",
+]]
+color = Color( 0.254902, 0.254902, 0.254902, 1 )
+polygon = PoolVector2Array( 377.95, -343.187, 320.273, -431.188, 365.463, -526.92, 589.629, -518.595, 713.306, -353.295, 710.5, -248.5, 780.5, -245.5, 776.5, -189, 710.5, -150.5, 712.511, 122.7, 576.511, 126.7, 582.511, -339.3 )
+
+[node name="blank2" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_back",
+]]
+color = Color( 0.254902, 0.254902, 0.254902, 1 )
+polygon = PoolVector2Array( 576.122, 84.1334, 577.066, 237.041, 629.923, 316.327, 729.03, 233.266, 1007.47, 229.49, 1013.14, 277.628, 1315.18, 283.291, 1315.18, 192.679, 1386.91, 194.567, 1385.97, 125.664, 711.543, 128.172, 712.665, 68.6817 )
+
+[node name="light" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 589.128, -355.884, 570.476, -386.243, 556.983, -367.789, 543.291, -386.045, 524.044, -367.591, 508.17, -386.243, 489.915, -368.583, 478.803, -383.267, 461.342, -368.385, 449.436, -388.227, 435.943, -369.575, 422.45, -388.624, 407.965, -369.972, 398.639, -387.434, 382.17, -377.909, 388.321, -396.958, 368.479, -402.117, 379.194, -414.419, 355.184, -428.508, 371.257, -434.857, 357.764, -458.271, 379.392, -460.454, 369.471, -481.487, 386.932, -479.503, 382.765, -503.512, 401.417, -490.019, 413.72, -505.298, 427.014, -491.21, 441.102, -505.695, 453.405, -490.019, 466.302, -504.703, 474.438, -491.408, 495.074, -504.901, 504.598, -489.424, 515.71, -504.108, 526.227, -486.646, 544.482, -500.536, 546.268, -483.868, 567.499, -492.202, 568.293, -472.955, 590.12, -474.542, 588.334, -456.089, 606.787, -454.898, 600.438, -433.27, 621.272, -430.293, 613.931, -411.443, 641.512, -406.284, 631.987, -387.037, 659.37, -384.655, 656.195, -364.416, 679.014, -365.011, 677.824, -343.78, 701.635, -341.796, 702.428, -367.988, 578.637, -528.321, 360.813, -526.094, 319.386, -427.204, 372.394, -344.796, 586.656, -347.023 )
+
+[node name="light2" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 581.595, -353.517, 604.374, -375.003, 604.374, -335.273, 621, -323, 603.45, -299.536, 620.469, -277.177, 604.451, -261.826, 622.059, -248.882, 601.447, -222.782, 622.137, -201.091, 602.782, -178.733, 623.139, -158.71, 604.451, -135.35, 621.47, -110.656, 601.4, -92.6113, 623.649, -84.1356, 607.121, -53.5915, 632.124, -28.5138, 609.123, -11.544, 629.813, 6.14261, 606.787, 24.4967, 629.476, 37.7027, 605.786, 66.5441, 626.809, 85.2319, 607.454, 102.918, 625.141, 123.942, 602.115, 146.635, 625.141, 157.981, 603.116, 182.008, 625.141, 195.022, 607.788, 214.378, 629.479, 219.383, 620.469, 251.753, 644.83, 237.07, 662.183, 255.424, 674.53, 222.387, 710.237, 237.737, 648.5, 293.5, 612, 284.5, 578, 224.5 )
+
+[node name="light3" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 701.3, -354.865, 674.566, -322.426, 688.425, -309.827, 671.416, -283.998, 684.015, -274.864, 663.226, -251.555, 686.535, -241.476, 678.66, -213.128, 708.268, -223.207, 713.5, -210.5, 743.5, -229.25, 733.75, -207, 753, -196.5, 717.75, -195.75, 713.623, -178.165, 683.7, -181.315, 688.74, -155.801, 673.62, -137.217, 689.055, -125.248, 674.25, -100.68, 688.11, -90.6003, 665.746, -72.0164, 687.795, -56.8974, 664.251, -42.4649, 688.11, -24.1394, 664.171, -2.4058, 684.015, 10.1934, 654.722, 25.9424, 679.29, 42.3214, 663.226, 61.5352, 680.55, 71.9295, 647.988, 91.1783, 680.865, 102.483, 660.716, 122.291, 684.05, 127.948, 678.345, 159.809, 721.498, 136.186, 708, 121.5, 708.514, -164.788, 777.272, -197.362, 777.272, -248.995, 705.434, -248.995 )
+
+[node name="light4" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 700.647, 132.11, 721.583, 170.419, 746.528, 149.037, 765.746, 175.564, 803.991, 152.601, 820.09, 181.801, 852.545, 151.264, 883.79, 175.565, 899.317, 150.819, 918.98, 181.355, 948.317, 153.492, 977.271, 179.773, 993.753, 152.155, 1016.03, 182.891, 1047.21, 150.373, 1067.7, 177.1, 1090.86, 161.955, 1093.95, 190.216, 1131.56, 176.443, 1147.88, 202.491, 1165.7, 186.009, 1191.42, 204.254, 1207.57, 175.319, 1240.42, 192.865, 1240.09, 162.401, 1263.25, 177.1, 1269.49, 148.592, 1296.21, 166.855, 1321.16, 148.592, 1334.52, 157.244, 1359.53, 147.364, 1349.02, 163.131, 1358.58, 179.328, 1323.86, 168.232, 1310.88, 180.416, 1279.89, 178.827, 1302.67, 214.054, 1381.74, 194.918, 1387.08, 126.319 )
+
+[node name="light5" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 703.126, 248.652, 693.134, 200.033, 726.846, 208.273, 736.585, 186.548, 780.909, 207.869, 794.254, 183.137, 831.783, 211.232, 862.408, 179.128, 884.339, 208.289, 906.062, 190.71, 932.27, 209.971, 949.508, 188.108, 973.894, 204.926, 991.974, 183.483, 1015.52, 200.721, 1039.06, 191.471, 1034.02, 226.789, 1054.2, 224.266, 1050.84, 256.22, 1071.02, 230.993, 1089.1, 245.709, 1097.93, 227.209, 1119.37, 234.778, 1135.35, 210.392, 1150.06, 221.744, 1163.52, 205.767, 1187.48, 225.948, 1203.7, 210.166, 1223.22, 236.039, 1242.12, 224.34, 1255.17, 250.755, 1271.99, 235.198, 1293.45, 247.76, 1279.22, 210.302, 1308.57, 194.835, 1314.42, 278.992, 1015.41, 278.992, 1012.74, 228.268, 717.745, 233.607 )
+
+[node name="dark" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 585.453, -354.236, 575.521, -371.187, 567.442, -360.46, 563.337, -370.658, 550.756, -362.049, 544.929, -373.836, 538.175, -361.652, 529.831, -369.598, 523.74, -361.122, 514.072, -371.982, 507.053, -361.52, 500.829, -369.995, 489.969, -360.858, 484.672, -369.995, 479.507, -361.652, 474.342, -373.041, 463.085, -361.785, 453.947, -371.055, 449.18, -363.241, 444.545, -373.174, 435.539, -362.844, 428.255, -373.041, 420.574, -363.506, 416.072, -372.644, 408.92, -363.904, 402.299, -373.704, 390.909, -365.89, 391.042, -375.69, 376.077, -377.014, 380.182, -384.828, 369.19, -387.609, 376.342, -393.833, 361.377, -403.633, 368.528, -407.209, 356.609, -413.301, 362.171, -417.936, 350.65, -431.577, 357.669, -434.358, 350.253, -447.336, 358.199, -446.145, 355.285, -460.447, 363.363, -461.639, 359.126, -470.38, 369.588, -467.466, 367.072, -484.153, 374.488, -484.153, 370.78, -493.291, 381.507, -490.245, 380.447, -507.858, 392.25, -500.375, 394.875, -507.75, 401.625, -499.375, 413.5, -509.25, 420.5, -501.875, 424.5, -507.875, 428.75, -499, 441.75, -508.75, 448.875, -500.5, 454.625, -507.125, 459.25, -502, 467.375, -508.75, 472.75, -498.375, 477.625, -507.5, 482.875, -501.5, 495.25, -509.625, 500.25, -501.375, 503.125, -507.125, 507.125, -498.625, 515.375, -507.75, 522.625, -498.5, 528.625, -503.375, 531.5, -495.5, 546.125, -503.25, 548.5, -494.5, 555.875, -498.125, 554.875, -489.875, 570, -494.5, 571.5, -483, 580.625, -486.5, 577.5, -477.125, 593.875, -477, 592, -464.625, 600.625, -466.375, 596, -459.625, 609, -459.25, 606.125, -445.375, 615.125, -445.75, 611.75, -438, 628.625, -433.5, 623.5, -424.375, 634.375, -424.125, 626, -415.25, 642.5, -411.25, 643, -396.875, 651.875, -398, 648.625, -390.125, 664.125, -388.375, 663, -376.125, 673.75, -378.375, 671.5, -368.875, 681.75, -369, 682.5, -353.875, 691.5, -357, 687.25, -346.875, 706.375, -345.5, 700.125, -364.875, 578.453, -528.008, 364.396, -523.846, 324.558, -420.98, 374.504, -350.816, 586.778, -344.87 )
+
+[node name="dark2" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 581.125, -353.625, 593.625, -360.875, 594.375, -352, 601.875, -353.625, 598.803, -335.081, 611.074, -325.878, 598.803, -323.401, 605.293, -315.26, 596.75, -299, 607.5, -287.75, 595.5, -278.5, 607, -276.5, 598.25, -259.75, 608.75, -252, 596, -239.25, 604, -236.75, 597.25, -219.75, 609.75, -204.75, 597.5, -201, 606.5, -193.75, 598.25, -176.25, 609.25, -165.25, 598.75, -157, 612.309, -154.985, 599.066, -137.239, 608.336, -120.023, 598.801, -113.931, 609.926, -109.163, 597.212, -91.9471, 607.542, -82.147, 600.39, -69.9632, 610.985, -71.5524, 599.066, -50.0983, 612.574, -41.0929, 598.536, -35.7956, 613.634, -25.9955, 597.477, -9.57385, 613.899, -1.62788, 599.066, 7.90729, 614.163, 9.23162, 598.007, 26.9776, 612.044, 32.2749, 598.007, 46.5777, 616.282, 44.7236, 598.801, 66.9724, 610.985, 77.8319, 598.536, 84.7184, 611.25, 90.0157, 598.007, 102.994, 612.574, 117.562, 596.682, 122.594, 610.455, 128.421, 595.623, 146.697, 609.661, 157.556, 598.006, 167.621, 608.866, 165.767, 595.358, 182.984, 611.515, 191.989, 596.417, 199.67, 610.19, 200.994, 597.212, 222.184, 610.455, 221.919, 602.509, 239.665, 617.607, 230.659, 614.163, 260.324, 628.466, 254.762, 634.028, 266.151, 645.417, 248.935, 664.223, 262.443, 671.639, 247.346, 680.645, 253.438, 682.499, 233.043, 711.104, 243.108, 645.389, 295.971, 617.357, 289.964, 576.644, 233.901 )
+
+[node name="dark3" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 703.324, -350.103, 688.847, -334.066, 694.192, -330.503, 684.392, -323.598, 695.306, -307.117, 685.506, -297.985, 693.524, -292.417, 683.279, -282.84, 693.747, -272.594, 680.383, -263.24, 693.747, -261.458, 680.606, -252.104, 693.301, -238.518, 687.733, -227.604, 699.538, -229.609, 695.306, -221.813, 712.456, -228.94, 715.128, -221.591, 728.937, -233.84, 728.269, -226.49, 752.101, -233.395, 746.978, -216.691, 761.678, -210.009, 749.428, -206.223, 758.56, -194.195, 737.401, -193.527, 735.842, -184.173, 723.815, -187.736, 714.683, -173.927, 699.538, -176.377, 703.547, -167.468, 692.188, -171.923, 692.856, -154.996, 685.506, -146.31, 694.638, -142.301, 684.17, -136.51, 693.747, -126.487, 686.174, -114.905, 693.079, -110.451, 681.72, -102.656, 693.301, -89.2921, 683.279, -81.9422, 692.856, -73.7014, 680.829, -71.0287, 693.524, -57.6652, 679.047, -46.0835, 692.856, -39.6245, 684.615, -34.0564, 693.301, -21.5838, 681.497, -11.5612, 693.079, -7.55214, 678.379, -0.202232, 691.965, 8.70675, 677.711, 18.0612, 689.07, 28.0838, 672.365, 28.3065, 689.07, 40.5564, 679.047, 50.1335, 689.07, 52.8062, 676.374, 61.9379, 690.629, 70.4015, 675.929, 80.4241, 689.292, 86.4377, 671.252, 93.1194, 687.288, 102.251, 677.933, 111.383, 689.738, 111.828, 679.27, 121.183, 688.179, 123.41, 684.838, 142.564, 694.415, 136.105, 692.856, 146.573, 713.347, 138.333, 719.36, 154.369, 726.265, 144.123, 733.615, 152.81, 747.869, 142.564, 761.901, 156.819, 769.696, 147.91, 778.828, 158.155, 835.189, 130.119, 704.875, 125.881, 705.935, -155.936, 777.978, -196.196, 776.919, -250.228, 712.292, -251.288 )
+
+[node name="dark4" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 798, 133.5, 813, 159.75, 820.75, 148.5, 833, 160.5, 853, 141.75, 864, 154.25, 871.25, 145.25, 883, 158.5, 899.5, 144.5, 915.75, 165.75, 925.25, 146.5, 936.25, 155.25, 951.75, 145.5, 961.75, 158.5, 970.75, 149.75, 980, 160.5, 995.75, 146.75, 1009, 165.5, 1019, 149.5, 1025, 163.75, 1045.75, 141.75, 1059, 154.5, 1072.75, 149.25, 1076.5, 163.25, 1094.25, 156.25, 1095, 172, 1107.75, 167, 1105.5, 179.75, 1134, 172.25, 1145.5, 190, 1150.75, 182.75, 1154.25, 191, 1168, 180.5, 1178.75, 191, 1183, 181.25, 1198.75, 185.25, 1207.75, 168.75, 1220.25, 177.25, 1220.5, 166.5, 1234, 174.5, 1238.25, 154.75, 1247, 161.5, 1249, 150, 1262.5, 160.75, 1268.75, 143.25, 1283.75, 154, 1289.25, 144, 1301, 155, 1322.5, 143.5, 1330.25, 149.25, 1338, 144.25, 1342.25, 150.25, 1364.75, 143.25, 1358.75, 157, 1365.25, 167, 1358, 168.5, 1363, 183.5, 1340.25, 175.75, 1336.5, 181.25, 1323.75, 175.25, 1313, 183, 1297, 182.5, 1301.5, 188.75, 1291.25, 190, 1300, 204.75, 1384.89, 196, 1380.68, 123.683 )
+
+[node name="dark5" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 701.482, 244.474, 702.044, 214.695, 710.659, 218.254, 710.097, 206.829, 730.699, 214.695, 736.317, 201.398, 751.301, 213.01, 753.548, 200.836, 784.076, 214.508, 788.946, 203.458, 798.685, 214.133, 803.929, 198.588, 829.587, 216.943, 843.259, 205.144, 854.684, 213.572, 861.988, 194.655, 885.399, 216.755, 895.7, 202.896, 903.753, 216.755, 914.054, 206.267, 930.91, 214.883, 941.398, 204.956, 955.07, 215.257, 956.756, 198.401, 971.926, 212.073, 987.097, 195.779, 995.712, 206.267, 997.023, 193.719, 1015, 205.705, 1027.55, 198.588, 1026.05, 210.762, 1030.73, 208.14, 1025.87, 232.862, 1038.6, 231.551, 1035.04, 248.22, 1043.47, 241.478, 1048.34, 261.517, 1061.82, 249.718, 1071.38, 257.959, 1076.25, 242.227, 1091.23, 250.093, 1100.03, 236.795, 1107.71, 244.287, 1107.34, 234.361, 1121.57, 237.357, 1131.12, 224.06, 1136.37, 228.929, 1138.61, 216.568, 1150.04, 224.996, 1157.53, 216.006, 1159.96, 221.625, 1166.52, 212.448, 1187.87, 231.551, 1197.61, 223.311, 1202.85, 236.046, 1207.54, 223.685, 1222.52, 242.414, 1233.57, 236.608, 1235.07, 246.909, 1242.75, 236.795, 1253.23, 255.899, 1260.73, 249.718, 1269.53, 257.959, 1273.65, 245.223, 1297.81, 253.089, 1289.75, 224.622, 1298.74, 222.561, 1287.32, 213.572, 1305.49, 195.217, 1314.32, 278.163, 1011.67, 279.947, 1012.86, 230.595, 714.369, 233.568 )
+
+[node name="noor2" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_light",
+]]
+color = Color( 1, 1, 1, 0.117647 )
+polygon = PoolVector2Array( 1020.12, 145.813, 1096.93, 289.37, 1313.54, 280.984, 1312.94, 249.47, 1026.94, 132.928, 1019.8, 132.928 )
+
+[node name="noor3" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_light",
+]]
+color = Color( 1, 1, 1, 0.117647 )
+polygon = PoolVector2Array( 585.393, -209.179, 709.04, -83.6434, 710.012, -156.733, 755.29, -185.582, 586.337, -259.204 )
+
+[node name="noor4" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_light",
+]]
+color = Color( 1, 1, 1, 0.117647 )
+polygon = PoolVector2Array( 721.695, 135.823, 624.18, 284.474, 650.343, 296.366, 722.29, 237.501, 839.427, 236.311, 771.642, 134.634 )
+
+[node name="noor5" type="Polygon2D" parent="BG_polygons" groups=[
+"bg_light",
+]]
+color = Color( 1, 1, 1, 0.117647 )
+polygon = PoolVector2Array( 596.171, -495.48, 322.386, -436.494, 371.223, -349.469, 565.677, -347.348, 625.602, -457.64 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 111
+
+[node name="Game_HUD" parent="CanvasLayer" instance=ExtResource( 13 )]
+
+[node name="Shader" parent="." instance=ExtResource( 5 )]
+
+[node name="player" parent="." instance=ExtResource( 9 )]
+
+[node name="PlayerRigidBody" parent="player" index="1"]
+position = Vector2( 466.078, -444.472 )
+
+[node name="Ground" type="Node2D" parent="."]
+
+[node name="StaticBodyRect" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 64
+script = ExtResource( 4 )
+
+[node name="CollisionShape2D14" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 599.473, 273.816 )
+rotation = 0.991416
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D20" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 659.9, 287.045 )
+rotation = 2.48904
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D23" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 643.924, 293.396 )
+rotation = 3.32494
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D16" type="CollisionShape2D" parent="Ground/StaticBodyRect"]
+position = Vector2( 750.429, -177.561 )
+rotation = 2.66903
+shape = SubResource( 2 )
+
+[node name="StaticBodyRect2" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 64
+script = ExtResource( 4 )
+
+[node name="StaticBodyCircle" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 68
+script = ExtResource( 1 )
+
+[node name="StaticBodypoly" type="StaticBody2D" parent="Ground"]
+collision_layer = 68
+collision_mask = 68
+script = ExtResource( 3 )
+
+[node name="FG_polygons" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="black" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 581.541, -345.944, 375.776, -346.888, 324.807, -424.285, 366.487, -523.724, 580.302, -519.27, 711.264, -356.235, 873.101, -351.664, 625.187, -661.027, 228.948, -637.719, 199.283, -226.647, 582.808, -233.004 )
+
+[node name="black2" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 704.49, -367.53, 706.871, -246.888, 775.923, -247.682, 774.336, -191.329, 708.459, -154.819, 707.573, 129.196, 987.272, 127.077, 963.963, -381.465 )
+
+[node name="black3" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 432.113, -344.51, 580.438, -343.325, 578.319, 237.261, 627.054, 313.542, 724.525, 235.142, 805.044, 235.142, 802.925, 447.969, 413.043, 452.207 )
+
+[node name="black4" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 777.511, 230.821, 1015.11, 229.486, 1017.94, 272.023, 1066.71, 272.864, 1163.84, 232.08, 1260.96, 273.284, 1309.31, 270.341, 1311.41, 187.933, 1555.01, 190.974, 1585.17, 475.119, 754.957, 448.133 )
+
+[node name="black5" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 948.62, 125.891, 1077.2, 129.066, 1162.92, 168.751, 1251.81, 125.891, 1383.57, 130.653, 1378.81, 195.737, 1553.42, 202.086, 1543.9, -47.1358, 931.159, -23.3248 )
+
+[node name="black6" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 588.405, -494.492, 595.723, -495.504, 625.907, -456.791, 623.129, -450.441 )
+
+[node name="black7" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 587.858, -258.04, 593.78, -257.332, 593.053, -200.003, 588.128, -203.836 )
+
+[node name="black8" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 773.586, 134.796, 777.895, 142.635, 716.726, 142.115, 720.355, 135.687 )
+
+[node name="black9" type="Polygon2D" parent="FG_polygons"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 1024.88, 154.849, 1025.94, 157.796, 1044.83, 139.667, 1042.16, 138.229 )
+
+[node name="Objects" type="Node2D" parent="."]
+
+[node name="Glasses" type="Node2D" parent="Objects"]
+
+[node name="static" type="Node2D" parent="Objects/Glasses"]
+
+[node name="Glass1" parent="Objects/Glasses/static" instance=ExtResource( 11 )]
+position = Vector2( 705.587, -198.189 )
+z_index = -1
+
+[node name="CollisionPolygon2D" parent="Objects/Glasses/static/Glass1" index="0"]
+polygon = PoolVector2Array( -5.58716, -39.1448, -5.58716, -15.0613, -5.58716, 12.9387, -5.58716, 38.1887, 6.41284, 38.1887, 6.41284, 23.1887, 6.41285, 7.615, 6.41284, -11.3113, 6.41284, -39.0747 )
+script = SubResource( 3 )
+shard_poly_colors = Color( 1, 1, 1, 0.5 )
+
+[node name="mid_circle" parent="Objects" instance=ExtResource( 22 )]
+position = Vector2( 736.812, -208.577 )
+collision_layer = 524502
+collision_mask = 524502
+mass = 15.0
+
+[node name="enemies" type="Node2D" parent="."]
+
+[node name="lezer" type="Node2D" parent="enemies"]
+script = ExtResource( 23 )
+
+[node name="LezerRay" parent="enemies/lezer" instance=ExtResource( 12 )]
+position = Vector2( 434.564, -514.302 )
+rotation = 1.5708
+cast_to = Vector2( 130, 0 )
+
+[node name="Sprite" type="Sprite" parent="enemies/lezer"]
+position = Vector2( 434.046, -520.399 )
+rotation = 3.14159
+z_index = 1
+texture = ExtResource( 21 )
+
+[node name="PhysicBTN2D" parent="enemies/lezer" instance=ExtResource( 7 )]
+position = Vector2( 1376.08, 160.815 )
+rotation = -1.5708
+is_push_type = false
+triger = true
+
+[node name="btn" parent="enemies/lezer/PhysicBTN2D" index="2"]
+collision_layer = 34
+collision_mask = 34
+
+[node name="Line2D" parent="enemies/lezer/PhysicBTN2D" index="3"]
+points = PoolVector2Array( 0.00262451, -3.26501, -0.00648499, 8.15698, 34.7282, 4.26721, 28.9461, -57.9274, 35.1196, -166.806, 28.3849, -308.236, 37.9258, -399.717, 31.1911, -559.668, 33.236, -644.626, 57.2631, -655.972, 119.153, -639.9, 224.715, -635.931, 283.449, -657.36, 319.959, -654.185, 352.927, -594.849, 404.619, -605.337, 409.863, -668.266, 465.301, -663.022, 513.246, -663.771, 557.447, -699.73, 615.131, -729.697, 652.953, -764.412, 688.528, -807.944, 685.552, -894.51, 691.495, -941.576, 685.063, -941.455 )
+
+[node name="movung_lezer" type="Node2D" parent="enemies"]
+position = Vector2( 697.99, -139.754 )
+rotation = 3.14159
+
+[node name="LezerRay" parent="enemies/movung_lezer" instance=ExtResource( 12 )]
+position = Vector2( 0.00177002, 0 )
+cast_to = Vector2( 110, 0 )
+
+[node name="Sprite2" type="Sprite" parent="enemies/movung_lezer"]
+position = Vector2( -6.03094, 0.484375 )
+rotation = 1.5708
+z_index = 1
+texture = ExtResource( 21 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="enemies/movung_lezer"]
+autoplay = "move"
+anims/move = SubResource( 4 )
+
+[node name="Complex_Objects" type="Node2D" parent="."]
+
+[node name="CheckPoints" type="Node2D" parent="."]
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="CheckPoint" parent="CheckPoints" instance=ExtResource( 8 )]
+position = Vector2( -458.205, -388.333 )
+
+[node name="exit_portal2" parent="." instance=ExtResource( 16 )]
+position = Vector2( 401.922, -427.842 )
+rotation = 1.5708
+next_scene = ExtResource( 14 )
+next_level = 13
+
+[node name="Control" type="Node2D" parent="."]
+
+[node name="Zone_Control" type="Node2D" parent="Control"]
+script = ExtResource( 20 )
+zone_path_0 = "res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_1.tscn"
+zone_path_1 = "res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_2.tscn"
+zone_path_2 = "res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_3.tscn"
+zone_path_3 = "res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_4.tscn"
+zone_path_4 = "res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_5.tscn"
+zone_path_5 = "res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_6.tscn"
+zone_path_6 = "res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_7.tscn"
+zone_path_7 = "res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_8.tscn"
+zone_path_8 = "res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_9.tscn"
+zone_path_9 = "res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_10.tscn"
+
+[node name="VisibilityNotifiers" type="Node2D" parent="Control/Zone_Control"]
+
+[node name="0" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 421.188, -402.835 )
+rect = Rect2( -10, -10, 100, 50 )
+
+[node name="1" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 435.458, -432.565 )
+rect = Rect2( -10, -10, 200, 100 )
+
+[node name="2" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 713.982, -243.583 )
+rect = Rect2( -10, -10, 50, 50 )
+
+[node name="3" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 707.977, -521.881 )
+rect = Rect2( -10, -10, 20, 290 )
+
+[node name="4" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 580.481, -341.89 )
+rect = Rect2( -10, -10, 20, 290 )
+
+[node name="5" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 580.213, -44.9315 )
+rect = Rect2( -10, -10, 20, 290 )
+
+[node name="6" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 708.382, -147.714 )
+rect = Rect2( -10, -10, 20, 290 )
+
+[node name="7" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 714.618, 137.373 )
+rect = Rect2( -10, -10, 290, 100 )
+
+[node name="8" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 1327.56, 155.191 )
+rect = Rect2( -10, -10, 50, 50 )
+
+[node name="9" type="VisibilityNotifier2D" parent="Control/Zone_Control/VisibilityNotifiers"]
+position = Vector2( 1024.55, 155.191 )
+rect = Rect2( -10, -10, 300, 100 )
+
+[node name="Zones" type="Node2D" parent="Control/Zone_Control"]
+
+[node name="00" parent="Control/Zone_Control/Zones" instance=ExtResource( 24 )]
+
+[node name="11" parent="Control/Zone_Control/Zones" instance=ExtResource( 29 )]
+
+[node name="22" parent="Control/Zone_Control/Zones" instance=ExtResource( 25 )]
+
+[node name="33" parent="Control/Zone_Control/Zones" instance=ExtResource( 30 )]
+
+[node name="44" parent="Control/Zone_Control/Zones" instance=ExtResource( 26 )]
+
+[node name="55" parent="Control/Zone_Control/Zones" instance=ExtResource( 28 )]
+
+[node name="66" parent="Control/Zone_Control/Zones" instance=ExtResource( 27 )]
+
+[node name="77" parent="Control/Zone_Control/Zones" instance=ExtResource( 31 )]
+
+[node name="88" parent="Control/Zone_Control/Zones" instance=ExtResource( 32 )]
+
+[node name="99" parent="Control/Zone_Control/Zones" instance=ExtResource( 33 )]
+
+[node name="Zone_Control2" type="Node2D" parent="Control"]
+script = ExtResource( 20 )
+zone_path_0 = "res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_11.tscn"
+zone_path_1 = "res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_12.tscn"
+zone_path_2 = "res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_13.tscn"
+zone_path_3 = "res://Scenes/Levels/inside_levels/level_12/zones/level_12_zone_14.tscn"
+
+[node name="VisibilityNotifiers" type="Node2D" parent="Control/Zone_Control2"]
+
+[node name="0" type="VisibilityNotifier2D" parent="Control/Zone_Control2/VisibilityNotifiers"]
+position = Vector2( 1036.25, 138.865 )
+rect = Rect2( -10, -10, 10, 150 )
+
+[node name="1" type="VisibilityNotifier2D" parent="Control/Zone_Control2/VisibilityNotifiers"]
+position = Vector2( 1299.76, 138.865 )
+rect = Rect2( -10, -10, 10, 150 )
+
+[node name="2" type="VisibilityNotifier2D" parent="Control/Zone_Control2/VisibilityNotifiers"]
+position = Vector2( 1086.83, 139.756 )
+rect = Rect2( -10, -10, 80, 150 )
+
+[node name="3" type="VisibilityNotifier2D" parent="Control/Zone_Control2/VisibilityNotifiers"]
+position = Vector2( 1181.27, 139.756 )
+rect = Rect2( -10, -10, 80, 150 )
+
+[node name="Zones" type="Node2D" parent="Control/Zone_Control2"]
+
+[node name="00" parent="Control/Zone_Control2/Zones" instance=ExtResource( 36 )]
+
+[node name="11" parent="Control/Zone_Control2/Zones" instance=ExtResource( 35 )]
+
+[node name="22" parent="Control/Zone_Control2/Zones" instance=ExtResource( 6 )]
+
+[node name="33" parent="Control/Zone_Control2/Zones" instance=ExtResource( 10 )]
+
+[node name="Object_Control" type="Node2D" parent="Control"]
+script = ExtResource( 17 )
+object_path_0 = "res://Scenes/enemys/DashSpik.tscn"
+
+[node name="VisibilityNotifiers" type="Node2D" parent="Control/Object_Control"]
+
+[node name="0" type="VisibilityNotifier2D" parent="Control/Object_Control/VisibilityNotifiers"]
+position = Vector2( 1033.83, 232.464 )
+rect = Rect2( -10, -10, 15, 15 )
+script = ExtResource( 19 )
+
+[node name="Objects" type="Node2D" parent="Control/Object_Control"]
+
+[node name="00" parent="Control/Object_Control/Objects" instance=ExtResource( 15 )]
+position = Vector2( 1031.29, 229.96 )
+
+[editable path="player"]
+
+[editable path="Objects/Glasses/static/Glass1"]
+
+[editable path="enemies/lezer/PhysicBTN2D"]

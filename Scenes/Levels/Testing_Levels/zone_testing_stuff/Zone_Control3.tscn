@@ -1,0 +1,366 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/Levels/Testing_Levels/zone_testing_stuff/Zone_1.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/zone_system/Zone_Control.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Levels/Testing_Levels/zone_testing_stuff/Zone_2.tscn" type="PackedScene" id=3]
+
+[node name="Zone_Control3" type="Node2D"]
+position = Vector2( -13244.3, 3991.43 )
+script = ExtResource( 2 )
+zone_path_0 = "res://Scenes/Levels/Testing_Levels/zone_testing_stuff/Zone_2.tscn"
+zone_path_1 = "res://Scenes/Levels/Testing_Levels/zone_testing_stuff/Zone_1.tscn"
+
+[node name="Areas" type="Node2D" parent="."]
+
+[node name="0" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/0"]
+polygon = PoolVector2Array( -151.725, -212.372, -127.725, 55.6283, -697.725, 43.6283, -761.725, -272.372, -209.725, -288.372 )
+
+[node name="1" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/1"]
+polygon = PoolVector2Array( 910.95, -374.73, 940.917, -78.0657, 383.546, -72.0724, 334.102, -437.659, 800.076, -425.673 )
+
+[node name="2" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/2"]
+polygon = PoolVector2Array( 1961.1, -530.501, 1927.12, -203.92, 1428.76, -230.349, 1404.22, -632.439 )
+
+[node name="3" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/3"]
+polygon = PoolVector2Array( 2513.49, -488.902, 2558.84, -151.243, 1944, -141.164, 1908.72, -554.418 )
+
+[node name="4" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/4"]
+polygon = PoolVector2Array( -388.413, -395.423, -388.413, 150.644, 683.542, 78.1226, 596.234, -497.398 )
+
+[node name="5" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/5"]
+polygon = PoolVector2Array( 1321.93, -583.87, 1428.96, -184.297, 1141.18, -41.5917, 934.253, -41.5917, 886.685, -462.571 )
+
+[node name="6" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/6"]
+polygon = PoolVector2Array( 2966.81, -667.054, 3030.99, -289.504, 2581.71, -96.9535, 2506.2, -493.381 )
+
+[node name="7" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/7"]
+polygon = PoolVector2Array( 3465.86, -859.018, 3533.74, -417.784, 3027.46, -267.877, 2968.06, -694.969 )
+
+[node name="8" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/8"]
+polygon = PoolVector2Array( 3949.52, -1042.87, 3994.78, -590.317, 3525.26, -468.695, 3446.06, -890.131 )
+
+[node name="9" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/9"]
+polygon = PoolVector2Array( 4387.93, -1249.34, 4481.27, -776.994, 3986.29, -652.543, 3938.21, -1076.81 )
+
+[node name="10" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/10"]
+polygon = PoolVector2Array( 4874.42, -1402.08, 4945.13, -918.415, 4436.01, -842.048, 4399.24, -1226.71 )
+
+[node name="11" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/11"]
+polygon = PoolVector2Array( 5346.77, -1619.86, 5408.99, -1065.49, 4933.82, -1003.27, 4846.14, -1461.47 )
+
+[node name="12" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/12"]
+polygon = PoolVector2Array( 5824.77, -1764.11, 5892.65, -1277.63, 5400.51, -1139.03, 5352.42, -1588.75 )
+
+[node name="13" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/13"]
+polygon = PoolVector2Array( 6291.46, -1930.99, 6367.83, -1464.3, 5898.31, -1294.6, 5810.63, -1781.08 )
+
+[node name="14" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/14"]
+polygon = PoolVector2Array( 6766.64, -2103.53, 6857.15, -1696.23, 6336.72, -1501.07, 6277.32, -1945.13 )
+
+[node name="15" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/15"]
+polygon = PoolVector2Array( 7227.67, -2338.28, 7326.67, -1809.37, 6854.32, -1699.06, 6752.5, -2151.61 )
+
+[node name="16" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/16"]
+polygon = PoolVector2Array( 7711.33, -2488.19, 7790.53, -2038.47, 7304.04, -1874.42, 7227.67, -2324.14 )
+
+[node name="17" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/17"]
+polygon = PoolVector2Array( 7765.07, -2089.38, 7719.82, -2482.53, 8231.76, -2672.04, 8279.85, -2137.47 )
+
+[node name="18" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/18"]
+polygon = PoolVector2Array( 8664.51, -2858.71, 8746.54, -2358.08, 8262.88, -2273.23, 8200.65, -2714.46 )
+
+[node name="19" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/19"]
+polygon = PoolVector2Array( 9159.49, -3073.67, 9221.71, -2590.01, 8715.43, -2482.53, 8661.69, -2881.34 )
+
+[node name="20" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/20"]
+polygon = PoolVector2Array( 9617.69, -3246.21, 9730.83, -2663.55, 9216.06, -2609.81, 9142.52, -3059.53 )
+
+[node name="21" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/21"]
+polygon = PoolVector2Array( 10126.8, -3413.09, 10194.7, -2884.17, 9651.64, -2768.2, 9634.67, -3229.24 )
+
+[node name="22" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/22"]
+polygon = PoolVector2Array( 10596.3, -3622.39, 10695.3, -3059.53, 10163.6, -2985.99, 10109.8, -3438.54 )
+
+[node name="23" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/23"]
+polygon = PoolVector2Array( 11088.5, -3769.47, 11153.5, -3220.75, 10675.5, -3127.41, 10602, -3602.59 )
+
+[node name="24" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/24"]
+polygon = PoolVector2Array( 11552.2, -3961.8, 11611.6, -3455.51, 11133.6, -3367.83, 11082.7, -3772.3 )
+
+[node name="25" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/25"]
+polygon = PoolVector2Array( 12035.9, -4142.82, 12100.9, -3625.22, 11608.8, -3500.77, 11549.4, -3987.26 )
+
+[node name="26" type="Area2D" parent="Areas"]
+monitorable = false
+collision_layer = 0
+collision_mask = 2147487744
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/26"]
+polygon = PoolVector2Array( -767.013, -260.91, -661.066, 162.875, -1192.92, 296.368, -1237.41, -89.2767 )
+
+[node name="Zones" type="Node2D" parent="."]
+
+[node name="0" type="Node2D" parent="Zones" groups=[
+"z0",
+] instance=ExtResource( 3 )]
+position = Vector2( -724.895, 61.9657 )
+
+[node name="1" type="Node2D" parent="Zones" groups=[
+"z0",
+] instance=ExtResource( 3 )]
+position = Vector2( 338.593, -82.2841 )
+
+[node name="2" type="Node2D" parent="Zones" groups=[
+"z0",
+] instance=ExtResource( 3 )]
+position = Vector2( 1389.45, -231.5 )
+
+[node name="3" type="Node2D" parent="Zones" groups=[
+"z0",
+] instance=ExtResource( 3 )]
+position = Vector2( 1925.99, -193.402 )
+
+[node name="4" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( -173.499, 60.9906 )
+
+[node name="5" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 872.32, -82.8469 )
+
+[node name="6" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 2461.59, -186.644 )
+
+[node name="7" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 2953.68, -367.608 )
+
+[node name="8" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 3439.43, -554.921 )
+
+[node name="9" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 3912.47, -732.71 )
+
+[node name="10" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 4366.47, -907.324 )
+
+[node name="11" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 4845.87, -1081.94 )
+
+[node name="12" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 5322.09, -1269.25 )
+
+[node name="13" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 5788.78, -1447.04 )
+
+[node name="14" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 6271.35, -1628 )
+
+[node name="15" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 6741.22, -1802.62 )
+
+[node name="16" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 7220.62, -1989.93 )
+
+[node name="17" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 7712.71, -2174.07 )
+
+[node name="18" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 8176.23, -2364.56 )
+
+[node name="19" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 8655.63, -2548.7 )
+
+[node name="20" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 9131.31, -2734.21 )
+
+[node name="21" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 9616.51, -2910.22 )
+
+[node name="22" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 10101.7, -3098.11 )
+
+[node name="23" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 10582.1, -3278.87 )
+
+[node name="24" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 11048.3, -3462.01 )
+
+[node name="25" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( 11519.2, -3647.52 )
+
+[node name="26" type="Node2D" parent="Zones" groups=[
+"z1",
+] instance=ExtResource( 1 )]
+position = Vector2( -1242.42, 211.133 )
