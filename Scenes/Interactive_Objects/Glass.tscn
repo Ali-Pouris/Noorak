@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/Interactive_Objects/Glass.gd" type="Script" id=1]
+
+[node name="Glass" type="RigidBody2D"]
+collision_layer = 2148008448
+collision_mask = 524800
+mode = 3
+contacts_reported = 1
+contact_monitor = true
+__meta__ = {
+"_edit_horizontal_guides_": [ 7.91946, -8.18734 ],
+"_edit_vertical_guides_": [ -64.117, 63.9883, -64.117 ]
+}
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( 64, -8, -64, -8, -64, 8, 64, 8 )
+script = ExtResource( 1 )
+shard_poly_colors = Color( 1, 1, 1, 0.196078 )
+[connection signal="body_entered" from="." to="CollisionPolygon2D" method="_on_RigidBody2D2_body_entered"]

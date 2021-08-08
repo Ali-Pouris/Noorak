@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Interactive_Objects/PhysicBTN2D_OLD.gd" type="Script" id=1]
+
+[sub_resource type="PhysicsMaterial" id=1]
+friction = 0.0
+
+[node name="PhysicBTN2D" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 34
+collision_mask = 2
+physics_material_override = SubResource( 1 )
+
+[node name="Polygon2D" type="Polygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 10, 0, 10, 1, 12, 1, 12, 8, -12, 8, -12, 1, -10, 1, -10, 0, -14, 0, -14, 10, 14, 10, 14, 0 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 10, 0, 14, 0, 14, 16, -14, 16, -14, 0, -10, 0, -10, 1, -12, 1, -12, 8, 12, 8, 12, 1, 10, 1 )
+
+[node name="btn" type="RigidBody2D" parent="."]
+collision_layer = 35
+collision_mask = 2
+mass = 0.2
+gravity_scale = 0.0
+
+[node name="Polygon2D" type="Polygon2D" parent="btn"]
+color = Color( 0.960784, 0.0431373, 0.0431373, 1 )
+polygon = PoolVector2Array( -10, -3, -10, 1, -12, 1, -12, 5, 12, 5, 12, 1, 10, 1, 10, -3, 9, -4, -9, -4 )
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="btn"]
+polygon = PoolVector2Array( -10, -3, -10, 1, -12, 1, -12, 5, 12, 5, 12, 1, 10, 1, 10, -3, 9, -4, -9, -4 )
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PoolVector2Array( -0.328323, 4.70341, -0.460758, 37.2819, 54.4989, 37.017 )
+width = 0.5
+default_color = Color( 0.937255, 0.945098, 0.0901961, 1 )

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://sprites/Interface/lift_disable.png" type="Texture" id=1]
+[ext_resource path="res://sprites/Interface/lift_enable.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 120, 24 )
+
+[node name="Extra_RL_lift" type="TouchScreenButton"]
+light_mask = 0
+position = Vector2( 47.2, 18.2 )
+normal = ExtResource( 1 )
+pressed = ExtResource( 2 )
+shape = SubResource( 1 )
+action = "right_lift"
+visibility_mode = 1
+__meta__ = {
+"_edit_horizontal_guides_": [ 10.0687, 58.6152 ],
+"_edit_vertical_guides_": [ 63.5972, 182.997 ]
+}

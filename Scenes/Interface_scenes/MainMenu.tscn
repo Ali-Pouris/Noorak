@@ -1,0 +1,1803 @@
+[gd_scene load_steps=45 format=2]
+
+[ext_resource path="res://scripts/Ground/BG_polygons.gd" type="Script" id=1]
+[ext_resource path="res://Fonts/PatrickHand-Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Scenes/Interface_scenes/btn_theme_style.tres" type="StyleBox" id=3]
+[ext_resource path="res://Scenes/Interface_scenes/MainMenu.gd" type="Script" id=4]
+[ext_resource path="res://Scenes/Interface_scenes/Shader.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/Interface_scenes/CustomizeContainer.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/Interface_scenes/SettingsContainer.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/Interface_scenes/LevelsContainer.tscn" type="PackedScene" id=9]
+[ext_resource path="res://sprites/player/bg_light.png" type="Texture" id=10]
+[ext_resource path="res://scripts/Ground/BG_polygons_new.gd" type="Script" id=11]
+[ext_resource path="res://sprites/player/0_spot.png" type="Texture" id=12]
+[ext_resource path="res://scripts/Ground/BG_polygons_Mainmenu.gd" type="Script" id=14]
+
+[sub_resource type="Animation" id=1]
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("light:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0.196078 ), Color( 1, 1, 1, 0.392157 ), Color( 1, 1, 1, 0.196078 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("light:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.8, 0.8 ), Vector2( 0.9, 0.9 ), Vector2( 0.8, 0.8 ) ]
+}
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 5.0
+
+[sub_resource type="Curve" id=3]
+max_value = 0.5
+_data = [ Vector2( 0, 0.263636 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="GDScript" id=4]
+script/source = "extends Node2D
+
+func _ready():
+	visible = true
+	yield(get_tree().create_timer(0.5),\"timeout\")
+	for child in get_children():
+		if child.is_in_group(\"bg_back\"):
+			child.color = PlayerVars.bg_color_back
+		if child.is_in_group(\"bg_mid\"):
+			child.color = PlayerVars.bg_color_mid
+		if child.is_in_group(\"bg_front\"):
+			child.color = PlayerVars.bg_color_front
+		if child.is_in_group(\"bg_light\"):
+			child.color = PlayerVars.bg_color_light
+
+"
+
+[sub_resource type="DynamicFont" id=5]
+size = 9
+font_data = ExtResource( 2 )
+
+[sub_resource type="Animation" id=6]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Camera2D:zoom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Camera2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 160, 450 ), Vector2( 160, 90 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Camera2D:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0 ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("AnimationPlayerAboutMe")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "fade_out" ],
+"method": "play"
+} ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath("AnimationPlayerMenuPanel")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "fade_in" ],
+"method": "play"
+} ]
+}
+
+[sub_resource type="Animation" id=7]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Camera2D:zoom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Camera2D:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Camera2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 75, 90 ), Vector2( 160, 90 ) ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("AnimationPlayerMenuPanel")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "fade_in" ],
+"method": "play"
+} ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath("AnimationPlayerCustomize")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "fade_out" ],
+"method": "play"
+} ]
+}
+
+[sub_resource type="Animation" id=8]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Camera2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 800, 90 ), Vector2( 160, 90 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Camera2D:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0 ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath("AnimationPlayerMenuPanel")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "fade_in" ],
+"method": "play"
+} ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("AnimationPlayerLevelsPanel")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "fade_out" ],
+"method": "play"
+} ]
+}
+
+[sub_resource type="Animation" id=9]
+tracks/0/type = "value"
+tracks/0/path = NodePath("Camera2D:zoom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Camera2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 160, 90 ), Vector2( 160, 450 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Camera2D:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0 ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("AnimationPlayerMenuPanel")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "fade_out" ],
+"method": "play"
+} ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath("AnimationPlayerAboutMe")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "fade_in" ],
+"method": "play"
+} ]
+}
+
+[sub_resource type="Animation" id=10]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Camera2D:zoom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Camera2D:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Camera2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 160, 90 ), Vector2( 75, 90 ) ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("AnimationPlayerMenuPanel")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "fade_out" ],
+"method": "play"
+} ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath("AnimationPlayerCustomize")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "fade_in" ],
+"method": "play"
+} ]
+}
+
+[sub_resource type="Animation" id=11]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Camera2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 160, 90 ), Vector2( 800, 90 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Camera2D:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Camera2D:zoom")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1, 1 ) ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("AnimationPlayerMenuPanel")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "fade_out" ],
+"method": "play"
+} ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath("AnimationPlayerLevelsPanel")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "fade_in" ],
+"method": "play"
+} ]
+}
+
+[sub_resource type="Animation" id=12]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Camera2D:zoom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Camera2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 160, 90 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Camera2D:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("AnimationPlayerSettings")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "fade_in" ],
+"method": "play"
+} ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath("AnimationPlayerMenuPanel")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "fade_out" ],
+"method": "play"
+} ]
+}
+
+[sub_resource type="Animation" id=13]
+tracks/0/type = "value"
+tracks/0/path = NodePath("Camera2D:zoom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Camera2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 160, 90 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Camera2D:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("AnimationPlayerMenuPanel")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "fade_in" ],
+"method": "play"
+} ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath("AnimationPlayerSettings")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "fade_out" ],
+"method": "play"
+} ]
+}
+
+[sub_resource type="Animation" id=14]
+length = 9.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Camera2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2, 4, 7, 9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 294, -210 ), Vector2( 294, -210 ), Vector2( 160, -270 ), Vector2( 160, -270 ), Vector2( 160, 90 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Camera2D:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 2, 4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ -33.0, -33.0, 0.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Camera2D:zoom")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 2, 4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.4, 0.4 ), Vector2( 0.4, 0.4 ), Vector2( 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("BlackAdamak:polygon")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3, 3.1, 3.2, 3.3, 3.4, 3.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 307.042, -209.384, 308.74, -206.982, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 309.432, -205.331, 310.194, -202.091, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 307.042, -209.384, 308.74, -206.982, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 309.432, -205.331, 310.194, -202.091, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 307.042, -209.384, 308.74, -206.982, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 309.432, -205.331, 310.194, -202.091, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 307.042, -209.384, 308.74, -206.982, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 309.432, -205.331, 310.194, -202.091, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 307.042, -209.384, 308.74, -206.982, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 309.432, -205.331, 310.194, -202.091, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 307.042, -209.384, 308.74, -206.982, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 309.432, -205.331, 310.194, -202.091, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 307.042, -209.384, 308.74, -206.982, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 309.432, -205.331, 310.194, -202.091, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 307.042, -209.384, 308.74, -206.982, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 309.432, -205.331, 310.194, -202.091, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 307.042, -209.384, 308.74, -206.982, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 309.432, -205.331, 310.194, -202.091, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 307.042, -209.384, 308.74, -206.982, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 309.432, -205.331, 310.194, -202.091, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 307.042, -209.384, 308.74, -206.982, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 309.432, -205.331, 310.194, -202.091, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 307.042, -209.384, 308.74, -206.982, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 309.432, -205.331, 310.194, -202.091, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 307.042, -209.384, 308.74, -206.982, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 309.432, -205.331, 310.194, -202.091, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 307.042, -209.384, 308.74, -206.982, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 309.432, -205.331, 310.194, -202.091, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 307.042, -209.384, 308.74, -206.982, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 309.432, -205.331, 310.194, -202.091, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ), PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 307.624, -196.139, 305.498, -194.188, 300.358, -200.42, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 ) ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath("AnimationPlayerMenuPanel")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 9 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "fade_in" ],
+"method": "play"
+} ]
+}
+
+[sub_resource type="Animation" id=15]
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Camera2D:zoom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Camera2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 160, 90 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Camera2D:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=16]
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("black:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("black:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5, 1.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 0 ) ]
+}
+
+[sub_resource type="DynamicFont" id=17]
+size = 6
+extra_spacing_top = -2
+extra_spacing_bottom = -2
+font_data = ExtResource( 2 )
+
+[sub_resource type="StyleBoxFlat" id=18]
+content_margin_left = 2.0
+content_margin_right = 2.0
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color( 0, 0, 0, 0 )
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="DynamicFont" id=19]
+size = 10
+extra_spacing_top = -2
+extra_spacing_bottom = -2
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=20]
+size = 4
+font_data = ExtResource( 2 )
+
+[sub_resource type="StyleBoxFlat" id=21]
+bg_color = Color( 0, 0, 0, 0 )
+
+[sub_resource type="DynamicFont" id=22]
+size = 35
+font_data = ExtResource( 2 )
+
+[sub_resource type="Animation" id=23]
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Menu/PanelContainer:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.5, 1.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Menu/PanelContainer:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+
+[sub_resource type="Animation" id=24]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Menu/PanelContainer:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Menu/PanelContainer:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=25]
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Menu/LevelsContainer:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.5, 1.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Menu/LevelsContainer:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+
+[sub_resource type="Animation" id=26]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Menu/LevelsContainer:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Menu/LevelsContainer:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=27]
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Menu/CustomizeContainer:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Menu/CustomizeContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.5, 1.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("player/PlayerRigidBody/TrailParticles:gravity")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.5, 1.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( -400, -50 ) ]
+}
+
+[sub_resource type="Animation" id=28]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Menu/CustomizeContainer:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Menu/CustomizeContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("player/PlayerRigidBody/TrailParticles:gravity")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=29]
+tracks/0/type = "value"
+tracks/0/path = NodePath("Menu/SettingsContainer:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Menu/SettingsContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=30]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Menu/SettingsContainer:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Menu/SettingsContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath("AnimationPlayerMenuPanel")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "fade_in" ],
+"method": "play"
+} ]
+}
+
+[sub_resource type="Animation" id=31]
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Menu/AboutMeContainer:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Menu/AboutMeContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=32]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Menu/AboutMeContainer:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Menu/AboutMeContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BGMain" type="Node2D" parent="."]
+z_index = -1
+script = ExtResource( 11 )
+
+[node name="blank" type="Polygon2D" parent="BGMain" groups=[
+"bg_back",
+]]
+color = Color( 0.254902, 0.254902, 0.254902, 1 )
+polygon = PoolVector2Array( -96.0279, 227.38, 405.817, 195.272, 395.115, -84.1919, -115.055, -66.3538 )
+
+[node name="light" type="Polygon2D" parent="BGMain" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( -33.0452, 151.989, -3.61386, 133.069, 35.74, 139.215, 43.4582, 149.242, 50.4661, 140.899, 90.1347, 129.871, 98.5203, 139.565, 107.531, 131.889, 152.538, 117.19, 159.256, 129.553, 165.596, 119.208, 228, 124.881, 243.684, 134.225, 257.366, 127.885, 290.737, 135.894, 302.708, 140.55, 307.046, 125.199, 326.111, 111.533, 338.713, 104.113, 327.779, 96.5161, 323.107, 61.8102, 335.121, 56.4709, 319.06, 42.4391, 329.448, -2.26208, 346.09, -12.623, 322.063, -7.95107, 291.045, -20.9095, 283.353, -32.6456, 274.981, -23.4293, 211.67, -18.7046, 196.866, -27.524, 189.306, -15.2398, 135.445, -7.05032, 123.839, -19.2972, 108.671, -11.1451, 45.3603, -23.4293, 35.0106, -28.1156, 29.6113, -19.3345, -9.76125, -5.16043, -17.3153, 2.28998, -11.3362, 8.38372, -11.6511, 43.6615, -22.3255, 60.4595, -7.87135, 75.4745, -14.6502, 92.8293, -5.92633, 100.274, -7.60812, 115.62, -5.09931, 138.466, -14.5455, 161.239, -71.6757, 39.3668, -56.5737, -28.1202, -26.3697, -47.9415, 379.968, -71.5384, 377.137, 193.218, -25.4258, 203.129 )
+
+[node name="dark" type="Polygon2D" parent="BGMain" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( -24.0463, 160.763, -0.632141, 150.445, 21.7242, 151.896, 27.9411, 158.977, 32.4029, 150.227, 60.4828, 149.651, 66.775, 158.236, 69.4447, 146.557, 102.482, 145.222, 106.487, 150.227, 113.494, 140.55, 138.189, 136.212, 143.528, 141.551, 146.865, 131.54, 175.564, 131.206, 179.569, 133.876, 192.917, 126.2, 228.291, 132.875, 228.624, 140.55, 242.306, 134.877, 260.661, 143.22, 261.995, 150.227, 274.343, 142.218, 297.702, 145.222, 303.375, 149.894, 308.715, 140.55, 328.404, 127.201, 339.416, 129.871, 333.076, 119.86, 347.091, 96.8338, 353.766, 90.8271, 345.423, 85.8214, 337.08, 59.792, 342.419, 53.7853, 333.409, 47.7785, 334.744, 24.7525, 341.752, 25.4199, 336.413, 11.0704, 351.096, -9.28592, 360.28, -16.4483, 349.427, -16.2938, 323.064, -22.6343, 322.397, -30.3096, 318.059, -25.304, 291.696, -33.9805, 286.69, -39.6535, 278.013, -33.6467, 242.64, -30.3096, 235.632, -38.6524, 230.293, -29.9759, 194.586, -30.6433, 189.247, -34.9816, 186.243, -24.6366, 159.546, -19.2972, 155.876, -24.6366, 151.537, -17.9624, 120.836, -21.9669, 113.853, -29.8834, 105.819, -18.2961, 74.1167, -26.9725, 70.3659, -33.7725, 62.4368, -27.6399, 34.0715, -32.6456, 27.731, -37.985, 23.7265, -28.9748, -8.97711, -15.2927, -19.6558, -19.6309, -15.194, -9.73083, -23.3266, 11.4041, -32.5181, 15.3715, -21.6581, 20.0806, -25.9963, 49.7808, -31.6694, 57.7898, -22.6592, 66.8, -14.9839, 101.172, -19.9895, 106.511, -14.6502, 111.517, -5.64001, 143.22, -9.56127, 164.136, -39.9203, 141.913, -74.5, -16, -40.5, -70.5, 380.5, -75, 396.5, 205.5, -23, 203.5 )
+
+[node name="dark2" type="Polygon2D" parent="BGMain" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 40.2227, 159.613, 35.1716, 132.393, 21.4215, 107.98, 16.3155, 81.6789, 7.1101, 60.2752, 10.9761, 62.3237, 19.7378, 80.4795, 25.9113, 72.3417, 22.8246, 54.9435, 27.3144, 40.3515, 28.7175, 44.5607, 25.6307, 55.2241, 31.243, 74.5866, 22.8228, 87.5188, 26.9942, 101.535, 41.6258, 80.7601, 60.7077, 77.1121, 65.5568, 60.8724, 53.4117, 56.6272, 49.8547, 47.2862, 44.5093, 43.3885, 44.432, 41.4739, 51.4474, 45.6832, 57.0597, 53.5404, 67.1618, 56.3466, 68.5649, 47.9281, 61.2689, 37.2647, 65.7795, 27.7978, 66.0023, 31.3614, 64.1091, 36.9295, 73.616, 47.6475, 70.5292, 66.1681, 65.1975, 83.2857, 44.6808, 89.0205, 32.5004, 110.545, 47.5187, 130.148, 55.9372, 160.736 )
+
+[node name="dark3" type="Polygon2D" parent="BGMain" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 99.4286, 147.72, 103.145, 136.274, 97.0502, 141.774, 94.5231, 137.612, 92.7393, 142.22, 86.496, 136.72, 91.1041, 148.166 )
+
+[node name="dark4" type="Polygon2D" parent="BGMain" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 17.7383, 153.929, 19.1951, 147.705, 14.4275, 149.559, 13.2356, 146.513, 11.6464, 149.162, 8.20314, 144.924, 10.0572, 153.532 )
+
+[node name="dark5" type="Polygon2D" parent="BGMain" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( -28.5365, 39.514, -18.294, 44.5651, -20.6792, 38.8125, -16.8909, 37.69, -20.2583, 33.4808, -14.2251, 28.7103, -28.1156, 31.6568 )
+
+[node name="dark6" type="Polygon2D" parent="BGMain" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 57.1642, 150.207, 57.7829, 144.639, 55.3081, 147.467, 54.2474, 144.285, 52.3912, 150.737 )
+
+[node name="noor" type="Polygon2D" parent="BGMain" groups=[
+"bg_light",
+]]
+color = Color( 1, 1, 1, 0.117647 )
+polygon = PoolVector2Array( 281.007, -51.1189, 74.5516, 203.145, 288.609, 199.578, 319.502, -45.9599 )
+
+[node name="player" type="Node" parent="."]
+
+[node name="PlayerRigidBody" type="RigidBody2D" parent="player"]
+position = Vector2( 142.416, 69.5371 )
+collision_layer = 0
+collision_mask = 0
+mode = 1
+sleeping = true
+
+[node name="GlowingParticles" type="CPUParticles2D" parent="player/PlayerRigidBody"]
+show_behind_parent = true
+position = Vector2( 0.00210571, 0.00108337 )
+amount = 20
+speed_scale = 3.75
+emission_shape = 1
+emission_sphere_radius = 5.0
+gravity = Vector2( 0, 0 )
+radial_accel = 2.0
+scale_amount_random = 0.5
+
+[node name="light" type="Sprite" parent="player/PlayerRigidBody"]
+modulate = Color( 1, 1, 1, 0.196078 )
+scale = Vector2( 0.8, 0.8 )
+z_index = -1
+texture = ExtResource( 10 )
+
+[node name="LightAnimation" type="AnimationPlayer" parent="player/PlayerRigidBody"]
+autoplay = "light"
+anims/light = SubResource( 1 )
+
+[node name="spot" type="Sprite" parent="player/PlayerRigidBody"]
+scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 12 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player/PlayerRigidBody"]
+shape = SubResource( 2 )
+
+[node name="TrailParticles" type="CPUParticles2D" parent="player/PlayerRigidBody"]
+show_behind_parent = true
+speed_scale = 0.5
+fixed_fps = 24
+local_coords = false
+texture = ExtResource( 12 )
+gravity = Vector2( 0, 0 )
+scale_amount_curve = SubResource( 3 )
+
+[node name="BGMain2" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="Black" type="Polygon2D" parent="BGMain2"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 367.5, -27.5, 236.5, -52.5, 147.5, -30, 38, -45, -34, -26.5, -43, 54.5, -23.5, 126, -9.5, 170, 92, 164.5, 141, 147.5, 175.5, 139.5, 215, 137.5, 247.5, 156, 310.5, 161, 341.5, 157, 358, 85, 341.5, 38, 369.5, -20.5, 352.042, -81.9955, 436.227, -91.5364, 438.402, 250.437, -151.411, 261.044, -133.733, -96.7523, 439.73, -105.238 )
+
+[node name="Black2" type="Polygon2D" parent="BGMain2"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 185.013, 160.918, 187.571, 126.023, 152.601, 109.707, 132.625, 72.375, 148.25, 75.625, 170.287, 98.0271, 197.916, 106.001, 201.297, 77.5946, 186.371, 51.859, 162.421, 51.68, 148.526, 65.5987, 135.611, 63.8216, 156.399, 37.1079, 190.886, 33.8376, 218.237, 71.8922, 217.565, 104.233, 235.524, 80.6617, 229.547, 51.0545, 217.887, 31.4236, 187.23, 23.8821, 177.875, 9.18231, 227.765, 17.2004, 246.548, 43.508, 252.711, 82.6814, 238.409, 111.187, 267.41, 88.0268, 275.429, 62.1908, 272.004, 41.3756, 249.147, 20.3185, 246.029, 4.28237, 287.456, 31.9002, 295.919, 63.0817, 283.229, 98.6211, 254.492, 122.772, 278.101, 120.545, 292.801, 110.299, 304.383, 88.9177, 303.937, 60.8544, 314.628, 43.9274, 320.864, 92.9268, 309.283, 125.445, 288.28, 138.469, 249.592, 140.144, 220.193, 163.308 )
+
+[node name="Black3" type="Polygon2D" parent="BGMain2"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 319.365, -39.1858, 318.944, -33.7138, 272.502, -42.5532, 276.992, -47.4639 )
+
+[node name="BGIntro" type="Node2D" parent="."]
+script = SubResource( 4 )
+
+[node name="blank" type="Polygon2D" parent="BGIntro" groups=[
+"bg_back",
+]]
+position = Vector2( -9.50083, 6.72131 )
+color = Color( 0.254902, 0.254902, 0.254902, 1 )
+polygon = PoolVector2Array( 347.192, -385.004, 347.192, -156.586, -29.4136, -166.969, -19.9749, -359.519 )
+
+[node name="light" type="Polygon2D" parent="BGIntro" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 35.8288, -178.543, 56.4305, -207.011, 95.4058, -210.705, 101.139, -202.146, 105.644, -205.817, 145.431, -205.041, 150.858, -198.08, 154.634, -204.097, 186.297, -210.16, 193.526, -203.827, 199.917, -211.323, 236.602, -210.569, 242.532, -204.805, 247.638, -212.992, 280.008, -215.661, 287.544, -212.629, 285.681, -220.5, 292.414, -244.281, 300.934, -246.454, 296.359, -253.037, 301.532, -279.066, 308.333, -284.173, 298.782, -288.856, 293.857, -316.275, 299.755, -319.132, 291.854, -321.448, 294.474, -339.798, 297.041, -345.207, 290.686, -343.973, 264.123, -344.735, 259.404, -350.28, 255.157, -345.561, 220.351, -341.667, 214.57, -345.561, 212.092, -340.251, 183.658, -342.257, 179.883, -346.977, 175.635, -342.493, 149.679, -347.566, 145.785, -351.696, 144.251, -347.802, 120.828, -338.133, 114.519, -341.549, 113.153, -337.132, 87.895, -323.129, 79.5959, -329.515, 77.2789, -323.283, 53.5855, -318.111, 48.212, -320.548, 49.6881, -313.952, 28.3904, -302.093, 23.5533, -301.788, 24.8864, -297.588, 20.9577, -275.714, 17.6541, -272.057, 21.2203, -268.816, 25.2455, -240.213, 23.4637, -233.977, 30.5909, -234.2, 50.4134, -211.705, 57.5543, -184.161, 34.399, -182.975, -12.27, -247.675, -9.4416, -335.003, 73.997, -359.044, 174.76, -370.004, 296.382, -368.237, 334.566, -360.458, 329.616, -174.843 )
+
+[node name="dark" type="Polygon2D" parent="BGIntro" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 36.3419, -173.36, 54.625, -199.75, 75.375, -197.75, 79.375, -194.25, 82.933, -199.629, 106.25, -199, 108.204, -195.466, 111.75, -201.125, 132.88, -196.953, 135.25, -193.5, 138, -197, 154.988, -196.547, 158.763, -191.709, 161.123, -197.726, 180.354, -199.378, 184.13, -195.485, 185.31, -202.564, 207.019, -202.918, 210.44, -199.496, 213.746, -203.791, 233.07, -201.71, 236.869, -197.962, 239.347, -203.744, 261.017, -201.858, 265.625, -200.075, 266.814, -204.534, 284.889, -211.059, 289.49, -208.109, 289.26, -212.115, 293.029, -226.986, 300.707, -226.534, 297.734, -230.251, 302.94, -247.162, 306.834, -248.814, 302.044, -251.508, 303.234, -266.67, 306.952, -269.933, 304.274, -273.954, 309.774, -284.508, 312.599, -287.481, 308.139, -288.373, 302.704, -302.614, 306.244, -305.8, 302.193, -309.184, 304.274, -321.225, 307.099, -322.563, 301.301, -328.36, 303.708, -340.565, 306.539, -344.812, 302.292, -343.869, 294.917, -349.572, 292.675, -352.404, 290.906, -348.982, 274.544, -348.726, 271.91, -353.23, 269.787, -349.808, 253.436, -351.55, 250.165, -354.82, 247.638, -350.509, 230.395, -349.023, 227.194, -352.286, 225.896, -345.915, 208.246, -347.091, 205.839, -351.106, 203.597, -346.268, 186.254, -348.51, 184.012, -350.988, 181.652, -347.448, 163.502, -350.658, 161.123, -353.466, 157.853, -350.509, 140.83, -350.634, 139.296, -354.291, 137.785, -350.658, 121.434, -344.712, 118.312, -348.131, 118.413, -342.965, 104.19, -340.253, 101.366, -343.077, 101.812, -337.28, 84.1223, -333.861, 81.9555, -336.712, 81.4836, -330.813, 66.4328, -327.617, 63.9057, -330.442, 62.8421, -325.975, 47.8581, -323.616, 44.6725, -325.149, 45.7344, -321.846, 38.4864, -315.428, 34.1719, -316.183, 34.6215, -312.455, 23.9186, -305.765, 19.4239, -306.272, 22.8454, -301.789, 17.824, -288.373, 13.0527, -287.394, 16.0401, -285.252, 16.1548, -267.345, 11.4301, -265.927, 16.1548, -262.305, 14.81, -248.942, 9.77756, -245.763, 14.0154, -244.439, 17.8872, -228.13, 16.0039, -223.811, 21.1629, -227.184, 33.0062, -211.593, 30.6873, -205.357, 36.6285, -209.073, 51.522, -201.786, 52, -181.875, 33.75, -177.625, -1.7572, -211.351, -6.19849, -251.091, -3.52579, -338.399, 148.595, -377.599, 333.902, -371.363, 326.329, -168.46 )
+
+[node name="dark5" type="Polygon2D" parent="BGIntro" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 238.549, -329.346, 237.714, -332.352, 239.384, -332.13, 243.161, -363.192, 244.748, -363.291, 240.553, -332.074, 242.224, -331.907, 240.386, -329.29 )
+
+[node name="dark6" type="Polygon2D" parent="BGIntro" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 67.9393, -345.104, 75.0625, -273.562, 73.125, -273.062, 75.3483, -270.174, 77.375, -270.625, 78.0938, -274.344, 76.375, -273.781, 69.6687, -345.734 )
+
+[node name="dark7" type="Polygon2D" parent="BGIntro" groups=[
+"bg_front",
+]]
+position = Vector2( -0.140305, -0.14032 )
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 144.081, -297.875, 143.967, -300.968, 142.653, -300.284, 115.8, -354.909, 114.677, -354.068, 141.655, -299.759, 140.183, -299.076, 142.494, -297.279 )
+
+[node name="dark8" type="Polygon2D" parent="BGIntro" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 26.9054, -270.384, 25.375, -272.267, 26.9341, -272.267, 25.4657, -334.539, 27.1475, -335.065, 28.1312, -272.267, 29.5789, -272.239, 28.3084, -270.314 )
+
+[node name="dark9" type="Polygon2D" parent="BGIntro" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 156.119, -255.056, 154.467, -256.984, 156.207, -257.177, 155.577, -363.767, 157.582, -364.213, 157.115, -257.284, 158.774, -257.604, 157.4, -255.232 )
+
+[node name="dark10" type="Polygon2D" parent="BGIntro" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 92.4798, -213.006, 91.5338, -216.264, 93.2682, -215.739, 94.257, -352.216, 96.0252, -352.293, 94.4769, -215.371, 96.2639, -215.108, 94.3193, -212.743 )
+
+[node name="dark11" type="Polygon2D" parent="BGIntro" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 286.918, -293.178, 285.239, -295.3, 286.83, -295.432, 284.149, -362.799, 286.003, -362.799, 287.891, -295.432, 289.393, -295.565, 288.465, -293.267 )
+
+[node name="dark12" type="Polygon2D" parent="BGIntro" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 189.759, -362.693, 190.875, -336.156, 189.031, -335.969, 190.812, -332.875, 192.844, -333, 194.094, -336.5, 192.188, -336.312, 191.861, -363.008 )
+
+[node name="dark13" type="Polygon2D" parent="BGIntro" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 255.639, -198.08, 261.312, -212.763, 260.514, -223.201, 268.487, -234.121, 282.336, -238.292, 284.464, -247.627, 283.17, -246.802, 280.667, -239.46, 274.827, -238.459, 274.44, -243.872, 277.811, -249.751, 275.704, -253.122, 275.376, -251.717, 276.079, -249.985, 272.105, -244.122, 272.324, -239.293, 266.151, -236.29, 259.334, -226.855, 255.98, -233.086, 256.139, -240.795, 257.789, -244.828, 257.641, -247.135, 254.805, -241.629, 254.334, -233.276, 248.411, -235.612, 246.325, -241.035, 241.737, -243.705, 242.404, -241.953, 244.657, -239.783, 246.909, -234.277, 253.75, -230.44, 256.426, -225.282, 256.473, -213.097, 248.631, -200.082 )
+
+[node name="dark15" type="Polygon2D" parent="BGIntro" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 246.635, -200.654, 248.226, -208.697, 244.867, -205.692, 243.63, -208.697, 243.099, -205.515, 239.652, -207.637, 242.657, -200.919 )
+
+[node name="dark16" type="Polygon2D" parent="BGIntro" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 301.837, -233.217, 293.603, -231.629, 296.579, -235.102, 294.297, -236.888, 297.174, -238.277, 295.289, -242.741, 303.326, -238.277 )
+
+[node name="dark17" type="Polygon2D" parent="BGIntro" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 68.9404, -195.931, 72.8295, -204.77, 67.1726, -202.118, 65.2281, -205.3, 63.2835, -201.942, 58.157, -207.598, 60.8087, -196.462 )
+
+[node name="dark18" type="Polygon2D" parent="BGIntro" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 76.8834, -331.683, 84.3918, -326.176, 78.0513, -326.844, 76.8834, -323.34, 75.048, -326.844, 73.3794, -321.838, 71.0434, -331.849 )
+
+[node name="dark14" type="Polygon2D" parent="BGIntro" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 201.947, -199.527, 204.622, -211.717, 198.825, -206.365, 196.595, -208.595, 195.406, -205.473, 188.271, -210.974, 193.771, -198.784 )
+
+[node name="noor" type="Polygon2D" parent="BGIntro" groups=[
+"bg_light",
+]]
+color = Color( 1, 1, 1, 0.117647 )
+polygon = PoolVector2Array( 29.8073, -376.001, 73.6479, -161.041, 345.177, -163.869, 99.1038, -375.294 )
+
+[node name="Black" type="Polygon2D" parent="BGIntro"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 303.215, -296.196, 301.139, -288.909, 289.465, -284.971, 286.799, -278.096, 295.218, -270.8, 304.818, -279.028, 308.968, -277.956, 298.445, -258.173, 273.766, -253.886, 267.783, -254.919, 264.555, -251.376, 241.25, -245.25, 211.25, -228.25, 188.5, -208.25, 164.25, -196.75, 136.25, -193.75, 105, -199.25, 82, -208.25, 61.75, -220.5, 82, -218.25, 109.75, -208.25, 136.75, -203.5, 162.5, -207.5, 183, -218.75, 203.75, -237.25, 234, -256, 249.739, -261.395, 251.24, -275.248, 250.574, -308.114, 257.915, -338.148, 268.427, -340.151, 260.752, -307.447, 262.087, -278.581, 265.757, -264.064, 286.378, -266.03, 277.539, -276.413, 282.73, -293.109 )
+
+[node name="Black2" type="Polygon2D" parent="BGIntro"]
+visible = false
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 236.964, -269.168, 213.173, -325.873, 220.523, -332.554, 247.435, -329.723, 247.636, -306.584, 215.23, -293.8, 196.5, -285.476, 227.42, -268.827, 172.865, -250.097, 180.71, -244.369, 180.345, -234.018, 162.863, -227.72, 151.459, -241.475, 138.081, -228.245, 128.864, -220.218, 116.058, -215.431, 108.216, -219.436, 122.732, -229.114, 130.741, -236.288, 124.401, -246.633, 115.891, -255.31, 124.901, -257.979, 133.175, -252.475, 137.932, -243.11, 150.096, -253.307, 167.03, -259.468, 200.961, -271.969, 173.974, -285.337, 210.055, -301.596, 239.455, -312.286, 239.356, -323.366, 224.391, -323.101 )
+
+[node name="Black14" type="Polygon2D" parent="BGIntro"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 236.964, -269.168, 213.173, -325.873, 220.523, -332.554, 247.435, -329.723, 247.636, -306.584, 215.23, -293.8, 196.5, -285.476, 227.42, -268.827, 172.865, -250.097, 180.71, -244.369, 180.345, -234.018, 169.373, -227.778, 165.583, -230.825, 168.333, -234.392, 164.914, -236.697, 167, -240.688, 164.393, -241.751, 165.375, -244.75, 163.427, -247.771, 163.501, -225.622, 151.459, -241.475, 138.081, -228.245, 128.864, -220.218, 116.058, -215.431, 110.5, -224.375, 122.732, -229.114, 130.741, -236.288, 124.401, -246.633, 111.868, -250.485, 115.018, -259.147, 131.75, -254.375, 137.932, -243.11, 150.096, -253.307, 167.03, -259.468, 200.961, -271.969, 173.974, -285.337, 210.055, -301.596, 239.455, -312.286, 239.356, -323.366, 224.391, -323.101 )
+
+[node name="blank2" type="Polygon2D" parent="BGIntro" groups=[
+"bg_back",
+]]
+position = Vector2( -9.50083, 6.72131 )
+color = Color( 0.254902, 0.254902, 0.254902, 1 )
+polygon = PoolVector2Array( 184.764, -246.811, 180.87, -253.366, 187.102, -246.449, 186.47, -242.44, 183.765, -242.344, 181.032, -244.236 )
+
+[node name="noor2" type="Polygon2D" parent="BGIntro" groups=[
+"bg_light",
+]]
+position = Vector2( -9.501, 6.721 )
+color = Color( 1, 1, 1, 0.117647 )
+polygon = PoolVector2Array( 184.764, -246.811, 180.87, -253.366, 187.102, -246.449, 186.47, -242.44, 183.765, -242.344, 181.032, -244.236 )
+
+[node name="Black3" type="Polygon2D" parent="BGIntro"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 204.088, -336.149, 202.475, -330.537, 193.705, -328.432, 190.313, -319.659, 198.202, -315.115, 203.539, -320.547, 207.941, -321.296, 205.131, -310.714, 180.348, -301.432, 176.673, -302.49, 175.255, -299.506, 157.79, -292.951, 152.938, -294.188, 150.673, -290.422, 91.816, -267.65, 85.7343, -268.956, 82.742, -264.468, 53.857, -253.489, 50.209, -239.459, 32.398, -224.329, 27.265, -230.817, 42.478, -244.331, 44.368, -255.512, 27.972, -278.369, 58.454, -281.523, 52.737, -263.405, 79.2027, -273.268, 82.199, -277.622, 88.7044, -276.804, 145.809, -299.085, 148.436, -303.584, 154.188, -302.125, 163.358, -305.567, 157.411, -328.239, 160.581, -344.257, 169.592, -346.259, 164.085, -330.408, 174.25, -308.75, 186.5, -313.312, 180.234, -318.242, 186.143, -333.769 )
+
+[node name="Black13" type="Polygon2D" parent="BGIntro"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 124.475, -355.089, 127.15, -352.934, 37.6625, -330.859, 37.4396, -336.136 )
+
+[node name="Black4" type="Polygon2D" parent="BGIntro"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 31.76, -270.71, 28.951, -245.426, 11.61, -232.046, 6.57, -238.031, 21.689, -249.055, 23.421, -270.946 )
+
+[node name="Black5" type="Polygon2D" parent="BGIntro"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 61.046, -241.325, 76.738, -249.253, 79.057, -246.622, 74.087, -236.81, 83.427, -246.755, 78.744, -255.86, 62.9, -249.801 )
+
+[node name="Black6" type="Polygon2D" parent="BGIntro"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 108.58, -263.119, 157.983, -281.829, 161.136, -275.312, 127.08, -262.068 )
+
+[node name="Black15" type="Polygon2D" parent="BGIntro"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 129.472, -286.904, 141.258, -273.996, 138.873, -273.154, 126.947, -285.922 )
+
+[node name="Black16" type="Polygon2D" parent="BGIntro"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 66.194, -260.386, 69.28, -250.845, 71.104, -251.546, 68.298, -261.649 )
+
+[node name="Black7" type="Polygon2D" parent="BGIntro"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 259.505, -302.438, 267.703, -304.067, 274.326, -308.219, 275.593, -318.545, 276.06, -325.194, 279.956, -328.662, 280.823, -333.459, 278.522, -335.301, 278.077, -336.916, 282.545, -334.351, 281.736, -327.559, 278.6, -324.336, 278.488, -319.548, 285.616, -325.45, 290.957, -330.003, 291.205, -334.627, 285.901, -337.985, 286.343, -342.405, 287.183, -341.212, 287.448, -338.869, 293.149, -335.908, 293.635, -329.191, 286.078, -322.429, 288.423, -321.133, 295.861, -325.004, 303.719, -325.25, 304.75, -327.438, 305.938, -328, 304.703, -323.661, 296.375, -323.094, 288.088, -318.346, 283.382, -319.91, 279.045, -315.427, 277.932, -305.516, 269.357, -299.502, 259.78, -294.937 )
+
+[node name="Black8" type="Polygon2D" parent="BGIntro"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( -46.9342, -208.301, 1.66194, -273.045, 2.99828, -267.923, 5.89159, -215.438, 42.7539, -186.078, 114.981, -191.634, 157.047, -185.284, 214.987, -194.015, 296.243, -189.884, 309.087, -201.365, 311.025, -254.336, 315.787, -290.052, 310.447, -316.831, 316.241, -336.907, 305.547, -353.951, 244.354, -359.104, 188.001, -352.755, 148.316, -359.104, 26.8799, -332.119, 7.83112, -301.164, 3.22101, -268.145, -61.2208, -134.487, -59.6334, -235.287, -58.8397, -371.01, 21.324, -409.108, 335.629, -405.933, 397.538, -354.342, 373.727, -150.361, 257.847, -95.5959, -45.3468, -147.186 )
+
+[node name="Black9" type="Polygon2D" parent="BGIntro"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 158.693, -331.968, 146.876, -333.776, 141.874, -329.584, 133.266, -323.359, 120.108, -322.889, 109.546, -326.729, 107.361, -325.901, 106.249, -326.008, 109.295, -328.524, 120.022, -325.213, 127.571, -325.743, 122.621, -329.608, 117.448, -334.113, 119.36, -340.046, 119.942, -338.284, 119.493, -334.881, 124.79, -331.04, 129.462, -333.612, 129.69, -338.457, 127.392, -340.105, 126.776, -341.635, 131.297, -339.452, 131.297, -332.611, 127.041, -329.319, 131.412, -326.67, 138.96, -331.438, 145.847, -337, 160.812, -336.47 )
+
+[node name="Black10" type="Polygon2D" parent="BGIntro"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 47.541, -279.567, 49.919, -287.892, 34.311, -286.405, 39.365, -278.378 )
+
+[node name="Black12" type="Polygon2D" parent="BGIntro"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 82.135, -214.287, 81.747, -224.764, 88.035, -227.865, 98.164, -230.006, 102.117, -234.238, 104.344, -239.249, 106.043, -239.646, 106.605, -240.308, 103.593, -240.242, 100.725, -235.129, 98.999, -237.467, 99.778, -243.202, 104.138, -249.028, 102.117, -252.223, 101.945, -251.146, 102.874, -249.176, 98.553, -243.926, 97.328, -237.077, 98.943, -233.625, 96.66, -231.788, 89.923, -230.353, 91.688, -233.058, 90.09, -237.904, 91.7313, -240.744, 90.924, -244.578, 92.0654, -245.477, 92.384, -246.288, 89.921, -245.256, 90.507, -241.074, 88.087, -237.904, 89.125, -234.649, 85.585, -234.817, 82.832, -237.111, 80.245, -235.985, 81.3675, -235.613, 82.5594, -236.043, 84.7445, -233.758, 89.297, -232.815, 87.295, -230.27, 78.607, -227.136, 76.22, -216.264 )
+
+[node name="Black11" type="Polygon2D" parent="BGIntro"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 44.91, -284.027, 44.018, -289.527, 51.851, -301.865, 58.838, -305.284, 60.027, -309.595, 58.9263, -309.128, 57.352, -306.325, 51.108, -303.649, 46.946, -298.446, 44.568, -300.081, 45.608, -306.325, 52.8282, -310.141, 52.7345, -316.462, 51.7513, -315.058, 51.3767, -310.984, 44.3412, -307.723, 42.235, -299.338, 45.356, -296.662, 41.892, -291.608, 37.4305, -292.585, 32.87, -296.365, 33.625, -299.25, 33.121, -301.122, 30.64, -295.622, 36.5128, -290.583, 41.194, -288.932, 42.086, -284.176 )
+
+[node name="BGLevels" type="Node2D" parent="."]
+script = ExtResource( 14 )
+
+[node name="blank" type="Polygon2D" parent="BGLevels" groups=[
+"bg_back",
+]]
+color = Color( 0.254902, 0.254902, 0.254902, 1 )
+polygon = PoolVector2Array( 970, -20, 991, 215, 624, 207, 630, -15 )
+
+[node name="light" type="Polygon2D" parent="BGLevels" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 632, 168.75, 669.844, 147.335, 718.671, 145.932, 729.895, 155.754, 738.875, 144.249, 794.156, 151.545, 803.978, 162.208, 810.432, 151.264, 871.045, 153.228, 891.249, 160.805, 898.265, 151.264, 923.893, 131.418, 938.593, 126.518, 920.995, 115.065, 922.959, 68.763, 932.356, 54.3557, 905.28, 40.7015, 854.769, 32.283, 845.79, 22.7421, 837.652, 35.0891, 780.904, 32.9741, 767.189, 24.8241, 755.513, 36.9832, 695.38, 43.5076, 676.086, 37.8388, 680.788, 52.7679, 676.223, 97.1188, 667.599, 104.962, 679.341, 122.509, 663.5, 150.5, 615.585, 204.873, 624.972, -15.5381, 984.035, -12.1745, 995.807, 216.549, 629.176, 216.549 )
+
+[node name="dark" type="Polygon2D" parent="BGLevels" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 641.629, 183.145, 676.474, 159.297, 707.19, 161.17, 714.536, 166.359, 719.176, 162.668, 760.838, 160.375, 763.002, 170.16, 774.614, 162.668, 806.826, 164.469, 812.18, 171.399, 819.563, 163.417, 855.148, 166.04, 863.207, 170.769, 870.131, 163.417, 901.97, 164.916, 916.204, 169.411, 913.582, 160.046, 937.929, 138.321, 948.043, 136.073, 941.3, 128.582, 934.558, 94.1208, 944.472, 88.874, 935.307, 82.5089, 940.551, 53.2919, 944.787, 44.7768, 931.936, 46.5495, 894.853, 29.319, 888.11, 19.2054, 882.866, 25.9478, 849.904, 21.0783, 843.91, 12.0884, 840.165, 25.5732, 801.958, 25.5732, 794.841, 14.7105, 782.854, 22.9512, 744.273, 22.5766, 737.531, 15.4596, 729.664, 27.0715, 685.09, 26.6969, 677.684, 18.6334, 677.598, 29.319, 662.615, 52.5427, 652.876, 53.6665, 666.361, 63.4055, 663.364, 93.3716, 657.371, 100.489, 665.986, 113.973, 658.606, 149.331, 657.203, 159.012, 679.091, 159.573, 656.782, 182.443, 624.792, 166.168, 623.64, -13.1537, 975.249, -9.97891, 981.599, 197.177 )
+
+[node name="dark2" type="Polygon2D" parent="BGLevels" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 746.023, 166.653, 752.75, 150.256, 742.449, 156.142, 740.136, 150.046, 737.404, 156.562, 727.943, 149.625, 736.983, 167.074 )
+
+[node name="dark3" type="Polygon2D" parent="BGLevels" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 663.028, 41.8166, 668.855, 52.6761, 670.974, 45.5247, 676.271, 46.5842, 675.477, 41.022, 683.158, 38.3734, 664.882, 35.195 )
+
+[node name="dark4" type="Polygon2D" parent="BGLevels" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 943, 63, 925.5, 56.75, 931, 64.75, 926, 67, 931.75, 70.75, 924.75, 75.75, 942.25, 73.5 )
+
+[node name="noor" type="Polygon2D" parent="BGLevels" groups=[
+"bg_light",
+]]
+color = Color( 1, 1, 1, 0.117647 )
+polygon = PoolVector2Array( 874.48, 202.084, 933.877, 200.669, 864.581, -25.6047, 624.164, -34.09, 635.072, -14.7485 )
+
+[node name="Black" type="Polygon2D" parent="BGLevels"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 590.654, 172.588, 711.253, 172.834, 807.894, 178.078, 938.996, 175.831, 955.477, 158.6, 947.985, 97.1698, 955.477, 43.2307, 933.752, 1.27811, 870.823, 7.27133, 780.924, 3.52557, 725.487, 10.2679, 656.565, 6.52218, 643.08, 27.4985, 646.077, 109.905, 644.465, 183.291, 594.518, 168.426, 580, -44, 1008, -49, 1031, 250, 569, 257, 592.812, 179.576 )
+
+[node name="Black2" type="Polygon2D" parent="BGLevels"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 927.934, 177.819, 926.001, 170.684, 842.162, 174.4, 849.744, 181.833 )
+
+[node name="BGAboutMe" type="Node2D" parent="."]
+script = ExtResource( 14 )
+
+[node name="blank" type="Polygon2D" parent="BGAboutMe" groups=[
+"bg_back",
+]]
+color = Color( 0.254902, 0.254902, 0.254902, 1 )
+polygon = PoolVector2Array( 709.741, 306.809, 754.286, 595.46, -394.973, 588.333, -400.318, 319.282 )
+
+[node name="light" type="Polygon2D" parent="BGAboutMe" groups=[
+"bg_mid",
+]]
+color = Color( 0.196078, 0.196078, 0.196078, 1 )
+polygon = PoolVector2Array( 85, 510.25, 124.25, 512.5, 128.75, 517.5, 133.25, 512.5, 162.483, 506.061, 166.978, 512.242, 170.349, 505.874, 203.686, 507.56, 208.25, 512.75, 212.676, 507.185, 249, 508.75, 254.457, 514.778, 259.809, 506.454, 295.5, 506.75, 301.133, 510.616, 304.404, 502.589, 341.5, 501.25, 344.25, 505.5, 348.107, 498.129, 381.75, 504.75, 385.75, 509.75, 390.919, 501.697, 426, 499.913, 432.541, 508.832, 435.811, 502.589, 476.244, 502.291, 482.25, 511.25, 487.244, 501.399, 523.25, 499, 529.5, 503.25, 535.5, 498, 571.083, 497.534, 575.25, 505.25, 579.25, 500.75, 605.57, 491.588, 617.76, 498.724, 613.3, 488.021, 623, 468.5, 629.5, 467, 622.75, 459.5, 616.75, 434.25, 623.75, 427.25, 614.75, 426, 603.5, 404.75, 608.25, 398.75, 596.75, 398, 580.75, 383.25, 577.75, 375.5, 574, 382.5, 541, 385.75, 530.75, 381, 528.25, 386.75, 485.163, 389.911, 477.5, 381, 471.25, 387.75, 441.5, 391.75, 433, 386.5, 426.25, 393.75, 386.25, 393.25, 377.25, 387.5, 373, 393.25, 320.5, 397, 314.25, 390.25, 307.079, 400.317, 264.268, 397.641, 255.349, 388.425, 251.781, 395.857, 211.348, 399.425, 202.727, 390.209, 195.889, 400.02, 149.75, 392.5, 144.158, 383.371, 138.75, 390.25, 105.212, 394.668, 101.049, 387.533, 95.9953, 392.587, 47.25, 388.5, 41.3897, 385.911, 39.8052, 390.803, 8.25, 401.75, 0.264114, 394.668, -2.25, 404.25, -41.75, 406.25, -48.7907, 398.533, -56.8178, 408.047, -94, 404, -104.089, 394.965, -111.224, 406.263, -157.5, 405, -165.928, 397.938, -174.25, 405.25, -212.25, 404.75, -217.361, 396.749, -224.75, 404, -262, 407, -277.416, 397.046, -278.605, 406.263, -320, 418.25, -331, 415.75, -326.173, 426.777, -335.25, 455, -342, 461.25, -327.362, 466.615, -325.25, 494.5, -327.5, 506.25, -318.75, 502, -284.25, 517, -282, 526.5, -273.25, 517.75, -229.847, 517.751, -224, 529.5, -217.25, 524.25, -179, 525.25, -174.5, 528.75, -165.25, 521.5, -121.332, 517.751, -114.75, 526.25, -107, 519, -58.0069, 510.021, -51.169, 519.535, -43.25, 510.5, -2.25, 510.5, 4.75, 515, 19.5, 507.5, 62.25, 508.5, 69.25, 513.75, 71.2818, 557.948, -384.858, 569.529, -398.222, 346.805, 666.402, 316.514, 718.965, 552.602, 84.6452, 559.729 )
+
+[node name="dark" type="Polygon2D" parent="BGAboutMe" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 88.7319, 520.483, 107.273, 519.423, 110.451, 522.866, 111.886, 516.977, 132.278, 519.29, 135.216, 523.926, 138.262, 520.483, 155.508, 517.608, 158.871, 522.338, 160.133, 517.188, 181.576, 514.455, 184.125, 519.75, 185.57, 514.349, 203.125, 517, 205.125, 520.375, 207.5, 517.25, 225.302, 514.77, 227.51, 519.08, 230.243, 515.401, 246.125, 518.5, 248.375, 522.125, 251.475, 518.764, 271.026, 517.398, 274.5, 522.5, 278.174, 517.608, 296.358, 519.5, 300, 522.125, 301.509, 518.134, 319.272, 513.929, 322.625, 519.625, 324.423, 514.77, 344.92, 512.352, 347, 517.375, 349, 514.125, 364.26, 514.665, 365.625, 518.5, 368.78, 514.349, 384.875, 518.25, 386.75, 521.5, 389, 519, 402.626, 517.082, 405.125, 521.875, 407.146, 516.977, 425.875, 518.25, 428.875, 520.75, 432.125, 517.625, 449.611, 515.19, 453.606, 519.185, 457.25, 515.75, 472.25, 515.875, 474.943, 519.605, 477, 516.5, 495.875, 513.25, 498.625, 516, 501.852, 510.671, 520.625, 513.375, 523.875, 517, 527.375, 512.75, 543.625, 513.375, 548.125, 517.375, 551.375, 512.375, 568.178, 509.409, 572.375, 515.375, 574.75, 510.625, 595.625, 509.125, 598.625, 511.875, 601.125, 507.375, 618.001, 502.262, 624.375, 504.25, 621.5, 498.625, 628.625, 484.875, 636.5, 483.875, 630.625, 479.75, 635.75, 461.125, 640.625, 457.75, 636.5, 454.75, 634.375, 438.75, 639.375, 433.375, 634, 432.375, 628.875, 417.625, 632.25, 414.5, 625.75, 411.5, 621.25, 395.5, 624.25, 392.25, 617.625, 390.875, 605.25, 376.125, 605.375, 371, 600.125, 374, 586, 369.5, 582.375, 364.625, 580.625, 369.375, 563, 370.375, 558.459, 367.474, 555.625, 371.375, 534, 374, 529.275, 369.438, 527.5, 375.125, 506, 376.625, 502.336, 373.226, 499.375, 377.625, 476.375, 377, 471.609, 373.086, 469.785, 378.698, 449, 378.5, 444.75, 374.875, 443.125, 379.25, 425.728, 382.346, 422.501, 377.576, 419.695, 384.451, 400.25, 381.625, 396.263, 377.295, 393.738, 382.767, 373.814, 385.153, 370.125, 379.5, 368.763, 387.678, 347.125, 387.875, 344.209, 383.89, 342.375, 388.5, 321.75, 387, 318.393, 382.767, 316.148, 388.099, 297.767, 390.625, 294.681, 386.836, 292.857, 391.466, 275.625, 390, 272.512, 386.275, 271, 390.625, 257.5, 387.125, 254.125, 384.125, 250.343, 390.204, 233.125, 391.375, 230.875, 388.375, 228.375, 392.375, 211.759, 392.869, 210.075, 385.854, 206.875, 389, 187.485, 389.642, 184.399, 383.749, 181.593, 389.642, 160.125, 386.836, 157.375, 379, 154.653, 385.153, 137.25, 379.625, 133.748, 375.752, 131.643, 383.188, 108.071, 382.627, 104.283, 376.874, 101.757, 382.767, 79, 381.125, 68.0147, 350.044, 694.202, 308.967, 739.759, 578.071, 75.4757, 570.655 )
+
+[node name="dark3" type="Polygon2D" parent="BGAboutMe" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 164, 525, 157.25, 486.75, 166.402, 466.275, 182.174, 456.707, 196.994, 453.395, 202.424, 441.344, 219.531, 432.024, 226.953, 431.814, 229.051, 430.213, 218.22, 429.028, 210.541, 432.773, 207.191, 425.121, 213.68, 414.46, 209.906, 404.263, 213.018, 399.76, 212.976, 396.814, 207.17, 403.744, 209.98, 414.419, 203.05, 424.72, 205.47, 434.855, 198.598, 438.666, 193.952, 448.115, 184.696, 448.88, 181.137, 435.583, 167.294, 432.25, 164.094, 420.225, 156.602, 414.232, 157.013, 416.965, 161.91, 421.448, 164.281, 435.957, 175.893, 438.767, 178.598, 450.748, 159.41, 460.209, 146.75, 483.25, 152, 526.5 )
+
+[node name="dark7" type="Polygon2D" parent="BGAboutMe" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 304.331, 386.006, 302.997, 395.35, 306.334, 392.347, 308.837, 395.016, 310.171, 391.846, 314.843, 393.181, 310.171, 385.339 )
+
+[node name="dark4" type="Polygon2D" parent="BGAboutMe" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 180.878, 518.374, 181.673, 508.31, 178.76, 511.753, 176.376, 509.369, 176.243, 513.077, 173.065, 509.501, 176.243, 519.434 )
+
+[node name="dark5" type="Polygon2D" parent="BGAboutMe" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 264.752, 521.982, 266.994, 512.543, 264.044, 515.138, 262.628, 512.779, 260.622, 515.374, 257.319, 512.661, 259.915, 521.864 )
+
+[node name="dark6" type="Polygon2D" parent="BGAboutMe" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 170.233, 384.236, 162.797, 393.777, 168.55, 392.374, 170.093, 395.881, 172.899, 392.514, 177.389, 395.741, 177.67, 385.218 )
+
+[node name="dark2" type="Polygon2D" parent="BGAboutMe" groups=[
+"bg_front",
+]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+polygon = PoolVector2Array( 57.0154, 527.598, 51.664, 518.233, 32.2089, 515.166, 29.8123, 520.908, 25.7547, 516.71, 9.05807, 520.638, 6.743, 524.847, 3.2038, 520.76, -17.4085, 519.607, -20.6356, 526.342, -24.7426, 520.908, -48.8375, 523.115, -50.3809, 527.464, -55.3646, 523.287, -71.1216, 525.219, -74.9347, 529.849, -80.1261, 525.5, -101.149, 530.868, -104.865, 536.071, -109.17, 530.27, -130.879, 531.76, -134.298, 536.071, -141.285, 531.463, -159.866, 533.692, -164.451, 538.408, -168.941, 531.393, -192.272, 536.665, -194.502, 539.787, -198.516, 535.179, -222.3, 537.706, -224.529, 541.868, -227.309, 535.602, -250.179, 532.094, -254.248, 538.689, -258.878, 530.551, -284.287, 533.692, -286.071, 537.855, -290.085, 532.652, -305.842, 526.409, -311.49, 528.341, -312.828, 522.395, -332.153, 514.665, -338.842, 515.557, -336.612, 509.462, -340.626, 492.665, -345.829, 489.84, -341.072, 486.124, -344.937, 464.421, -352.815, 461.597, -345.829, 457.732, -344.491, 439.15, -348.356, 432.461, -341.964, 429.785, -335.274, 410.163, -338.099, 404.069, -331.112, 406.744, -312.233, 399.609, -311.639, 392.92, -307.031, 397.379, -284.062, 392.122, -283.247, 383.406, -279.976, 388.163, -257.53, 389.352, -254.706, 383.109, -249.8, 389.649, -227.8, 387.866, -226.016, 383.406, -224.381, 388.609, -205.502, 391.285, -202.51, 387.757, -200.002, 392.028, -174.532, 395.297, -171.312, 388.312, -168.339, 392.622, -150.353, 395.001, -146.355, 390.138, -141.582, 395.744, -120.771, 392.92, -119.879, 388.906, -115.568, 392.474, -95.7978, 390.393, -94.6086, 385.933, -88.6625, 391.731, -65.5964, 394.9, -62.7973, 389.055, -59.2296, 393.812, -34.9995, 394.109, -31.6657, 389.344, -26.2291, 394.406, 1.56857, 389.649, 3.46201, 385.623, 8.36195, 389.298, 32.0821, 386.848, 32.7503, 382.282, 37.6502, 386.18, 58.9478, 377.014, 59.9884, 373.001, 70.3939, 378.649, 84.9617, 373.892, 91.4355, 321.586, -399.648, 340.927, -385.353, 567.969, 65.3677, 559.56 )
+
+[node name="noor" type="Polygon2D" parent="BGAboutMe" groups=[
+"bg_light",
+]]
+color = Color( 1, 1, 1, 0.117647 )
+polygon = PoolVector2Array( 15.7043, 366.179, 91.2142, 554.954, 242.234, 544.571, 69.9167, 346.46 )
+
+[node name="Black" type="Polygon2D" parent="BGAboutMe"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 105.206, 551.064, 89.7296, 510.906, 110.863, 510.759, 133, 508, 123.854, 485.713, 116.782, 485.713, 122.793, 479.703, 113.984, 458.834, 130.255, 454.072, 96.5228, 425.895, 75, 431.5, 96.126, 420.736, 80.2791, 369.704, 11.8089, 417.409, 18.2315, 488.839, 49.3442, 512.174, 50.0513, 554.6 )
+
+[node name="Black2" type="Polygon2D" parent="BGAboutMe"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( -385.009, 533.85, -280.39, 553.98, -132.225, 552.857, -54.7754, 533.775, -7.63196, 534.898, 57.4708, 525.918, 131.553, 533.775, 168.595, 531.531, 216.86, 525.918, 286.453, 532.653, 339.209, 524.796, 412.169, 537.143, 485.129, 530.408, 574.926, 530.408, 649.008, 525.918, 675.229, 475.135, 646.656, 379.891, 626.02, 329.094, 506.965, 360.842, 430.77, 356.08, 375.211, 368.779, 278.379, 367.192, 202.184, 371.954, 130.751, 364.017, 87.778, 357.365, 6.42366, 380.779, -65.8031, 363.318, -151.509, 375.898, -236.816, 371.408, -299.674, 365.796, -358.042, 380.388, -383.859, 394.98, -359.165, 538.655, -435.492, 534.165, -419.778, 304.06, 721.766, 291.713, 768.91, 612.737, -449.45, 605.075, -460.796, 541.002 )
+
+[node name="Black3" type="Polygon2D" parent="BGAboutMe"]
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 80.699, 358.556, 86.505, 363.051, 20.0176, 382.155, 18.5193, 374.289 )
+
+[node name="Name" type="Label" parent="."]
+margin_left = 77.9349
+margin_top = -288.007
+margin_right = 206.935
+margin_bottom = -266.007
+rect_rotation = -21.694
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Ali Mohammad AliPour"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 294, -210 )
+rotation = -0.575959
+rotating = true
+current = true
+zoom = Vector2( 0.4, 0.4 )
+smoothing_enabled = true
+
+[node name="BlackAdamak" type="Polygon2D" parent="."]
+position = Vector2( 210.238, 143.162 )
+rotation = -0.741503
+color = Color( 0, 0, 0, 1 )
+polygon = PoolVector2Array( 296.704, -206.106, 291.233, -215.079, 297.299, -220.005, 302.635, -216.14, 298.637, -205.883, 300.272, -203.951, 307.042, -209.384, 308.74, -206.982, 300.718, -201.424, 301.246, -172.467, 292.537, -175.317, 294.92, -200.68, 290.386, -194.288, 288.008, -195.7, 294.772, -204.099 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/AboutmeToMenu = SubResource( 6 )
+anims/CustomizeToMenu = SubResource( 7 )
+anims/LevelsToMenu = SubResource( 8 )
+anims/MenuToAboutme = SubResource( 9 )
+anims/MenuToCustomize = SubResource( 10 )
+anims/MenuToLevels = SubResource( 11 )
+anims/MenuToSettings = SubResource( 12 )
+anims/SettingsToMenu = SubResource( 13 )
+anims/intro = SubResource( 14 )
+anims/no_intro = SubResource( 15 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="black" type="ColorRect" parent="CanvasLayer"]
+visible = false
+modulate = Color( 0, 0, 0, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer"]
+autoplay = "fade_out"
+anims/fade_out = SubResource( 16 )
+
+[node name="Shader" parent="." instance=ExtResource( 5 )]
+look_for_slider = true
+
+[node name="Menu" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="AboutMeContainer" type="Control" parent="Menu"]
+visible = false
+modulate = Color( 1, 1, 1, 0.2 )
+anchor_left = 0.4
+anchor_right = 0.934
+anchor_bottom = 1.0
+margin_right = 0.119995
+margin_bottom = 1.52588e-05
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Menu/AboutMeContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+custom_fonts/font = SubResource( 17 )
+custom_constants/line_spacing = 4
+text = "Hello dear gamer
+I am Ali Mohammad Alipour, the creator of this game, and
+this is my first game that I made all by myself.
+This game is made with a computer that has onboard graphics
+My computer can't even run Windows, but I was not disappointed
+and made the game with Linux Lite and Godot game engine.
+This game is much bigger than what you see now and
+more levels coming soon.
+I hope I can make better games for you in the future.
+thank you very much
+(This text has been translated from Persian to English by Google Translate)"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AboutToMenu" type="Button" parent="Menu/AboutMeContainer"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -20.5
+margin_top = -37.7957
+margin_right = 20.5
+margin_bottom = -22.7957
+custom_styles/hover = ExtResource( 3 )
+custom_styles/pressed = ExtResource( 3 )
+custom_styles/focus = ExtResource( 3 )
+custom_styles/disabled = ExtResource( 3 )
+custom_styles/normal = SubResource( 18 )
+custom_fonts/font = SubResource( 19 )
+text = "<- Menu"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="version" type="Label" parent="Menu"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -26.4242
+margin_top = -7.32434
+margin_right = -6.42422
+margin_bottom = -0.324341
+custom_fonts/font = SubResource( 20 )
+text = "V 1.0"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="Menu"]
+visible = false
+anchor_right = 0.333
+anchor_bottom = 1.0
+margin_left = 15.0803
+margin_right = 14.5203
+margin_bottom = 1.52588e-05
+custom_styles/panel = SubResource( 21 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu/PanelContainer"]
+margin_right = 106.0
+margin_bottom = 180.0
+
+[node name="Control" type="CenterContainer" parent="Menu/PanelContainer/VBoxContainer"]
+margin_right = 106.0
+margin_bottom = 48.0
+
+[node name="Label" type="Label" parent="Menu/PanelContainer/VBoxContainer/Control"]
+margin_left = 8.0
+margin_right = 97.0
+margin_bottom = 48.0
+custom_fonts/font = SubResource( 22 )
+text = "Noorak"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="CenterContainer" parent="Menu/PanelContainer/VBoxContainer"]
+margin_top = 52.0
+margin_right = 106.0
+margin_bottom = 172.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu/PanelContainer/VBoxContainer/PanelContainer"]
+margin_left = 32.0
+margin_right = 73.0
+margin_bottom = 120.0
+custom_constants/separation = 6
+alignment = 1
+
+[node name="Play" type="Button" parent="Menu/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+margin_right = 41.0
+margin_bottom = 15.0
+custom_styles/hover = ExtResource( 3 )
+custom_styles/pressed = ExtResource( 3 )
+custom_styles/focus = ExtResource( 3 )
+custom_styles/disabled = ExtResource( 3 )
+custom_styles/normal = SubResource( 18 )
+custom_fonts/font = SubResource( 19 )
+text = "Play"
+
+[node name="Levels" type="Button" parent="Menu/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+margin_top = 21.0
+margin_right = 41.0
+margin_bottom = 36.0
+custom_styles/hover = ExtResource( 3 )
+custom_styles/pressed = ExtResource( 3 )
+custom_styles/focus = ExtResource( 3 )
+custom_styles/disabled = ExtResource( 3 )
+custom_styles/normal = SubResource( 18 )
+custom_fonts/font = SubResource( 19 )
+text = "Levels"
+
+[node name="Customize" type="Button" parent="Menu/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+margin_top = 42.0
+margin_right = 41.0
+margin_bottom = 57.0
+custom_styles/hover = ExtResource( 3 )
+custom_styles/pressed = ExtResource( 3 )
+custom_styles/focus = ExtResource( 3 )
+custom_styles/disabled = ExtResource( 3 )
+custom_styles/normal = SubResource( 18 )
+custom_fonts/font = SubResource( 19 )
+text = "Customize"
+
+[node name="Settings" type="Button" parent="Menu/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+margin_top = 63.0
+margin_right = 41.0
+margin_bottom = 78.0
+custom_styles/hover = ExtResource( 3 )
+custom_styles/pressed = ExtResource( 3 )
+custom_styles/focus = ExtResource( 3 )
+custom_styles/disabled = ExtResource( 3 )
+custom_styles/normal = SubResource( 18 )
+custom_fonts/font = SubResource( 19 )
+text = "Settings"
+
+[node name="About Me" type="Button" parent="Menu/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+margin_top = 84.0
+margin_right = 41.0
+margin_bottom = 99.0
+custom_styles/hover = ExtResource( 3 )
+custom_styles/pressed = ExtResource( 3 )
+custom_styles/focus = ExtResource( 3 )
+custom_styles/disabled = ExtResource( 3 )
+custom_styles/normal = SubResource( 18 )
+custom_fonts/font = SubResource( 19 )
+text = "About Me"
+
+[node name="Exit" type="Button" parent="Menu/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+margin_top = 105.0
+margin_right = 41.0
+margin_bottom = 120.0
+custom_styles/hover = ExtResource( 3 )
+custom_styles/pressed = ExtResource( 3 )
+custom_styles/focus = ExtResource( 3 )
+custom_styles/disabled = ExtResource( 3 )
+custom_styles/normal = SubResource( 18 )
+custom_fonts/font = SubResource( 19 )
+text = "Exit"
+
+[node name="CustomizeContainer" parent="Menu" instance=ExtResource( 6 )]
+visible = false
+modulate = Color( 1, 1, 1, 0 )
+
+[node name="LevelsContainer" parent="Menu" instance=ExtResource( 9 )]
+visible = false
+
+[node name="SettingsContainer" parent="Menu" instance=ExtResource( 7 )]
+visible = false
+modulate = Color( 1, 1, 1, 0 )
+
+[node name="AnimationPlayerMenuPanel" type="AnimationPlayer" parent="."]
+anims/fade_in = SubResource( 23 )
+anims/fade_out = SubResource( 24 )
+
+[node name="AnimationPlayerLevelsPanel" type="AnimationPlayer" parent="."]
+anims/fade_in = SubResource( 25 )
+anims/fade_out = SubResource( 26 )
+
+[node name="AnimationPlayerCustomize" type="AnimationPlayer" parent="."]
+anims/fade_in = SubResource( 27 )
+anims/fade_out = SubResource( 28 )
+
+[node name="AnimationPlayerSettings" type="AnimationPlayer" parent="."]
+anims/fade_in = SubResource( 29 )
+anims/fade_out = SubResource( 30 )
+
+[node name="AnimationPlayerAboutMe" type="AnimationPlayer" parent="."]
+anims/fade_in = SubResource( 31 )
+anims/fade_out = SubResource( 32 )
+[connection signal="body_entered" from="player/PlayerRigidBody" to="player/PlayerRigidBody" method="_on_RigidBody2D_body_entered"]
+[connection signal="body_exited" from="player/PlayerRigidBody" to="player/PlayerRigidBody" method="_on_PlayerRigidBody_body_exited"]
+[connection signal="pressed" from="Menu/AboutMeContainer/AboutToMenu" to="." method="_on_AboutToMenu_pressed"]
+[connection signal="pressed" from="Menu/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/Play" to="." method="_on_Play_pressed"]
+[connection signal="pressed" from="Menu/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/Levels" to="." method="_on_Levels_pressed"]
+[connection signal="pressed" from="Menu/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/Customize" to="." method="_on_Customize_pressed"]
+[connection signal="pressed" from="Menu/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/Settings" to="." method="_on_Settings_pressed"]
+[connection signal="pressed" from="Menu/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/About Me" to="." method="_on_About_Me_pressed"]
+[connection signal="pressed" from="Menu/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/Exit" to="." method="_on_Exit_pressed"]
+
+[editable path="Menu/SettingsContainer"]

@@ -1,0 +1,84 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://sprites/Interface/ui_buttons/exit.png" type="Texture" id=1]
+[ext_resource path="res://sprites/Interface/ui_buttons/play.png" type="Texture" id=2]
+[ext_resource path="res://scripts/Interface/MainScreen.gd" type="Script" id=3]
+[ext_resource path="res://sprites/Interface/ui_buttons/new_game.png" type="Texture" id=4]
+[ext_resource path="res://Music/EmptyCity.ogg" type="AudioStream" id=5]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 18.0
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 18.0
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 18.0
+
+[node name="MainScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.12549, 0.12549, 0.12549, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Menu" type="Control" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -59.0
+margin_top = -19.0
+margin_right = 59.0
+margin_bottom = 19.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="Menu"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.92549, 0.298039, 0.298039, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="exit_btn" type="TouchScreenButton" parent="Menu"]
+position = Vector2( 3.77977, 3.77975 )
+normal = ExtResource( 1 )
+shape = SubResource( 1 )
+
+[node name="start_btn" type="TouchScreenButton" parent="Menu"]
+position = Vector2( 81.0298, 3.25003 )
+normal = ExtResource( 2 )
+shape = SubResource( 2 )
+
+[node name="newgame_btn" type="TouchScreenButton" parent="Menu"]
+position = Vector2( 42.9082, 3.17838 )
+normal = ExtResource( 4 )
+shape = SubResource( 3 )
+
+[node name="newgame_btn2" type="TouchScreenButton" parent="Menu"]
+position = Vector2( -20.0878, 49.7954 )
+normal = ExtResource( 4 )
+shape = SubResource( 3 )
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+position = Vector2( 160, 90 )
+stream = ExtResource( 5 )
+autoplay = true
+[connection signal="released" from="Menu/exit_btn" to="." method="_on_exit_btn_released"]
+[connection signal="released" from="Menu/start_btn" to="." method="_on_start_btn_released"]
+[connection signal="released" from="Menu/newgame_btn" to="." method="_on_newgame_btn_released"]
+[connection signal="released" from="Menu/newgame_btn2" to="." method="_on_newgame_btn2_released"]
+[connection signal="released" from="Menu/newgame_btn2" to="." method="_on_newgame_btn_released"]

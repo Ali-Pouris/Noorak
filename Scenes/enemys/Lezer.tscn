@@ -1,0 +1,78 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/enemys/Lezer.gd" type="Script" id=1]
+
+[sub_resource type="Animation" id=1]
+resource_name = "lezer"
+length = 1.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Line2D:width")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 1.0, 0.5, 1.0, 0.5, 1.0, 0.5 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Line2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.588235 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.588235 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.588235 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Line2D2:width")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.0053637, 0.2, 0.4, 0.6, 0.809786, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 2.0, 1.0, 2.0, 1.0, 2.0, 1.0 ]
+}
+
+[node name="LezerRay" type="RayCast2D"]
+enabled = true
+cast_to = Vector2( 100, 0 )
+collision_mask = 66
+script = ExtResource( 1 )
+
+[node name="Line2D2" type="Line2D" parent="."]
+points = PoolVector2Array( 0, 0, 0, 0 )
+width = 1.97388
+default_color = Color( 1, 1, 1, 0.196078 )
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PoolVector2Array( 0, 0, 0, 0 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Line2D"]
+speed_scale = 2.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 20.0
+initial_velocity_random = 0.5
+damping = 10.0
+scale_amount_random = 1.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "lezer"
+anims/lezer = SubResource( 1 )
+
+[node name="VisibilityEnabler2D" type="VisibilityEnabler2D" parent="."]
+position = Vector2( 0.793701, 0 )
+rect = Rect2( -10, -10, 120, 20 )
+process_parent = true
+physics_process_parent = true

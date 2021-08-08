@@ -1,0 +1,413 @@
+[gd_scene load_steps=23 format=2]
+
+[ext_resource path="res://Scenes/Interface_scenes/TouchControls.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/enemys/test_enemy.tscn" type="PackedScene" id=3]
+[ext_resource path="res://sprites/ground.png" type="Texture" id=4]
+[ext_resource path="res://Scenes/Interface_scenes/Shader.tscn" type="PackedScene" id=5]
+[ext_resource path="res://sprites/box.png" type="Texture" id=6]
+[ext_resource path="res://Scenes/exit_portal.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/Interface_scenes/Game_HUD.tscn" type="PackedScene" id=9]
+
+[sub_resource type="Animation" id=1]
+resource_name = "fade_out"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 0 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
+
+[sub_resource type="OccluderPolygon2D" id=2]
+polygon = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
+
+[sub_resource type="OccluderPolygon2D" id=3]
+polygon = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
+
+[sub_resource type="TileSet" id=4]
+0/name = "ground.png 0"
+0/texture = ExtResource( 4 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 16, 16 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/occluder = SubResource( 2 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
+1/name = "ground.png 1"
+1/texture = ExtResource( 4 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 0, 0, 16, 16 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 0, 0 )
+1/occluder = SubResource( 3 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
+1/shapes = [  ]
+1/z_index = 0
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 241.6, 8 )
+
+[sub_resource type="OccluderPolygon2D" id=6]
+polygon = PoolVector2Array( -16, -16, 0, -16, 0, 0, -16, 0 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 8, 8 )
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 1.82717, 64.5363 )
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 101.502, 3.33858 )
+
+[sub_resource type="RectangleShape2D" id=10]
+
+[sub_resource type="CircleShape2D" id=11]
+
+[sub_resource type="CircleShape2D" id=12]
+
+[sub_resource type="RectangleShape2D" id=13]
+extents = Vector2( 42, 10 )
+
+[sub_resource type="PackedScene" id=14]
+_bundled = {
+"conn_count": 0,
+"conns": PoolIntArray(  ),
+"editable_instances": [ NodePath("player") ],
+"names": PoolStringArray( "test_level", "Node", "CanvasLayer", "CanvasLayer", "TouchControls", "visible", "player", "GlowingParticles", "position", "RigidBody2D", "position", "StaticBody2D", "StaticBody2D", "CollisionPolygon2D", "CollisionPolygon2D", "position", "polygon", "CollisionPolygon2D2", "CollisionPolygon2D", "position", "rotation", "polygon", "CollisionPolygon2D3", "CollisionPolygon2D", "position", "polygon", "CollisionPolygon2D4", "CollisionPolygon2D", "polygon", "RigidBody2D", "RigidBody2D", "position", "rotation", "collision_layer", "collision_mask", "mass", "gravity_scale", "CollisionShape2D", "CollisionShape2D", "shape", "Node2D", "Node2D", "RigidBody2D", "RigidBody2D", "collision_layer", "collision_mask", "CollisionShape2D", "CollisionShape2D", "shape", "StaticBody2D", "RigidBody2D", "collision_layer", "collision_mask", "mode", "CollisionShape2D", "CollisionShape2D", "shape", "PinJoint2D", "PinJoint2D", "node_a", "node_b", "bias", "car", "Node2D", "wheelF", "RigidBody2D", "position", "CollisionShape2D", "CollisionShape2D", "shape", "wheelB", "RigidBody2D", "position", "CollisionShape2D", "CollisionShape2D", "shape", "body", "RigidBody2D", "position", "collision_layer", "collision_mask", "CollisionShape2D", "CollisionShape2D", "shape", "PinJoint2D", "PinJoint2D", "position", "node_a", "node_b", "PinJoint2D2", "PinJoint2D", "position", "node_a", "node_b", "exit_portal", "position", "next_scene" ),
+"node_count": 29,
+"node_paths": [ NodePath("."), NodePath("./CanvasLayer"), NodePath("."), NodePath("./player"), NodePath("./player"), NodePath("."), NodePath("./StaticBody2D"), NodePath("./StaticBody2D"), NodePath("./StaticBody2D"), NodePath("./StaticBody2D"), NodePath("."), NodePath("./RigidBody2D"), NodePath("."), NodePath("./Node2D"), NodePath("./Node2D/RigidBody2D"), NodePath("./Node2D"), NodePath("./Node2D/StaticBody2D"), NodePath("./Node2D"), NodePath("."), NodePath("./car"), NodePath("./car/wheelF"), NodePath("./car"), NodePath("./car/wheelB"), NodePath("./car"), NodePath("./car/body"), NodePath("./car"), NodePath("./car"), NodePath(".") ],
+"nodes": PoolIntArray( -1, -1, 1, 0, -1, 0, 0, 1073741824, 0, 3, 2, -1, 0, 0, 1073741825, 0, 2147483647, 4, 0, 1, 5, 1, 0, 1073741826, 0, 2147483647, 6, 2, 0, 0, 1073741827, -1, 2147483647, 262151, -1, 1, 8, 3, 0, 1073741828, -1, 2147483647, 524297, -1, 1, 10, 4, 0, 1073741829, 0, 12, 11, -1, 0, 0, 1073741830, 0, 14, 13, -1, 2, 15, 5, 16, 6, 0, 1073741831, 0, 18, 17, -1, 3, 19, 7, 20, 8, 21, 9, 0, 1073741832, 0, 23, 22, -1, 2, 24, 10, 25, 11, 0, 1073741833, 0, 27, 26, -1, 1, 28, 12, 0, 1073741834, 0, 30, 29, -1, 6, 31, 13, 32, 14, 33, 15, 34, 16, 35, 17, 36, 18, 0, 1073741835, 0, 38, 37, -1, 1, 39, 19, 0, 1073741836, 0, 41, 40, -1, 0, 0, 1073741837, 0, 43, 42, -1, 2, 44, 20, 45, 21, 0, 1073741838, 0, 47, 46, -1, 1, 48, 22, 0, 1073741839, 0, 50, 49, -1, 3, 51, 23, 52, 24, 53, 25, 0, 1073741840, 0, 55, 54, -1, 1, 56, 26, 0, 1073741841, 0, 58, 57, -1, 3, 59, 27, 60, 28, 61, 29, 0, 1073741842, 0, 63, 62, -1, 0, 0, 1073741843, 0, 65, 64, -1, 1, 66, 30, 0, 1073741844, 0, 68, 67, -1, 1, 69, 31, 0, 1073741845, 0, 71, 70, -1, 1, 72, 32, 0, 1073741846, 0, 74, 73, -1, 1, 75, 33, 0, 1073741847, 0, 77, 76, -1, 3, 78, 34, 79, 35, 80, 36, 0, 1073741848, 0, 82, 81, -1, 1, 83, 37, 0, 1073741849, 0, 85, 84, -1, 3, 86, 38, 87, 39, 88, 40, 0, 1073741850, 0, 90, 89, -1, 3, 91, 41, 92, 42, 93, 43, 0, 1073741851, 0, 2147483647, 94, 44, 2, 95, 45, 96, 46, 0 ),
+"variants": [ ExtResource( 1 ), false, ExtResource( 2 ), Vector2( 160.611, 93.3395 ), Vector2( 160.611, 93.3395 ), Vector2( -32.5514, 10.1022 ), PoolVector2Array( 61.7995, 161.093, 117.923, 168.389, 245.883, 168.389, 319.404, 159.409, 313.792, 143.694, 243.638, 156.603, 121.851, 155.48, 62.3607, 148.745 ), Vector2( 55, -72 ), 0.349066, PoolVector2Array( 273.296, 156.304, 287.454, 151.112, 398.814, 22.335, 265.636, 75.4182, 262.221, 79.3867, 260.668, 79.038, 259.731, 80.8603, 260.897, 85.1431 ), Vector2( -70.9196, -121.973 ), PoolVector2Array( 256.173, 99.1958, 259.53, 107.633, 270.047, 110.224, 268.455, 107.134, 283.791, 93.7766, 383.452, 73.1892, 368.09, 40.3459, 253.475, 85.513 ), PoolVector2Array( 30.2245, 159.706, -21.4906, 152.559, -85.3987, 150.036, -116.091, 140.786, -210.692, 126.912, -314.123, 121.446, -316.225, 140.786, -227.09, 149.616, 31.0654, 171.059 ), Vector2( 238.974, 37.5143 ), -0.610865, 23, 23, 2.5, 4.0, SubResource( 8 ), 39, 39, SubResource( 9 ), 7, 7, 1, SubResource( 10 ), NodePath("../RigidBody2D"), NodePath("../StaticBody2D"), 0.856, Vector2( -223.134, 104.567 ), SubResource( 11 ), Vector2( -291.37, 104.438 ), SubResource( 12 ), Vector2( -256.5, 94.5 ), 7, 7, SubResource( 13 ), Vector2( -223.113, 104.576 ), NodePath("../wheelF"), NodePath("../body"), Vector2( -291.351, 104.384 ), NodePath("../wheelB"), NodePath("../body"), ExtResource( 7 ), Vector2( 258.058, 131.407 ), null ],
+"version": 2
+}
+
+[node name="Game" type="Node"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="Game_HUD" parent="CanvasLayer" instance=ExtResource( 9 )]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/ColorRect"]
+autoplay = "fade_out"
+anims/fade_out = SubResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = -40.0
+margin_top = -23.0
+margin_right = 377.0
+margin_bottom = 167.0
+color = Color( 0.129412, 0.129412, 0.129412, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="player" parent="." instance=ExtResource( 2 )]
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource( 4 )
+cell_size = Vector2( 16, 16 )
+collision_layer = 0
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( -65539, 0, 0, -65538, 0, 0, -65537, 0, 0, -131072, 0, 0, -131071, 0, 0, -131070, 0, 0, -131069, 0, 0, -131068, 0, 0, -131067, 0, 0, -131066, 0, 0, -131065, 0, 0, -131064, 0, 0, -131063, 0, 0, -131062, 0, 0, -131061, 0, 0, -131060, 0, 0, -131059, 0, 0, -131058, 0, 0, -131057, 0, 0, -131056, 0, 0, -131055, 0, 0, -131054, 0, 0, -131053, 0, 0, -131052, 0, 0, -131051, 0, 0, -131050, 0, 0, -131049, 0, 0, -3, 0, 0, -65513, 0, 0, 65533, 0, 0, 23, 0, 0, 131069, 0, 0, 65559, 0, 0, 196605, 0, 0, 131095, 0, 0, 262141, 0, 0, 196624, 0, 0, 196625, 0, 0, 196626, 0, 0, 196627, 0, 0, 196628, 0, 0, 196629, 0, 0, 196630, 0, 0, 196631, 0, 0, 327677, 0, 0, 262167, 0, 0, 393213, 0, 0, 327703, 0, 0, 458749, 0, 0, 458750, 0, 0, 458751, 0, 0, 393216, 0, 0, 393217, 0, 0, 393218, 0, 0, 393239, 0, 0, 524285, 0, 0, 458775, 0, 0, 589821, 0, 0, 524311, 0, 0, 655357, 0, 0, 589847, 0, 0, 720893, 0, 0, 720894, 0, 0, 720895, 0, 0, 655360, 0, 0, 655361, 0, 0, 655362, 0, 0, 655363, 0, 0, 655364, 0, 0, 655365, 0, 0, 655366, 0, 0, 655367, 0, 0, 655368, 0, 0, 655369, 0, 0, 655370, 0, 0, 655371, 0, 0, 655372, 0, 0, 655373, 0, 0, 655374, 0, 0, 655375, 0, 0, 655376, 0, 0, 655377, 0, 0, 655378, 0, 0, 655379, 0, 0, 655380, 0, 0, 655381, 0, 0, 655382, 0, 0, 655383, 0, 0 )
+
+[node name="ground colisitoin" type="Node2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="ground colisitoin"]
+position = Vector2( -40.0362, 168.063 )
+collision_layer = 7
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ground colisitoin/StaticBody2D"]
+position = Vector2( 194.411, -0.0744629 )
+shape = SubResource( 5 )
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="ground colisitoin"]
+position = Vector2( -40.0931, -41.3044 )
+rotation = 1.5708
+collision_layer = 7
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ground colisitoin/StaticBody2D2"]
+position = Vector2( 194.411, -0.0744629 )
+shape = SubResource( 5 )
+
+[node name="StaticBody2D6" type="StaticBody2D" parent="ground colisitoin"]
+position = Vector2( 375.935, 6.38771 )
+rotation = 1.5708
+collision_layer = 7
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ground colisitoin/StaticBody2D6"]
+position = Vector2( 194.411, -0.0744629 )
+shape = SubResource( 5 )
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="ground colisitoin"]
+position = Vector2( -20.0962, -23.9377 )
+collision_layer = 7
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ground colisitoin/StaticBody2D3"]
+position = Vector2( 194.411, -0.0744629 )
+shape = SubResource( 5 )
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="ground colisitoin"]
+position = Vector2( 303.184, 56.0759 )
+collision_layer = 7
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ground colisitoin/StaticBody2D4"]
+position = Vector2( 194.411, -0.0744629 )
+shape = SubResource( 5 )
+
+[node name="StaticBody2D5" type="StaticBody2D" parent="ground colisitoin"]
+position = Vector2( -388.01, 104.072 )
+collision_layer = 7
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ground colisitoin/StaticBody2D5"]
+position = Vector2( 194.411, -0.0744629 )
+shape = SubResource( 5 )
+
+[node name="boxs" type="Node2D" parent="."]
+position = Vector2( 254.078, -3.74551 )
+
+[node name="BOX" type="RigidBody2D" parent="boxs"]
+position = Vector2( -216.886, 83.9589 )
+collision_layer = 15
+collision_mask = 15
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="boxs/BOX"]
+position = Vector2( 8, 8 )
+occluder = SubResource( 6 )
+
+[node name="Sprite" type="Sprite" parent="boxs/BOX"]
+texture = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="boxs/BOX"]
+shape = SubResource( 7 )
+
+[node name="BOX2" type="RigidBody2D" parent="boxs"]
+position = Vector2( -214.879, 66.5539 )
+collision_layer = 15
+collision_mask = 15
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="boxs/BOX2"]
+position = Vector2( 8, 8 )
+occluder = SubResource( 6 )
+
+[node name="Sprite" type="Sprite" parent="boxs/BOX2"]
+texture = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="boxs/BOX2"]
+shape = SubResource( 7 )
+
+[node name="BOX3" type="RigidBody2D" parent="boxs"]
+position = Vector2( -213.542, 43.836 )
+collision_layer = 15
+collision_mask = 15
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="boxs/BOX3"]
+position = Vector2( 8, 8 )
+occluder = SubResource( 6 )
+
+[node name="Sprite" type="Sprite" parent="boxs/BOX3"]
+texture = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="boxs/BOX3"]
+shape = SubResource( 7 )
+
+[node name="BOX4" type="RigidBody2D" parent="boxs"]
+position = Vector2( 7.40045, 38.0451 )
+collision_layer = 15
+collision_mask = 15
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="boxs/BOX4"]
+position = Vector2( 8, 8 )
+occluder = SubResource( 6 )
+
+[node name="Sprite" type="Sprite" parent="boxs/BOX4"]
+texture = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="boxs/BOX4"]
+shape = SubResource( 7 )
+
+[node name="BOX5" type="RigidBody2D" parent="boxs"]
+position = Vector2( 5.61865, 20.2271 )
+collision_layer = 15
+collision_mask = 15
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="boxs/BOX5"]
+position = Vector2( 8, 8 )
+occluder = SubResource( 6 )
+
+[node name="Sprite" type="Sprite" parent="boxs/BOX5"]
+texture = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="boxs/BOX5"]
+shape = SubResource( 7 )
+
+[node name="BOX6" type="RigidBody2D" parent="boxs"]
+position = Vector2( -18.3848, -3.53555 )
+collision_layer = 15
+collision_mask = 15
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="boxs/BOX6"]
+position = Vector2( 8, 8 )
+occluder = SubResource( 6 )
+
+[node name="Sprite" type="Sprite" parent="boxs/BOX6"]
+texture = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="boxs/BOX6"]
+shape = SubResource( 7 )
+
+[node name="BOX7" type="RigidBody2D" parent="boxs"]
+position = Vector2( -88.4652, 149.914 )
+collision_layer = 15
+collision_mask = 15
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="boxs/BOX7"]
+position = Vector2( 8, 8 )
+occluder = SubResource( 6 )
+
+[node name="Sprite" type="Sprite" parent="boxs/BOX7"]
+texture = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="boxs/BOX7"]
+shape = SubResource( 7 )
+
+[node name="BOX8" type="RigidBody2D" parent="boxs"]
+position = Vector2( -87.4057, 131.373 )
+collision_layer = 15
+collision_mask = 15
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="boxs/BOX8"]
+position = Vector2( 8, 8 )
+occluder = SubResource( 6 )
+
+[node name="Sprite" type="Sprite" parent="boxs/BOX8"]
+texture = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="boxs/BOX8"]
+shape = SubResource( 7 )
+
+[node name="BOX9" type="RigidBody2D" parent="boxs"]
+position = Vector2( -87.9355, 111.773 )
+collision_layer = 15
+collision_mask = 15
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="boxs/BOX9"]
+position = Vector2( 8, 8 )
+occluder = SubResource( 6 )
+
+[node name="Sprite" type="Sprite" parent="boxs/BOX9"]
+texture = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="boxs/BOX9"]
+shape = SubResource( 7 )
+
+[node name="BOX10" type="RigidBody2D" parent="boxs"]
+position = Vector2( -87.4057, 92.703 )
+collision_layer = 15
+collision_mask = 15
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="boxs/BOX10"]
+position = Vector2( 8, 8 )
+occluder = SubResource( 6 )
+
+[node name="Sprite" type="Sprite" parent="boxs/BOX10"]
+texture = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="boxs/BOX10"]
+shape = SubResource( 7 )
+
+[node name="BOX11" type="RigidBody2D" parent="boxs"]
+position = Vector2( -88.9949, 74.6921 )
+collision_layer = 15
+collision_mask = 15
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="boxs/BOX11"]
+position = Vector2( 8, 8 )
+occluder = SubResource( 6 )
+
+[node name="Sprite" type="Sprite" parent="boxs/BOX11"]
+texture = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="boxs/BOX11"]
+shape = SubResource( 7 )
+
+[node name="BOX12" type="RigidBody2D" parent="boxs"]
+position = Vector2( 62.025, 98.2889 )
+collision_layer = 15
+collision_mask = 15
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="boxs/BOX12"]
+position = Vector2( 8, 8 )
+occluder = SubResource( 6 )
+
+[node name="Sprite" type="Sprite" parent="boxs/BOX12"]
+texture = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="boxs/BOX12"]
+shape = SubResource( 7 )
+
+[node name="test_enemy" parent="." instance=ExtResource( 3 )]
+position = Vector2( 100.006, 16.2709 )
+
+[node name="test_enemy2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 110.867, 16.3847 )
+
+[node name="test_enemy3" parent="." instance=ExtResource( 3 )]
+position = Vector2( 210.477, 101.797 )
+
+[node name="exit_portal" parent="." instance=ExtResource( 7 )]
+position = Vector2( 354.261, 105.359 )
+next_scene = SubResource( 14 )
+
+[node name="Shader" parent="." instance=ExtResource( 5 )]
+
+[editable path="player"]
