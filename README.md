@@ -8,4 +8,4 @@ This game has 13 stages and about 15 minutes or more gameplay. This game is in d
 
 just use the zip file its godot project files and its correct
 and yes i dont know github and english! heeeeeeeeeeeeeeeeeeeelp
-![Screenshot_2021-07-27-17-43-12-414_ir alimohammadalipour noorak](https://user-images.githubusercontent.com/88623895/130354580-e4f66954-8165-45d4-a938-2c91741a24d6.jpg)
+
